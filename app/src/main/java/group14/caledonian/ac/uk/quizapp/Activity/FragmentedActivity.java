@@ -21,11 +21,11 @@ public abstract class FragmentedActivity extends FragmentActivity {
     }
 
     //Log in Adapter inner class
-    public static class LoginAdapter extends FragmentPagerAdapter {
+    public static class SliderAdapter extends FragmentPagerAdapter {
         protected int NUM_ITEMS = 1;
         protected ArrayList<FragmentView> fragments;
 
-        public LoginAdapter(FragmentManager fragmentManager, int number, ArrayList<FragmentView> fragments) {
+        public SliderAdapter(FragmentManager fragmentManager, int number, ArrayList<FragmentView> fragments) {
             super(fragmentManager);
             this.NUM_ITEMS = number;
             this.fragments = fragments;
@@ -41,14 +41,12 @@ public abstract class FragmentedActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
 
-            switch (position) {
-                case 0: // Fragment # 0 - This will show FirstFragment;
-                    return fragments.get(0);
-                case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return fragments.get(1);
-                default:
-                    return null;
+            for(int i = 0; i < fragments.size(); i++){
+                if(i == position){
+                    return fragments.get(i);
+                }
             }
+            return null;
         }
 
     }

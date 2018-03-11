@@ -23,10 +23,9 @@ public class AuthenticationActivity extends FragmentedActivity {
         ArrayList<FragmentView> fragments = new ArrayList<FragmentView>();
         fragments.add(new LoginFragment());
         fragments.add(new RegisterFragment());
-        loginAdapter = new LoginAdapter(getSupportFragmentManager(), 2, fragments);
+        loginAdapter = new SliderAdapter(getSupportFragmentManager(), 2, fragments);
         pager.setAdapter(loginAdapter);
 
     }
 
 }
-

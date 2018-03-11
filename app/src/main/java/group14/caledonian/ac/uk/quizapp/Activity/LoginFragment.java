@@ -90,7 +90,7 @@ public class LoginFragment extends FragmentView {
                         //CHECK IF EMAIL EXISTS
                         EmailHandler eh = new EmailHandler();
                         eh.sendMail(text.getText().toString(), "Password Recovery", "TODO: connect to database and send password if exists");
-                       Toast.makeText(getActivity(),"Email sent...", Toast.LENGTH_SHORT);
+                        Toast.makeText(getActivity(),"Email sent...", Toast.LENGTH_SHORT);
                     }
                 });
 
