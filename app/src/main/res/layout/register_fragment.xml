@@ -33,7 +33,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Username"
-        android:inputType="textEmailAddress" />
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/txtFirstname"
@@ -43,7 +43,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="First Name" />
+        android:hint="First Name" /
+        android:inputType="textPersonName">
 
     <EditText
         android:id="@+id/txtSurname"
@@ -53,7 +54,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="Surname" />
+        android:hint="Surname" 
+        android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/txtPassword"
