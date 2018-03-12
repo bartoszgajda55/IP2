@@ -27,6 +27,7 @@
                 android:layout_height="match_parent"
                 android:hint="Search for a Quiz"
                 android:textAlignment="center"
+                android:singleLine="true"
                 />
 
                 <ImageView
