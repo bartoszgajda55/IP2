@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+
+        android:theme="@style/textTitle"/>
+
+    <EditText
+        android:id="@+id/txtEmail"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/txtUsername"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/txtFirstname"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtUsername"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="First Name" />
+
+    <EditText
+        android:id="@+id/txtSurname"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtFirstname"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Surname" />
+
+    <EditText
+        android:id="@+id/txtPassword"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/txtSurname"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+
+    <EditText
+        android:id="@+id/txtConfirmPassword"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtPassword"
+        android:layout_below="@+id/txtPassword"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Confirm Password"
+        android:inputType="textPassword" />
+
+
+    <!--- add premade button styles -->
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="REGISTER"
+
+        android:theme="@style/buttonPrimary"
+        android:layout_below="@+id/txtConfirmPassword"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/txtSwipeLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnRegister"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:maxWidth="220dp"
+        android:textAlignment="center"
+
+        android:text="Already have an account? Swipe left to log in..."
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow_back"
+        android:tint="@color/colorLightGray"
+        android:layout_toLeftOf="@+id/txtSwipeLeft"
+        android:layout_alignBottom="@id/txtSwipeLeft"
+        android:layout_marginRight="10dp"
+        />
+
+    <!--- Icons -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_email"
+        android:tint="@color/colorLightGray"
+        android:layout_alignRight="@+id/txtEmail"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignBottom="@id/txtEmail"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_user"
+        android:tint="@color/colorLightGray"
+        android:layout_alignRight="@+id/txtUsername"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignBottom="@id/txtUsername"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_pen"
+        android:tint="@color/colorLightGray"
+        android:layout_alignRight="@+id/txtFirstname"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignBottom="@id/txtFirstname"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_pen"
+        android:tint="@color/colorLightGray"
+        android:layout_alignRight="@+id/txtSurname"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignBottom="@id/txtSurname"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_lock"
+        android:tint="@color/colorLightGray"
+        android:layout_alignRight="@+id/txtPassword"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignBottom="@id/txtPassword"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_lock"
+        android:tint="@color/colorLightGray"
+        android:layout_alignRight="@+id/txtConfirmPassword"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignBottom="@id/txtConfirmPassword"
+        />
+</RelativeLayout>

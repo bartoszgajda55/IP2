@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_fullsize"
+        android:adjustViewBounds="true"
+        android:maxWidth="200dp"
+
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:id="@+id/imageView" />
+
+
+    <EditText
+        android:id="@+id/txtEmail"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/txtPassword"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtEmail"
+        android:layout_below="@+id/txtEmail"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+
+    <!--- add premade button styles -->
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+
+        android:theme="@style/buttonPrimary"
+        android:text="LOGIN"
+        android:onClick="onClickLogin"
+/>
+
+    <Button
+        android:id="@+id/btnForgotPassword"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+
+        android:theme="@style/buttonFlat"
+        android:text="Reset Password"
+        android:onClick="onResetPassword"/>
+
+    <TextView
+        android:id="@+id/txtSwipeRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnForgotPassword"
+        android:layout_centerHorizontal="true"
+        android:maxWidth="220dp"
+        android:textAlignment="center"
+
+        android:text="Don't have an account? Swipe right to sign up..."
+        />
+
+
+    <!--- Icons -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow_next"
+        android:tint="@color/colorLightGray"
+        android:layout_toRightOf="@+id/txtSwipeRight"
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@id/txtSwipeRight"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_email"
+        android:tint="@color/colorLightGray"
+        android:layout_alignRight="@+id/txtEmail"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="2dp"
+        android:layout_alignBottom="@id/txtEmail"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_lock"
+        android:tint="@color/colorLightGray"
+        android:layout_alignRight="@+id/txtPassword"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="2dp"
+        android:layout_alignBottom="@id/txtPassword"
+        />
+</RelativeLayout>
