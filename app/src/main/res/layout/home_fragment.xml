@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+            <EditText
+                android:id="@+id/txtSearch"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Search for a Quiz"
+                android:textAlignment="center"
+                android:singleLine="true"
+                />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_search"
+                    android:tint="@color/colorLightGray"
+                    android:layout_alignRight="@+id/txtSearch"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_alignBottom="@id/txtSearch"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/textTitle"
+                    android:text="Featured Quizzes"
+                    android:layout_centerHorizontal="true"/>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/featuredSlider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="300dp">
+
+
+
+                </android.support.v4.view.ViewPager>
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>
