@@ -43,8 +43,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="First Name" /
-        android:inputType="textPersonName">
+        android:hint="First Name"
+        android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/txtSurname"
