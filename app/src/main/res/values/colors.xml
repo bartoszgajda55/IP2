@@ -10,5 +10,7 @@
     <color name="colorDarkGray">#616161</color>
     <color name="colorLightGray">#8E8E8E</color>
 
+    <color name="colorSliderBackground">#e2e2e2</color>
+
     <color name="colorBackground">#FFFFFF</color>
 </resources>

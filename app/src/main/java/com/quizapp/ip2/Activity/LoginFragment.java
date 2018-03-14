@@ -4,25 +4,23 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import  com.quizapp.ip2.Helper.EmailHandler;
-import  com.quizapp.ip2.R;
+import com.quizapp.ip2.Helper.EmailHandler;
+import com.quizapp.ip2.R;
 
 /**
  * Created by aaron on 08/03/2018.
  */
 
-public class LoginFragment extends FragmentView {
+public class LoginFragment extends Fragment {
 
 
     @Nullable
@@ -111,7 +109,7 @@ public class LoginFragment extends FragmentView {
 
     }
 
-    public static FragmentView newInstance(int page) {
+    public static Fragment newInstance(int page) {
         LoginFragment logFragment = new LoginFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);

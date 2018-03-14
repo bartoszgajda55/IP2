@@ -2,17 +2,18 @@ package com.quizapp.ip2.Activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import  com.quizapp.ip2.R;
+import com.quizapp.ip2.R;
 
 /**
  * Created by aaron on 08/03/2018.
  */
 
-public class RegisterFragment extends FragmentView {
+public class RegisterFragment extends Fragment {
 
     @Nullable
     @Override
@@ -22,7 +23,7 @@ public class RegisterFragment extends FragmentView {
     }
 
 
-    public static FragmentView newInstance(int page) {
+    public static Fragment newInstance(int page) {
         RegisterFragment regFragment = new RegisterFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
