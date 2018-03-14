@@ -28,6 +28,7 @@
                 android:hint="Search for a Quiz"
                 android:textAlignment="center"
                 android:singleLine="true"
+                android:maxLines="1"
                 />
 
                 <ImageView

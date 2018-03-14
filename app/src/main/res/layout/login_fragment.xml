@@ -15,7 +15,6 @@
         android:layout_marginTop="40dp"
         android:id="@+id/imageView" />
 
-
     <EditText
         android:id="@+id/txtEmail"
         android:layout_width="300dp"
@@ -87,7 +86,7 @@
         android:layout_toRightOf="@+id/txtSwipeRight"
         android:layout_marginLeft="10dp"
         android:layout_alignBottom="@id/txtSwipeRight"
-        />
+        android:id="@+id/imageView3" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -110,4 +109,5 @@
         android:layout_marginRight="2dp"
         android:layout_alignBottom="@id/txtPassword"
         />
+
 </RelativeLayout>
