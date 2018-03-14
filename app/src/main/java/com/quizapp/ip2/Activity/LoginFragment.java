@@ -4,12 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import  com.quizapp.ip2.Helper.EmailHandler;
@@ -21,11 +24,11 @@ import  com.quizapp.ip2.R;
 
 public class LoginFragment extends FragmentView {
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
-
 
         //SUCCESS
         Button btnLogin = (Button) view.findViewById(R.id.btnLogin);
@@ -36,8 +39,6 @@ public class LoginFragment extends FragmentView {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Remember me");
                 builder.setMessage("Do you want Quizzy to remember your password?");
-
-
 
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
                     @Override
@@ -103,9 +104,11 @@ public class LoginFragment extends FragmentView {
 
 
     private void logIn(){
-        Intent intent = new Intent(getActivity(), HomepageActivity.class);
+
+        Intent intent = new Intent(getContext(), HomepageActivity.class);
         startActivity(intent);
-        Toast.makeText(getActivity(), "Logged in...", Toast.LENGTH_SHORT).show();
+
+
     }
 
     public static FragmentView newInstance(int page) {
@@ -115,7 +118,6 @@ public class LoginFragment extends FragmentView {
         logFragment.setArguments(args);
         return logFragment;
     }
-
 
 
 }

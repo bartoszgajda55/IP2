@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.AuthenticationActivity" />
+        <activity android:name=".Activity.AuthenticationActivity" android:noHistory="true"/>
         <activity android:name=".Activity.HomepageActivity"></activity>
     </application>
 
