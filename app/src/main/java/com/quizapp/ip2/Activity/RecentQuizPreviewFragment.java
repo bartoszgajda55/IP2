@@ -3,7 +3,6 @@ package com.quizapp.ip2.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
@@ -18,30 +17,27 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
- * Created by Aaron on 11/03/2018.
+ * Created by Allan on 15/03/2018.
  */
 
-public class QuizPreviewFragment extends Fragment {
+public class RecentQuizPreviewFragment extends android.support.v4.app.Fragment{
     private int color; //this gets passed in as R.color.<color> from the
 
     private Drawable drawable = null;
     //components
     private TextView txtQuizTitle;
-    private TextView txtQuizDesc;
     private ImageView imgQuizImg;
 
 
 
     @Nullable
-  //  @Override
+    //  @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.quiz_preview_fragment, container, false);
+        View view = inflater.inflate(R.layout.recent_quiz_preview_fragment, container, false);
         txtQuizTitle = (TextView) view.findViewById(R.id.txtTitle);
-        txtQuizDesc = (TextView) view.findViewById(R.id.txtDesc);
         imgQuizImg = (ImageView) view.findViewById(R.id.imgQuizImg);
 
         txtQuizTitle.setText(this.getArguments().getString("title"));
-        txtQuizDesc.setText(this.getArguments().getString("desc"));
         final String txt = this.getArguments().getString("img");
 
         Thread networkThread = new Thread(new Runnable() {
@@ -58,12 +54,12 @@ public class QuizPreviewFragment extends Fragment {
         DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), color)); //TODO set color to database color
         while(drawable==null){
             System.out.println("Loading Image ...");
-        imgQuizImg.setImageDrawable(drawable);}
+            imgQuizImg.setImageDrawable(drawable);}
         return view;
     }
 
-    //TODO onClick to open quiz associated with fragment
-    //TODO add Navigation dots
+
+    //TODO OnClick method to open Quiz associated with Fragment
 
     private Drawable loadImage(String url){
         try{

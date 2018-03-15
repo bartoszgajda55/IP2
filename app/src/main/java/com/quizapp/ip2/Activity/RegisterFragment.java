@@ -23,12 +23,4 @@ public class RegisterFragment extends Fragment {
     }
 
 
-    public static Fragment newInstance(int page) {
-        RegisterFragment regFragment = new RegisterFragment();
-        Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        regFragment.setArguments(args);
-        return regFragment;
-    }
-
 }

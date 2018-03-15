@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/colorSliderBackground">
 
     <ImageView
         android:id="@+id/imgBackground"
-        android:layout_width="350dp"
-        android:layout_height="match_parent"
-        android:src="@drawable/rounded_rect"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
-        android:padding="7dp"/>
+        android:padding="7dp"
+        android:src="@drawable/rounded_rect" />
 
     <ImageView
         android:id="@+id/imgQuizImg"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:src="@drawable/notfound" />
@@ -27,21 +27,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imgQuizImg"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:text="Title"
-        android:layout_marginTop="5dp"
-        android:textStyle="bold"
         android:textColor="@color/colorLight"
-        android:textSize="18dp"/>
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
-
-    <TextView
-        android:id="@+id/txtDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtTitle"
-        android:layout_centerHorizontal="true"
-        android:text="Description"
-        android:layout_marginTop="3dp"
-        android:textColor="@color/colorLight"/>
 
 </RelativeLayout>

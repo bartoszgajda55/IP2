@@ -33,18 +33,11 @@ public class LoginFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO Authenticate Login
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Remember me");
                 builder.setMessage("Do you want Quizzy to remember your password?");
-
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which){
-                        //CREATE LOCAL FILE - STORE LOGIN
-                        logIn();
-                    }
-                });
 
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
@@ -52,6 +45,14 @@ public class LoginFragment extends Fragment {
                         dialog.dismiss();
                         logIn();
 
+                    }
+                });
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        //TODO CREATE LOCAL FILE - STORE LOGIN
+                        logIn();
                     }
                 });
 
@@ -67,7 +68,6 @@ public class LoginFragment extends Fragment {
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("test button click");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Reset Password");
@@ -86,7 +86,7 @@ public class LoginFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
-                        //CHECK IF EMAIL EXISTS
+                        //TODO CHECK IF EMAIL EXISTS
                         EmailHandler eh = new EmailHandler();
                         eh.sendMail(text.getText().toString(), "Password Recovery", "TODO: connect to database and send password if exists");
                         Toast.makeText(getActivity(),"Email sent...", Toast.LENGTH_SHORT);
@@ -107,14 +107,6 @@ public class LoginFragment extends Fragment {
         startActivity(intent);
 
 
-    }
-
-    public static Fragment newInstance(int page) {
-        LoginFragment logFragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        logFragment.setArguments(args);
-        return logFragment;
     }
 
 
