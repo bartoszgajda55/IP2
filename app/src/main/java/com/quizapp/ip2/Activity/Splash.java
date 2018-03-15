@@ -10,9 +10,6 @@ import  com.quizapp.ip2.R;
 
 public class Splash extends AppCompatActivity {
 
-
-    RelativeLayout container;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

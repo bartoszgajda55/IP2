@@ -2,17 +2,19 @@ package com.quizapp.ip2.Activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
-import  com.quizapp.ip2.R;
+import com.quizapp.ip2.R;
 
 /**
  * Created by Aaron on 10/03/2018.
  */
 
-public class UserFragment extends FragmentView {
+public class UserFragment extends Fragment {
 
     @Nullable
     @Override

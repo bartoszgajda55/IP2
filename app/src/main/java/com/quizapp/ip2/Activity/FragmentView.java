@@ -29,5 +29,4 @@ public class FragmentView extends Fragment{
 
     }
 
-
 }

@@ -2,11 +2,12 @@ package com.quizapp.ip2.Activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
-import java.util.ArrayList;
+import com.quizapp.ip2.R;
 
-import  com.quizapp.ip2.R;
+import java.util.ArrayList;
 
 public class HomepageActivity extends FragmentedActivity {
 
@@ -24,7 +25,7 @@ public class HomepageActivity extends FragmentedActivity {
         viewPager = (ViewPager) findViewById(R.id.slider);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-        ArrayList<FragmentView> fragments = new ArrayList<>();
+        ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new UserFragment());
         fragments.add(new HomeFragment());
         fragments.add(new LeaderboardFragment());

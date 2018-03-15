@@ -9,9 +9,11 @@ import javax.mail.internet.MimeMessage;
  * Created by Allan on 10/03/2018.
  */
 
+//TODO FIX
+
 public class EmailHandler {
     public void sendMail(String recipient, String subject, String content){
-        final String password = "1o44UX2tn4Ah4";
+        final String password = "1o44UX2tn4Ah4"; //TODO Encrypt Username, Password
         final String email = "noreply.quizzy@gmail.com";
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", "true");
