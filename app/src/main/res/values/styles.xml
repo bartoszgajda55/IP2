@@ -34,4 +34,8 @@
         <item name="android:textSize">25dp</item>
     </style>
 
+    <style name="toolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/colorLight</item>
+    </style>
+
 </resources>
