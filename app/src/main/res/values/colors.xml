@@ -13,4 +13,11 @@
     <color name="colorSliderBackground">#e2e2e2</color>
 
     <color name="colorBackground">#FFFFFF</color>
+
+
+    <color name="colorIntroNavy">#34495e</color>
+    <color name="colorIntroDarkBlue">#40739e</color>
+    <color name="colorIntroBlue">#3498db</color>
+    <color name="colorIntroGreen">#2ecc71</color>
+    <color name="colorIntroDarkGreen">#16a085</color>
 </resources>

@@ -12,10 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.quizapp.ip2.Helper.LoadImageHelper;
 import com.quizapp.ip2.R;
-
-import java.io.InputStream;
-import java.net.URL;
 
 /**
  * Created by Aaron on 11/03/2018.
@@ -47,7 +45,8 @@ public class QuizPreviewFragment extends Fragment {
         Thread networkThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                drawable = loadImage(txt);
+                LoadImageHelper loadImageHelper = new LoadImageHelper(getContext());
+                drawable = loadImageHelper.load(txt);
             }
         });
         networkThread.start();
@@ -58,23 +57,13 @@ public class QuizPreviewFragment extends Fragment {
         DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), color)); //TODO set color to database color
         while(drawable==null){
             System.out.println("Loading Image ...");
-        imgQuizImg.setImageDrawable(drawable);}
+
+        }
+        imgQuizImg.setImageDrawable(drawable);
         return view;
     }
 
     //TODO onClick to open quiz associated with fragment
     //TODO add Navigation dots
-
-    private Drawable loadImage(String url){
-        try{
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "url");
-            return d;
-        }catch (Exception e) {
-            imgQuizImg.setImageResource(R.drawable.notfound);
-            System.out.println("Exc="+e);
-            return null;
-        }
-    }
 
 }
