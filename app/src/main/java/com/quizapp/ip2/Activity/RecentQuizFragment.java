@@ -29,7 +29,7 @@ public class RecentQuizFragment extends Fragment {
             //TODO Load 5 featured quizes from database
             RecentQuizPreviewFragment quizPreview = new RecentQuizPreviewFragment();
             Bundle bundle = new Bundle();
-            String title = "Title"; //TODO get from database
+            String title = ("Recent Quiz "+(x+1)); //TODO get from database
             String img = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO get from database
             String color = ""; //TODO get from database
             bundle.putString("title", title);

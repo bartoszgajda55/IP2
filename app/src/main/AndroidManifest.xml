@@ -25,6 +25,10 @@
         </activity>
         <activity android:name=".Activity.AuthenticationActivity" android:noHistory="true"/>
         <activity android:name=".Activity.HomepageActivity"></activity>
+        <activity android:name=".Activity.TutorialActivity"
+            android:noHistory="true"
+            android:hardwareAccelerated="false">
+        </activity>
     </application>
 
 </manifest>

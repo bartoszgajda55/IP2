@@ -26,7 +26,6 @@ public class HomeFragment extends Fragment {
     private FragmentPagerAdapter recentAdapter;
     private ViewPager featuredPager;
     private ViewPager recentPager;
-    private GridLayout gridLayout;
 
     @Nullable
     @Override
@@ -36,12 +35,14 @@ public class HomeFragment extends Fragment {
         featuredPager = (ViewPager) view.findViewById(R.id.featuredSlider);
         recentPager = (ViewPager) view.findViewById(R.id.recentSlider);
 
+
+        //To display the featured quizzes in a slider
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         for(int x=0; x<5; x++){
             //TODO Load 5 featured quizes from database
             QuizPreviewFragment quizPreview = new QuizPreviewFragment();
             Bundle bundle = new Bundle();
-            String title = "Title"; //TODO get from database
+            String title = ("Featured Quiz "+(x+1)); //TODO get from database
             String desc = "Description";//TODO get from database
             String img = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO get from database
             String color = ""; //TODO get from database
@@ -75,6 +76,8 @@ public class HomeFragment extends Fragment {
             linearLayout.addView(rel);
         }**/
 
+
+            //To display the recent quizzes in a slider with a grid layout
             ArrayList<Fragment> fragmentsRecent = new ArrayList<Fragment>();
             //TODO Load 5 featured quizes from database
             for(int x=0; x<3; x++){
@@ -93,6 +96,8 @@ public class HomeFragment extends Fragment {
             }
         recentAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragmentsRecent.size(), fragmentsRecent);
         recentPager.setAdapter(recentAdapter);
+
+
         return view;
     }
 
