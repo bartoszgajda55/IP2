@@ -1,13 +1,16 @@
 package com.quizapp.ip2.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.quizapp.ip2.R;
 
@@ -32,7 +35,31 @@ public class HomeFragment extends Fragment {
 
         featuredPager = (ViewPager) view.findViewById(R.id.featuredSlider);
         recentPager = (ViewPager) view.findViewById(R.id.recentSlider);
+        final EditText searchText = (EditText) view.findViewById(R.id.txtSearch);
 
+        searchText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+
+                            Intent intent = new Intent(getContext(), QuizSearchActivity.class);
+                            Bundle b = new Bundle();
+                            b.putString("search", searchText.getText().toString());
+                            intent.putExtras(b);
+                            startActivity(intent);
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
 
         //To display the featured quizzes in a slider
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
@@ -54,31 +81,10 @@ public class HomeFragment extends Fragment {
         featuredAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragments.size(), fragments);
         featuredPager.setAdapter(featuredAdapter);
 
-        /** KEEP FOR THE SEARCH
-        //TODO for each recent quiz from database do the following
-        for (int x=0; x<3; x++){
-            QuizPreviewFragment frag = new QuizPreviewFragment();
-            Bundle bundle = new Bundle();
-            String title = "Title 123"; //TODO get from database
-            String desc = "Description"; //TODO get from database
-            String img = "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_80%2Cw_300/MTE4MDAzNDEwODgzMDIwMzAy/bobby-sands-20941955-1-402.jpg"; //TODO get from database
-            String color = ""; //TODO get from database
-            bundle.putString("title", title);
-            bundle.putString("desc", desc);
-            bundle.putString("img", img);
-            bundle.putString("color", color);
-            frag.setArguments(bundle);
-            RelativeLayout rel = new RelativeLayout(getContext());
-            rel.setId(View.generateViewId());
-            getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
-            linearLayout.addView(rel);
-        }**/
-
-
-            //To display the recent quizzes in a slider with a grid layout
-            ArrayList<Fragment> fragmentsRecent = new ArrayList<Fragment>();
-            //TODO Load 5 featured quizes from database
-            for(int x=0; x<3; x++){
+         //To display the recent quizzes in a slider with a grid layout
+        ArrayList<Fragment> fragmentsRecent = new ArrayList<Fragment>();
+        //TODO Load 5 featured quizes from database
+        for(int x=0; x<3; x++){
                 RecentQuizFragment quizRecent = new RecentQuizFragment();
                 Bundle bundle = new Bundle();
                 String title = "Title"; //TODO get from database
@@ -91,10 +97,9 @@ public class HomeFragment extends Fragment {
                 bundle.putString("color", color);
                 quizRecent.setArguments(bundle);
                 fragmentsRecent.add(quizRecent);
-            }
+        }
         recentAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragmentsRecent.size(), fragmentsRecent);
         recentPager.setAdapter(recentAdapter);
-
 
         return view;
     }

@@ -51,7 +51,8 @@ public class TutorialFragment extends Fragment {
         networkThread.start();
         while(drawable==null){
             System.out.println("Loading Image ...");
-            imgTutorial.setImageDrawable(drawable);}
+        }
+        imgTutorial.setImageDrawable(drawable);
         return view;
     }
 }

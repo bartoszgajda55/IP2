@@ -29,6 +29,7 @@
             android:noHistory="true"
             android:hardwareAccelerated="false">
         </activity>
+        <activity android:name=".Activity.QuizSearchActivity"/>
     </application>
 
 </manifest>
