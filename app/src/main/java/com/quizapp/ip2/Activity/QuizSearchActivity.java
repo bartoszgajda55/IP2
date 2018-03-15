@@ -1,6 +1,7 @@
 package com.quizapp.ip2.Activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -27,8 +28,26 @@ public class QuizSearchActivity extends FragmentedActivity {
         search = b.getString("search");
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layoutLinear);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         final EditText textSearch = (EditText) findViewById(R.id.txtSearch);
-        textSearch.setText(search);
+
+        toolbar.setTitle("Showing results for: " + "\"" + search + "\"");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
+
+        Drawable whiteArrow = getDrawable(R.drawable.arrow_back);
+        whiteArrow.setTint(getResources().getColor(R.color.colorLight));
+        toolbar.setNavigationIcon(whiteArrow);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Drawable searchIcon = getDrawable(R.drawable.icon_search);
+        searchIcon.setTint(getResources().getColor(R.color.colorLight));
+
 
         textSearch.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -54,17 +73,11 @@ public class QuizSearchActivity extends FragmentedActivity {
             }
         });
 
-        /**
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);**/
-
          //TODO display quizzes that match search term
          for (int x=0; x<3; x++){
          QuizPreviewFragment frag = new QuizPreviewFragment();
          Bundle bundle = new Bundle();
-         String title = textSearch.getText().toString(); //TODO get from database
+         String title = search; //TODO get from database
          String desc = "Description"; //TODO get from database
          String img = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO get from database
          String color = ""; //TODO get from database
@@ -80,8 +93,4 @@ public class QuizSearchActivity extends FragmentedActivity {
          }
     }
 
-    public void goBack(View view){
-        Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
-        startActivity(intent);
-    }
 }
