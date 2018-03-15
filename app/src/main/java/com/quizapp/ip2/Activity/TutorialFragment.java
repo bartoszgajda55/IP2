@@ -4,18 +4,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.quizapp.ip2.Helper.LoadImageHelper;
 import com.quizapp.ip2.R;
-
-import java.io.InputStream;
-import java.net.URL;
 
 /**
  * Created by Allan on 15/03/2018.
@@ -48,7 +44,8 @@ public class TutorialFragment extends Fragment {
         Thread networkThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                drawable = loadImage(txt);
+                LoadImageHelper loadImageHelper = new LoadImageHelper(getContext());
+                drawable = loadImageHelper.load(txt);
             }
         });
         networkThread.start();
@@ -56,18 +53,5 @@ public class TutorialFragment extends Fragment {
             System.out.println("Loading Image ...");
             imgTutorial.setImageDrawable(drawable);}
         return view;
-    }
-
-    private Drawable loadImage(String url){
-        //TODO FIX Image Resetting to NULL after scrolling
-        try{
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "url");
-            return d;
-        }catch (Exception e) {
-            imgTutorial.setImageResource(R.drawable.notfound);
-            System.out.println("Exc="+e);
-            return null;
-        }
     }
 }

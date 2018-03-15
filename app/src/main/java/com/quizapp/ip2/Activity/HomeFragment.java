@@ -8,8 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
-
 
 import com.quizapp.ip2.R;
 
@@ -56,7 +54,7 @@ public class HomeFragment extends Fragment {
         featuredAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragments.size(), fragments);
         featuredPager.setAdapter(featuredAdapter);
 
-        /**
+        /** KEEP FOR THE SEARCH
         //TODO for each recent quiz from database do the following
         for (int x=0; x<3; x++){
             QuizPreviewFragment frag = new QuizPreviewFragment();
@@ -100,12 +98,6 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
-
-
-
-    //TODO INSERT VIEWPAGER INSIDE THIS FRAGMENT
-    //TODO INSERT QUIZ FRAGMENTS INSIDE THIS VIEWPAGER
-
 
 
 }
