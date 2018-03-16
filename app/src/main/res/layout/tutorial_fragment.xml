@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <ImageView
         android:id="@+id/imgTutorial"
         android:src="@drawable/logo_inverted_small"
@@ -31,15 +32,6 @@
         android:textColor="@color/colorLight"
         android:textSize="15dp"/>
 
-    <TextView
-        android:id="@+id/txtSwipe"
-        android:text="Swipe to move between tutorials"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
-        android:textColor="@color/colorLight"
-        android:textSize="15dp"/>
+
 
 </RelativeLayout>

@@ -19,7 +19,7 @@ public class AuthenticationActivity extends FragmentedActivity {
         setContentView(R.layout.activity_authentication);
 
 
-
+//
         ViewPager pager = (ViewPager) findViewById(R.id.slider);
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new LoginFragment());
