@@ -15,9 +15,9 @@
     <color name="colorBackground">#FFFFFF</color>
 
 
-    <color name="colorIntroNavy">#34495e</color>
-    <color name="colorIntroDarkBlue">#40739e</color>
-    <color name="colorIntroBlue">#3498db</color>
+    <color name="colorIntroNavy">#6c5ce7</color>
+    <color name="colorIntroDarkBlue">#0984e3</color>
+    <color name="colorIntroBlue">#00cec9</color>
     <color name="colorIntroGreen">#2ecc71</color>
     <color name="colorIntroDarkGreen">#16a085</color>
 </resources>

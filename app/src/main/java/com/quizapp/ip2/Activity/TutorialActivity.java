@@ -1,9 +1,11 @@
 package com.quizapp.ip2.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.quizapp.ip2.Helper.AnimatedColor;
 import com.quizapp.ip2.R;
@@ -79,6 +81,11 @@ public class TutorialActivity extends FragmentedActivity {
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+    }
+
+    public void onSkipClick(View v){
+        Intent intent = new Intent(this, HomepageActivity.class);
+        startActivity(intent);
     }
 
 }
