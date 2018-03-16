@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment {
          //To display the recent quizzes in a slider with a grid layout
         ArrayList<Fragment> fragmentsRecent = new ArrayList<Fragment>();
         //TODO Load 5 featured quizes from database
-        for(int x=0; x<3; x++){
+        for(int x=0; x<2; x++){
                 RecentQuizFragment quizRecent = new RecentQuizFragment();
                 Bundle bundle = new Bundle();
                 String title = "Title"; //TODO get from database
