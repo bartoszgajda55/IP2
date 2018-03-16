@@ -3,49 +3,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.quizapp.ip2.Activity.UserPreviewFragment"
-    android:backgroundTint="@color/colorLightGray">
+    android:backgroundTint="@color/colorLightGray"
+    android:layout_margin="10dp">
 
     <TextView
         android:text="1"
         android:id="@+id/place"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:textSize="30dp"/>
 
     <ImageView
-        android:id="@+id/person"
-        android:paddingLeft="5dp"
+        android:id="@+id/imgPerson"
         android:layout_toRightOf="@+id/place"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_user" />
+        android:src="@drawable/icon_user"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="10dp"
+        android:scaleX="2.2"
+        android:scaleY="2.2"/>
 
     <TextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/person"
-        android:paddingLeft="5dp"
-        android:text="Username" />
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toEndOf="@+id/imgPerson"
+        android:text="Username"
+        android:textSize="25dp" />
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/imgLevel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="46dp"
-        android:layout_toEndOf="@+id/username"
-        android:src="@drawable/icon_level" />
+        android:src="@drawable/icon_level"
+        android:layout_toLeftOf="@id/level"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="10dp"
+        android:scaleX="2.2"
+        android:scaleY="2.2" />
 
     <TextView
         android:id="@+id/level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="6dp"
-        android:layout_toEndOf="@+id/image"
+        android:layout_alignParentRight="true"
         android:text="10"
-        android:textSize="15dp" />
+        android:textSize="30dp" />
 
 </RelativeLayout>
