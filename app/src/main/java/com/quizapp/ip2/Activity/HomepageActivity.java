@@ -25,6 +25,7 @@ public class HomepageActivity extends FragmentedActivity {
         viewPager = (ViewPager) findViewById(R.id.slider);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
+        //Add the 3 fragments for the homepage (User section, home section, leaderboard section)
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new UserFragment());
         fragments.add(new HomeFragment());
@@ -38,6 +39,7 @@ public class HomepageActivity extends FragmentedActivity {
         addTabIcons();
     }
 
+    //Adds the white navigation icons to the tab bar
     private void addTabIcons(){
         for(int i = 0; i < tabLayout.getTabCount(); i++){
             tabLayout.getTabAt(i).setIcon(icons[i]);

@@ -19,7 +19,6 @@ import com.quizapp.ip2.R;
  */
 
 public class RecentQuizPreviewFragment extends android.support.v4.app.Fragment{
-    private int color; //this gets passed in as R.color.<color> from the
 
     private Drawable drawable = null;
     //components
@@ -47,10 +46,8 @@ public class RecentQuizPreviewFragment extends android.support.v4.app.Fragment{
         });
         networkThread.start();
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
-
-        color = R.color.colorPrimary; //TODO remove this, pass it in
-
-        DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), color)); //TODO set color to database color
+        
+        DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), R.color.colorIntroBlue)); //TODO set color to database color //this.getArguments().getInt("color"))
         while(drawable==null){
             System.out.println("Loading Image ...");
 

@@ -20,8 +20,8 @@ import com.quizapp.ip2.R;
  */
 
 public class QuizPreviewFragment extends Fragment {
-    private int color; //this gets passed in as R.color.<color> from the
 
+    //todo move to oncreate
     private Drawable drawable = null;
     //components
     private TextView txtQuizTitle;
@@ -31,7 +31,7 @@ public class QuizPreviewFragment extends Fragment {
 
 
     @Nullable
-  //  @Override
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.quiz_preview_fragment, container, false);
         txtQuizTitle = (TextView) view.findViewById(R.id.txtTitle);
@@ -52,9 +52,7 @@ public class QuizPreviewFragment extends Fragment {
         networkThread.start();
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
 
-        color = R.color.colorPrimary; //TODO remove this, pass it in
-
-        DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), color)); //TODO set color to database color
+        DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), this.getArguments().getInt("color"))); //TODO set color to database color
         while(drawable==null){
             System.out.println("Loading Image ...");
 
