@@ -11,9 +11,10 @@
         android:layout_height="match_parent" />
 
     <Button
+        android:id="@+id/btnSkip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SKIP TUTORIAL"
+        android:text="END TUTORIAL"
         android:theme="@style/buttonFlat"
         android:textColor="@color/colorLight"
         android:layout_centerHorizontal="true"
@@ -38,7 +39,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"
-        android:alpha="0.3"
+        android:alpha="0.6"
 
         android:src="@drawable/background_cubes_light"/>
 </RelativeLayout>
