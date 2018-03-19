@@ -18,6 +18,14 @@ public class User {
     private String password;
     private Drawable userImage;
 
+    public User(String username, String email, String firstName, String surname, String password) {
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.password = password;
+    }
+
     public User(String username, String email, String firstName, String surname, String password, String userImage, Context context) {
         this.username = username;
         this.email = email;
