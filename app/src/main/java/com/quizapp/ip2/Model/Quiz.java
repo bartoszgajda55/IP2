@@ -1,6 +1,9 @@
 package com.quizapp.ip2.Model;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+
+import com.quizapp.ip2.Helper.LoadImageHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,11 +21,11 @@ public class Quiz {
     private ArrayList<Question> questions = new ArrayList<>();
 
 
-    public Quiz(String title, String description, Integer color, Drawable image){
+    public Quiz(String title, String description, Integer color, String image, Context context){
         this.title = title;
         this.description = description;
         this.color = color;
-        this.image = image;
+        this.image = new LoadImageHelper(context).load(image);
     }
 
 

@@ -1,6 +1,10 @@
 package com.quizapp.ip2.Model;
 
-import java.lang.reflect.Array;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+
+import com.quizapp.ip2.Helper.LoadImageHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -11,10 +15,12 @@ public class Question {
 
     private String correctAnswer;
     private ArrayList<String> wrongAnswers = new ArrayList<>();
+    private Drawable questionImage;
 
-    public Question(String correctAnswer, ArrayList<String> wrongAnswers){
+    public Question(String correctAnswer, ArrayList<String> wrongAnswers, String questionImage, Context context){
         this.correctAnswer = correctAnswer;
         this.wrongAnswers = wrongAnswers;
+        this.questionImage = new LoadImageHelper(context).load(questionImage);
     }
 
     public String getCorrectAnswer() {
@@ -31,5 +37,13 @@ public class Question {
 
     public void setWrongAnswers(ArrayList<String> wrongAnswers) {
         this.wrongAnswers = wrongAnswers;
+    }
+
+    public Drawable getQuestionImage() {
+        return questionImage;
+    }
+
+    public void setQuestionImage(Drawable questionImage) {
+        this.questionImage = questionImage;
     }
 }
