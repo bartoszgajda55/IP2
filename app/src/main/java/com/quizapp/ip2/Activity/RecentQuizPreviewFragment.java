@@ -3,6 +3,7 @@ package com.quizapp.ip2.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
@@ -18,8 +19,7 @@ import com.quizapp.ip2.R;
  * Created by Allan on 15/03/2018.
  */
 
-public class RecentQuizPreviewFragment extends android.support.v4.app.Fragment{
-    private int color; //this gets passed in as R.color.<color> from the
+public class RecentQuizPreviewFragment extends Fragment {
 
     private Drawable drawable = null;
     //components
@@ -29,7 +29,7 @@ public class RecentQuizPreviewFragment extends android.support.v4.app.Fragment{
 
 
     @Nullable
-    //  @Override
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recent_quiz_preview_fragment, container, false);
         txtQuizTitle = (TextView) view.findViewById(R.id.txtTitle);
@@ -48,9 +48,8 @@ public class RecentQuizPreviewFragment extends android.support.v4.app.Fragment{
         networkThread.start();
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
 
-        color = R.color.colorPrimary; //TODO remove this, pass it in
-
-        DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), color)); //TODO set color to database color
+        System.out.println("tostring get:... " + this.getArguments().toString());
+        DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), R.color.colorIntroBlue)); //TODO set color to database color //this.getArguments().getInt("color"))
         while(drawable==null){
             System.out.println("Loading Image ...");
 
