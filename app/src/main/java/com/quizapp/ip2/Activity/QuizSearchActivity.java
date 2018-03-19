@@ -80,11 +80,11 @@ public class QuizSearchActivity extends FragmentedActivity {
          String title = search; //TODO get from database
          String desc = "Description"; //TODO get from database
          String img = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO get from database
-         String color = ""; //TODO get from database
+         int color = R.color.colorIntroGreen; //TODO get from database
          bundle.putString("title", title);
          bundle.putString("desc", desc);
          bundle.putString("img", img);
-         bundle.putString("color", color);
+         bundle.putInt("color", color);
          frag.setArguments(bundle);
          RelativeLayout rel = new RelativeLayout(this);
          rel.setId(View.generateViewId());

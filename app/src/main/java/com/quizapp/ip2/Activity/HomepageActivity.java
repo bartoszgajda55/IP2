@@ -26,16 +26,44 @@ public class HomepageActivity extends FragmentedActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
         //Add the 3 fragments for the homepage (User section, home section, leaderboard section)
+        final UserFragment userFragment = new UserFragment();
+        final LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
+
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(new UserFragment());
+        fragments.add(userFragment);
         fragments.add(new HomeFragment());
-        fragments.add(new LeaderboardFragment());
+        fragments.add(leaderboardFragment);
 
         SliderAdapter sliderAdapter = new SliderAdapter(getSupportFragmentManager(), 3, fragments);
 
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(sliderAdapter);
         viewPager.setCurrentItem(1);
+        viewPager.setOffscreenPageLimit(2);
+
+
+        //
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                switch (position) {
+                    case 0: //User
+                        //TODO load user page content
+                        break;
+                    case 2: //Leaderboard
+                        leaderboardFragment.populatePage();
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) { }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
+
+        //Add tab icons to the navigation bar
         addTabIcons();
     }
 

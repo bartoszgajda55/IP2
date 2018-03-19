@@ -66,41 +66,51 @@ public class HomeFragment extends Fragment {
         //To display the featured quizzes in a slider
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         for(int x=0; x<5; x++){
-            //TODO Load 5 featured quizzes from database -- FeaturedQuiz table
+            //TODO Load 5 featured quizzes from database -- FeaturedQuiz table, move to a new thread - make use of spinners
             QuizPreviewFragment quizPreview = new QuizPreviewFragment();
-            Bundle bundle = new Bundle();
-            String title = ("Featured Quiz "+(x+1)); //TODO Get quiz title from the database
-            String desc = "Description";//TODO Get quiz description from database
-            String img = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO Get quiz image from database
-            int color = R.color.colorPrimary; //TODO Get quiz color from database
-            bundle.putString("title", title);
-            bundle.putString("desc", desc);
-            bundle.putString("img", img);
-            bundle.putInt("color", color);
-            quizPreview.setArguments(bundle);
+            Bundle featuredBundle = new Bundle();
+            String featuredTitle = ("Featured Quiz "+(x+1)); //TODO Get quiz title from the database
+            String featuredDesc = "Description";//TODO Get quiz description from database
+            String featuredImg = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO Get quiz image from database
+            int featuredColor = R.color.colorPrimary; //TODO Get quiz color from database
+            featuredBundle.putString("title", featuredTitle);
+            featuredBundle.putString("desc", featuredDesc);
+            featuredBundle.putString("img", featuredImg);
+            featuredBundle.putInt("color", featuredColor);
+            quizPreview.setArguments(featuredBundle);
             fragments.add(quizPreview);
         }
         featuredAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragments.size(), fragments);
         featuredPager.setAdapter(featuredAdapter);
 
          //To display the recent quizzes in a slider with a grid layout
-        ArrayList<Fragment> fragmentsRecent = new ArrayList<Fragment>();
-        for(int x=0; x<2; x++){
+        //ArrayList<Fragment> fragmentsRecent = new ArrayList<Fragment>();
+        //todo move to a new thread - make use of spinners
+        /*for(int x=0; x<2; x++){
                 RecentQuizFragment quizRecent = new RecentQuizFragment();
-                Bundle bundle = new Bundle();
-                String title = "Title"; //TODO Get quiz title from database
-                String desc = "Description";//TODO Get quiz description from database
-                String img = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO Get quiz image from database
-                int color = R.color.colorIntroBlue; //TODO Get quiz color from database
-           // System.out.println("//DEBUG//" + color);
-                bundle.putString("title", title);
-                bundle.putString("desc", desc);
-                bundle.putString("img", img);
-                bundle.putInt("color", color);
-                quizRecent.setArguments(bundle);
-                fragmentsRecent.add(quizRecent);
+                Bundle recentBundle = new Bundle();
+                String recentTitle = "Title"; //TODO Get quiz title from database
+                String recentImg = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO Get quiz image from database
+                int recentColor = R.color.colorIntroBlue; //TODO Get quiz color from database
+                recentBundle.putString("title", recentTitle);
+                recentBundle.putString("img", recentImg);
+                recentBundle.putInt("color", recentColor);
+
+            quizRecent.setArguments(recentBundle);
+            System.out.println("tostring put 2:... " + quizRecent.getArguments().toString());
+
+            fragmentsRecent.add(quizRecent);
+            System.out.println("tostring put 3:... " + quizRecent.getArguments().toString());
+
+        }*/
+
+        ArrayList<Fragment> fragmentsRecentGrid = new ArrayList<>();
+        for(int x=0; x<2; x++){
+            RecentQuizFragment recentGrid = new RecentQuizFragment();
+            fragmentsRecentGrid.add(recentGrid);
+
         }
-        recentAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragmentsRecent.size(), fragmentsRecent);
+        recentAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragmentsRecentGrid.size(), fragmentsRecentGrid);
         recentPager.setAdapter(recentAdapter);
 
         return view;
