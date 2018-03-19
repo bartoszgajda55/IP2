@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.quizapp.ip2.R;
@@ -29,6 +30,7 @@ public class RecentQuizFragment extends Fragment {
         gridLayout = (GridLayout) view.findViewById(R.id.gridLayout);
 
 
+
         //ArrayList<Fragment> fragmentsRecent = new ArrayList<Fragment>();
         for(int x=0; x<4; x++) {
             //TODO Load 5 featured quizes from database
@@ -42,7 +44,6 @@ public class RecentQuizFragment extends Fragment {
             recentBundle.putInt("color", recentColor);
 
             quizRecent.setArguments(recentBundle);
-            //fragmentsRecent.add(quizRecent);
 
             RelativeLayout rel = new RelativeLayout(getContext());
             rel.setId(View.generateViewId());
@@ -51,4 +52,5 @@ public class RecentQuizFragment extends Fragment {
         }
         return view;
     }
+
 }
