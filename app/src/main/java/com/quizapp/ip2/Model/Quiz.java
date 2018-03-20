@@ -18,7 +18,7 @@ public class Quiz {
     private int color; //color resource
     private Drawable image;
 
-    private ArrayList<Question> questions = new ArrayList<>();
+    private ArrayList<Question> questions = new ArrayList<>(); //TODO Add question and set question method
 
 
     public Quiz(String title, String description, Integer color, String image, Context context){
