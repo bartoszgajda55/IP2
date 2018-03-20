@@ -25,17 +25,20 @@ public class UserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_fragment, container, false);
+
+        //TODO Load Current Users Data and Update Page with it
+
         LinearLayout friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
         ImageView powerImage = (ImageView) view.findViewById(R.id.imgPowerIcon);
         ImageView settingsImage = (ImageView) view.findViewById(R.id.imgSettingsIcon);
 
+        //To log users out when clicking on the power icon
         powerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Log out");
                 builder.setMessage("Are you sure you want to log out?");
-
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -43,7 +46,6 @@ public class UserFragment extends Fragment {
 
                     }
                 });
-
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which){
@@ -53,8 +55,6 @@ public class UserFragment extends Fragment {
                 });
                 AlertDialog ad = builder.create();
                 ad.show();
-
-
             }
         });
 
@@ -65,7 +65,7 @@ public class UserFragment extends Fragment {
             }
         });
 
-        for (int x = 0; x < 10; x++) {
+        for (int x = 0; x < 12; x++) {
             UserPreviewFragment frag = new UserPreviewFragment();
             Bundle bundle = new Bundle();
             int place = x + 1;
@@ -74,7 +74,6 @@ public class UserFragment extends Fragment {
             bundle.putInt("place", place);
             bundle.putString("username", username);
             bundle.putString("level", level);
-
             bundle.putInt("color", R.color.colorLightGray);
             bundle.putInt("textColor", R.color.colorDarkGray);
             bundle.putFloat("alpha", 0.25F);
@@ -84,8 +83,15 @@ public class UserFragment extends Fragment {
             rel.setId(View.generateViewId());
             getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
             friendsLayout.addView(rel);
-        }
 
+            //To open other users page on click
+            rel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO OPEN OTHER USERS PAGE
+                }
+            });
+        }
         return view;
     }
 }
