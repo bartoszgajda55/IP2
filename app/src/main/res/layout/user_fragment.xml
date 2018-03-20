@@ -136,13 +136,14 @@
             <RelativeLayout
                 android:id="@+id/layoutFriends"
                 android:layout_width="match_parent"
-                android:layout_height="250dp">
+                android:layout_height="420dp">
 
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <LinearLayout
+                        android:id="@+id/friendLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -150,37 +151,36 @@
                         <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp">
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp">
 
                             <TextView
                                 android:id="@+id/txtFriendsTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
                                 android:text="Friends:"
-                                android:theme="@style/textNormal"
                                 android:textStyle="bold"
-                                android:layout_marginTop="10dp"/>
+                                android:theme="@style/textNormal" />
 
                             <EditText
                                 android:layout_width="280dp"
                                 android:layout_height="wrap_content"
-                                android:hint="Search for Users"
-                                android:layout_toRightOf="@id/txtFriendsTitle"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:singleLine="true"
+                                android:layout_toRightOf="@id/txtFriendsTitle"
+                                android:hint="Search for Users"
                                 android:maxLines="1"
-                                />
+                                android:singleLine="true" />
 
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:src="@drawable/icon_friends"
-                                android:tint="@color/colorDarkGray"
                                 android:layout_alignParentRight="true"
-                                android:layout_marginTop="10dp"/>
+                                android:layout_marginTop="10dp"
+                                android:src="@drawable/icon_friends"
+                                android:tint="@color/colorDarkGray" />
 
                         </RelativeLayout>
 
@@ -197,9 +197,10 @@
             <RelativeLayout
                 android:id="@+id/layoutStatistics"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:id="@+id/txtStatisticsTitle"
@@ -213,7 +214,7 @@
                     android:id="@+id/txtQuizzesComplete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20 quizzes completed"
+                    android:text="Quizzes Completed: 1872"
                     android:layout_below="@id/txtStatisticsTitle"
                     android:theme="@style/textNormal"
                     android:layout_marginTop="10dp"/>
@@ -222,7 +223,7 @@
                     android:id="@+id/txtCorrectAnswers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="167 correct answers"
+                    android:text="Correct Answers: 54"
                     android:layout_below="@id/txtQuizzesComplete"
                     android:theme="@style/textNormal"
                     android:layout_marginTop="10dp"/>
@@ -238,6 +239,7 @@
                     android:tint="@color/colorDarkGray"/>
 
                 <ImageView
+                    android:id="@+id/imgSettingsIcon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
