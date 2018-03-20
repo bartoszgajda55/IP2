@@ -65,7 +65,7 @@ public class UserFragment extends Fragment {
             }
         });
 
-        for (int x = 0; x < 101; x++) {
+        for (int x = 0; x < 10; x++) {
             UserPreviewFragment frag = new UserPreviewFragment();
             Bundle bundle = new Bundle();
             int place = x + 1;
