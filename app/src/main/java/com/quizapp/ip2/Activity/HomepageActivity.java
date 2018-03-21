@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
+import com.quizapp.ip2.Helper.DBHandler;
 import com.quizapp.ip2.R;
 
 import java.util.ArrayList;
@@ -40,9 +41,6 @@ public class HomepageActivity extends FragmentedActivity {
         viewPager.setAdapter(sliderAdapter);
         viewPager.setCurrentItem(1);
         viewPager.setOffscreenPageLimit(2);
-
-
-        //
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

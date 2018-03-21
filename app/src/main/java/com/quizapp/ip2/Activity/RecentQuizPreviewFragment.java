@@ -51,8 +51,6 @@ public class RecentQuizPreviewFragment extends Fragment {
         System.out.println("tostring get:... " + this.getArguments().toString());
         DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), R.color.colorIntroBlue)); //TODO set color to database color //this.getArguments().getInt("color"))
         while(drawable==null){
-            System.out.println("Loading Image ...");
-
         }
         imgQuizImg.setImageDrawable(drawable);
         return view;

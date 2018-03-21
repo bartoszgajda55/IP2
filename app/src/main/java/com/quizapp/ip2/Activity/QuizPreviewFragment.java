@@ -54,8 +54,6 @@ public class QuizPreviewFragment extends Fragment {
 
         DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), this.getArguments().getInt("color"))); //TODO set color to database color
         while(drawable==null){
-            System.out.println("Loading Image ...");
-
         }
         imgQuizImg.setImageDrawable(drawable);
         return view;
