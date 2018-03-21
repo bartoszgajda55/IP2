@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
+import com.quizapp.ip2.Helper.DBHandler;
 import com.quizapp.ip2.R;
 
 import java.util.ArrayList;
@@ -65,6 +66,10 @@ public class HomepageActivity extends FragmentedActivity {
 
         //Add tab icons to the navigation bar
         addTabIcons();
+
+        DBHandler dbHandler = new DBHandler();
+        System.out.println(dbHandler.get("user/4").toString());
+
     }
 
     //Adds the white navigation icons to the tab bar
