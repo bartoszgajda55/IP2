@@ -65,7 +65,7 @@ public class UserFragment extends Fragment {
             }
         });
 
-        for (int x = 0; x < 10; x++) {
+        /*for (int x = 0; x < 10; x++) {
             UserPreviewFragment frag = new UserPreviewFragment();
             Bundle bundle = new Bundle();
             int place = x + 1;
@@ -84,7 +84,7 @@ public class UserFragment extends Fragment {
             rel.setId(View.generateViewId());
             getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
             friendsLayout.addView(rel);
-        }
+        }*/
 
         return view;
     }

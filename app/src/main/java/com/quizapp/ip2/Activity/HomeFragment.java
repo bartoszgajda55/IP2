@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
             Bundle featuredBundle = new Bundle();
             String featuredTitle = ("Featured Quiz "+(x+1)); //TODO Get quiz title from the database
             String featuredDesc = "Description";//TODO Get quiz description from database
-            String featuredImg = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO Get quiz image from database
+            String featuredImg = "https://d30y9cdsu7xlg0.cloudfront.net/png/36442-200.png"; //TODO Get quiz image from database
             int featuredColor = R.color.colorPrimary; //TODO Get quiz color from database
             featuredBundle.putString("title", featuredTitle);
             featuredBundle.putString("desc", featuredDesc);
@@ -83,26 +83,6 @@ public class HomeFragment extends Fragment {
         featuredAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragments.size(), fragments);
         featuredPager.setAdapter(featuredAdapter);
 
-         //To display the recent quizzes in a slider with a grid layout
-        //ArrayList<Fragment> fragmentsRecent = new ArrayList<Fragment>();
-        //todo move to a new thread - make use of spinners
-        /*for(int x=0; x<2; x++){
-                RecentQuizFragment quizRecent = new RecentQuizFragment();
-                Bundle recentBundle = new Bundle();
-                String recentTitle = "Title"; //TODO Get quiz title from database
-                String recentImg = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO Get quiz image from database
-                int recentColor = R.color.colorIntroBlue; //TODO Get quiz color from database
-                recentBundle.putString("title", recentTitle);
-                recentBundle.putString("img", recentImg);
-                recentBundle.putInt("color", recentColor);
-
-            quizRecent.setArguments(recentBundle);
-            System.out.println("tostring put 2:... " + quizRecent.getArguments().toString());
-
-            fragmentsRecent.add(quizRecent);
-            System.out.println("tostring put 3:... " + quizRecent.getArguments().toString());
-
-        }*/
 
         ArrayList<Fragment> fragmentsRecentGrid = new ArrayList<>();
         for(int x=0; x<2; x++){
