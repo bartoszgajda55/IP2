@@ -48,7 +48,7 @@ public class HomepageActivity extends FragmentedActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 switch (position) {
                     case 0: //User
-                        //TODO load user page content
+                        userFragment.populateFriends();
                         break;
                     case 2: //Leaderboard
                         leaderboardFragment.populatePage();

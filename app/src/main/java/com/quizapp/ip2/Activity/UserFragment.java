@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.quizapp.ip2.R;
@@ -21,13 +22,21 @@ import com.quizapp.ip2.R;
 
 public class UserFragment extends Fragment {
 
+
+    ProgressBar progressBar;
+    LinearLayout friendsLayout;
+    boolean friendsLoaded = false;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_fragment, container, false);
-        LinearLayout friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
+        friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
         ImageView powerImage = (ImageView) view.findViewById(R.id.imgPowerIcon);
         ImageView settingsImage = (ImageView) view.findViewById(R.id.imgSettingsIcon);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         powerImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,27 +74,41 @@ public class UserFragment extends Fragment {
             }
         });
 
-        /*for (int x = 0; x < 10; x++) {
-            UserPreviewFragment frag = new UserPreviewFragment();
-            Bundle bundle = new Bundle();
-            int place = x + 1;
-            String username = "User " + 1; //TODO get username from user query result
-            String level = "10"; //TODO calculate level from user query result (XP)
-            bundle.putInt("place", place);
-            bundle.putString("username", username);
-            bundle.putString("level", level);
-
-            bundle.putInt("color", R.color.colorLightGray);
-            bundle.putInt("textColor", R.color.colorDarkGray);
-            bundle.putFloat("alpha", 0.25F);
-
-            frag.setArguments(bundle);
-            RelativeLayout rel = new RelativeLayout(getContext());
-            rel.setId(View.generateViewId());
-            getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
-            friendsLayout.addView(rel);
-        }*/
 
         return view;
+    }
+
+    public void populateFriends(){
+        if(!friendsLoaded) {
+            Thread loadFriends = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int x = 0; x < 300; x++) {
+                        UserPreviewFragment frag = new UserPreviewFragment();
+                        Bundle bundle = new Bundle();
+                        int place = x + 1;
+                        String username = "User " + 1; //TODO get username from user query result
+                        String level = "10"; //TODO calculate level from user query result (XP)
+                        bundle.putInt("place", place);
+                        bundle.putString("username", username);
+                        bundle.putString("level", level);
+
+                        bundle.putInt("color", R.color.colorLightGray);
+                        bundle.putInt("textColor", R.color.colorDarkGray);
+                        bundle.putFloat("alpha", 0.25F);
+
+                        frag.setArguments(bundle);
+                        RelativeLayout rel = new RelativeLayout(getContext());
+                        rel.setId(View.generateViewId());
+                        getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
+                        friendsLayout.addView(rel);
+                    }
+
+                    progressBar.setVisibility(View.INVISIBLE);
+                    friendsLoaded = true;
+                }
+            });
+            loadFriends.start();
+        }
     }
 }

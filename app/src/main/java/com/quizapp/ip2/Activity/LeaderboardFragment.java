@@ -45,49 +45,59 @@ public class LeaderboardFragment extends Fragment {
 
     public void populatePage(){
         if(!pageLoaded) {
-            for (int x = 0; x < 101; x++) {
-                UserPreviewFragment frag = new UserPreviewFragment();
-                Bundle bundle = new Bundle();
-                int place = x + 1;
-                String username = "User " + 1; //TODO get username from user query result
-                String level = "10"; //TODO calculate level from user query result (XP)
-                bundle.putInt("place", place);
-                bundle.putString("username", username);
-                bundle.putString("level", level);
+            Thread loadLeaderboard = new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-                bundle.putInt("color", R.color.colorLightGray);
-                bundle.putInt("textColor", R.color.colorDarkGray);
-                bundle.putFloat("alpha", 0.25F);
+                    for (int x = 0; x < 101; x++) {
+                        UserPreviewFragment frag = new UserPreviewFragment();
+                        Bundle bundle = new Bundle();
+                        int place = x + 1;
+                        String username = "User " + 1; //TODO get username from user query result
+                        String level = "10"; //TODO calculate level from user query result (XP)
+                        bundle.putInt("place", place);
+                        bundle.putString("username", username);
+                        bundle.putString("level", level);
 
-                frag.setArguments(bundle);
-                RelativeLayout rel = new RelativeLayout(getContext());
-                rel.setId(View.generateViewId());
-                getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
-                linearLayout.addView(rel);
-            }
+                        bundle.putInt("color", R.color.colorLightGray);
+                        bundle.putInt("textColor", R.color.colorDarkGray);
+                        bundle.putFloat("alpha", 0.25F);
+
+                        frag.setArguments(bundle);
+                        RelativeLayout rel = new RelativeLayout(getContext());
+                        rel.setId(View.generateViewId());
+                        getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
+                        linearLayout.addView(rel);
+                    }
+
+                    //Add current user's ranking/score to bottom of page
+                    UserPreviewFragment frag = new UserPreviewFragment();
+                    Bundle bundle = new Bundle();
+                    int place = 201; //TODO Calculate user's place in the world
+
+                    String username = "You";  //Username is hardcoded "You"
+                    String level = "1"; //TODO Calculate user's level from XP
+                    bundle.putInt("place", place);
+                    bundle.putString("username", username);
+                    bundle.putString("level", level);
+
+                    bundle.putInt("color", R.color.colorPrimary);
+                    bundle.putInt("textColor", R.color.colorLight);
+                    bundle.putFloat("alpha", 1F);
+
+                    frag.setArguments(bundle);
+                    getFragmentManager().beginTransaction().add(ownLayout.getId(), frag).commit();
 
 
-            //Add current user's ranking/score to bottom of page
-            UserPreviewFragment frag = new UserPreviewFragment();
-            Bundle bundle = new Bundle();
-            int place = 201; //TODO Calculate user's place in the world
+                    progressBar.setVisibility(View.INVISIBLE);
+                    pageLoaded = true;
 
-            String username = "You";  //Username is hardcoded "You"
-            String level = "1"; //TODO Calculate user's level from XP
-            bundle.putInt("place", place);
-            bundle.putString("username", username);
-            bundle.putString("level", level);
-
-            bundle.putInt("color", R.color.colorPrimary);
-            bundle.putInt("textColor", R.color.colorLight);
-            bundle.putFloat("alpha", 1F);
-
-            frag.setArguments(bundle);
-            getFragmentManager().beginTransaction().add(ownLayout.getId(), frag).commit();
+                }
+            });
+            loadLeaderboard.start();
 
 
-            progressBar.setVisibility(View.INVISIBLE);
-            pageLoaded = true;
+
         }
     }
 
