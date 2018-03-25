@@ -1,6 +1,5 @@
 package com.quizapp.ip2.Activity;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.quizapp.ip2.Helper.LoadImageHelper;
+import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.R;
 
 /**
@@ -21,7 +20,6 @@ import com.quizapp.ip2.R;
 
 public class RecentQuizPreviewFragment extends Fragment {
 
-    private Drawable drawable = null;
     //components
     private TextView txtQuizTitle;
     private ImageView imgQuizImg;
@@ -38,23 +36,10 @@ public class RecentQuizPreviewFragment extends Fragment {
         txtQuizTitle.setText(this.getArguments().getString("title"));
         final String txt = this.getArguments().getString("img");
 
-        Thread networkThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                LoadImageHelper loadImageHelper = new LoadImageHelper(getContext());
-                drawable = loadImageHelper.load(txt);
-            }
-        });
-        networkThread.start();
+        new DownloadImageTask(imgQuizImg).execute(txt);
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
-
-        System.out.println("tostring get:... " + this.getArguments().toString());
         DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), R.color.colorIntroBlue)); //TODO set color to database color //this.getArguments().getInt("color"))
-        while(drawable==null){
-            System.out.println("Loading Image ...");
 
-        }
-        imgQuizImg.setImageDrawable(drawable);
         return view;
     }
 
