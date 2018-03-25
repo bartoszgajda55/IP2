@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
             Bundle featuredBundle = new Bundle();
             String featuredTitle = ("Featured Quiz "+(x+1)); //TODO Get quiz title from the database
             String featuredDesc = "Description";//TODO Get quiz description from database
-            String featuredImg = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO Get quiz image from database
+            String featuredImg = "https://d30y9cdsu7xlg0.cloudfront.net/png/36442-200.png"; //TODO Get quiz image from database
             int featuredColor = R.color.colorPrimary; //TODO Get quiz color from database
             featuredBundle.putString("title", featuredTitle);
             featuredBundle.putString("desc", featuredDesc);
@@ -82,6 +82,7 @@ public class HomeFragment extends Fragment {
         }
         featuredAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragments.size(), fragments);
         featuredPager.setAdapter(featuredAdapter);
+
 
         ArrayList<Fragment> fragmentsRecentGrid = new ArrayList<>();
         for(int x=0; x<2; x++){
