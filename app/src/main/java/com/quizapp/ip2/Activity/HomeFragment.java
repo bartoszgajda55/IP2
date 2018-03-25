@@ -3,6 +3,7 @@ package com.quizapp.ip2.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -28,6 +29,8 @@ public class HomeFragment extends Fragment {
     private FragmentPagerAdapter recentAdapter;
     private ViewPager featuredPager;
     private ViewPager recentPager;
+    private TabLayout featuredNavigationDots;
+    private TabLayout recentNavigationDots;
 
     @Nullable
     @Override
@@ -36,6 +39,8 @@ public class HomeFragment extends Fragment {
 
         featuredPager = (ViewPager) view.findViewById(R.id.featuredSlider);
         recentPager = (ViewPager) view.findViewById(R.id.recentSlider);
+        featuredNavigationDots = (TabLayout) view.findViewById(R.id.tabFeaturedNavigationDots);
+        recentNavigationDots = (TabLayout) view.findViewById(R.id.tabRecentNavigationDots);
         final EditText searchText = (EditText) view.findViewById(R.id.txtSearch);
 
         //Listen for search submit (click ENTER/RETURN)
@@ -82,16 +87,18 @@ public class HomeFragment extends Fragment {
         }
         featuredAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragments.size(), fragments);
         featuredPager.setAdapter(featuredAdapter);
-
+        featuredNavigationDots.setupWithViewPager(featuredPager, true);
 
         ArrayList<Fragment> fragmentsRecentGrid = new ArrayList<>();
         for(int x=0; x<2; x++){
-            RecentQuizFragment recentGrid = new RecentQuizFragment();
+            RecentQuizGridFragment recentGrid = new RecentQuizGridFragment();
             fragmentsRecentGrid.add(recentGrid);
 
         }
         recentAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragmentsRecentGrid.size(), fragmentsRecentGrid);
         recentPager.setAdapter(recentAdapter);
+        recentNavigationDots.setupWithViewPager(recentPager, true);
+
 
         return view;
     }
