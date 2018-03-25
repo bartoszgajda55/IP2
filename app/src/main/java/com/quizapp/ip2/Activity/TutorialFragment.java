@@ -1,6 +1,5 @@
 package com.quizapp.ip2.Activity;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.quizapp.ip2.Helper.LoadImageHelper;
 import com.quizapp.ip2.R;
 
 /**

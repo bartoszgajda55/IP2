@@ -3,7 +3,7 @@ package com.quizapp.ip2.Model;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-import com.quizapp.ip2.Helper.LoadImageHelper;
+//import com.quizapp.ip2.Helper.LoadImageHelper;
 
 /**
  * Created by aaron on 19/03/2018.
@@ -32,7 +32,7 @@ public class User {
         this.firstName = firstName;
         this.surname = surname;
         this.password = password;
-        this.userImage = new LoadImageHelper(context).load(userImage);
+       // this.userImage = new LoadImageHelper(context).load(userImage);
     }
 
     public Drawable getUserImage() {

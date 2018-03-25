@@ -12,27 +12,6 @@ import java.net.URL;
  * Created by Aaron on 15/03/2018.
  */
 
-/*public class LoadImageHelper {
-
-    Context context;
-    public LoadImageHelper(Context context){
-        this.context = context;
-    }
-
-    public Drawable load(String url){
-        try{
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "url");
-            return d;
-        }catch (Exception e) {
-            System.out.println("Exc="+e);
-            Drawable notfound = context.getResources().getDrawable(R.drawable.notfound);
-            return notfound;
-        }
-    }
-
-
-}*/
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bitmapImage;
 

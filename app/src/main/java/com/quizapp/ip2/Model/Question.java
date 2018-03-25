@@ -3,7 +3,7 @@ package com.quizapp.ip2.Model;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-import com.quizapp.ip2.Helper.LoadImageHelper;
+//import com.quizapp.ip2.Helper.LoadImageHelper;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class Question {
     public Question(String correctAnswer, ArrayList<String> wrongAnswers, String questionImage, Context context){
         this.correctAnswer = correctAnswer;
         this.wrongAnswers = wrongAnswers;
-        this.questionImage = new LoadImageHelper(context).load(questionImage);
+       // this.questionImage = new LoadImageHelper(context).load(questionImage);
     }
 
     public String getCorrectAnswer() {

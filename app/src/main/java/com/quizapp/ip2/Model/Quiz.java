@@ -3,7 +3,7 @@ package com.quizapp.ip2.Model;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-import com.quizapp.ip2.Helper.LoadImageHelper;
+//import com.quizapp.ip2.Helper.LoadImageHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +25,7 @@ public class Quiz {
         this.title = title;
         this.description = description;
         this.color = color;
-        this.image = new LoadImageHelper(context).load(image);
+       // this.image = new LoadImageHelper(context).load(image);
     }
 
 
