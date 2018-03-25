@@ -10,9 +10,6 @@ import  com.quizapp.ip2.R;
 
 public class Splash extends AppCompatActivity {
 
-
-    RelativeLayout container;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +20,7 @@ public class Splash extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        //DELAYED, USE THIS TIME TO LOAD DATABASE CONTENT?
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

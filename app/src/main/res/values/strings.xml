@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Quizzy</string>
+    <string name="tutorial_1">Welcome to Quizzy, an interactive quiz app. Complete quizzes to earn XP and level up, Challenge your friends and compete for a spot on the Global Leaderboard</string>
+    <string name="tutorial_2">The Homepage is indicated by the above icon. On this page you can view Featured Quizzes, your own Recent quizzes and also search for any quiz. This is your main hub for finding and taking quizzes</string>
+    <string name="tutorial_3">The User Page is indicated by the above icon. From this page you can see details about yourself for example username and level, friends etc. you can also edit your details and access the settings page from here</string>
+    <string name="tutorial_4">Quizzes consist of 10 questions related to the category you have chosen. These questions are randomly chosen from the question pool, meaning you are less likely to run into repeat questions when completing a
+    quiz multiple times. Each question will have 4 possible answers with only one correct answer. At the end of the Quiz your score will be displayed. You will earn XP based on your score.</string>
+    <string name="tutorial_5">The Leaderboard page is indicated by the above icon. This page shows the current Top 100 players in the world, based on their Levels. it will also show you your own rank compared to theirs e.g 205th in the world</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

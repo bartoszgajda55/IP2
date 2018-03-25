@@ -5,4 +5,6 @@ package com.quizapp.ip2.Helper;
  */
 
 public class DBHandler {
+    //TODO EVERYTHING
+
 }

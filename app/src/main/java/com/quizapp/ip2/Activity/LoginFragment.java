@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,40 +13,33 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import  com.quizapp.ip2.Helper.EmailHandler;
-import  com.quizapp.ip2.R;
+import com.quizapp.ip2.Helper.EmailHandler;
+import com.quizapp.ip2.R;
 
 /**
  * Created by aaron on 08/03/2018.
  */
 
-public class LoginFragment extends FragmentView {
+public class LoginFragment extends Fragment {
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
-
-
-        //SUCCESS
         Button btnLogin = (Button) view.findViewById(R.id.btnLogin);
+
+        //Button pressed
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //TODO Authenticate login
+                //if statement
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Remember me");
                 builder.setMessage("Do you want Quizzy to remember your password?");
+                //else
 
-
-
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which){
-                        //CREATE LOCAL FILE - STORE LOGIN
-                        logIn();
-                    }
-                });
 
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
@@ -56,6 +50,13 @@ public class LoginFragment extends FragmentView {
                     }
                 });
 
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        //TODO Store user login on local system file. Ensure password is hashed/salted -- do not store plaintext password in file
+                        logIn();
+                    }
+                });
                 AlertDialog ad = builder.create();
                 ad.show();
 
@@ -68,28 +69,27 @@ public class LoginFragment extends FragmentView {
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("test button click");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Reset Password");
                 final EditText text = new EditText(getActivity());
                 builder.setMessage("Forgotten your password? Enter your email below to receive an email containing your password");
                 builder.setView(text);
-                builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener(){
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which){
                         dialog.dismiss();
                     }
                 });
 
-                builder.setNegativeButton("Send", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
-                        //CHECK IF EMAIL EXISTS
+                        //TODO Check if email exists in the users table, if so:
                         EmailHandler eh = new EmailHandler();
-                        eh.sendMail(text.getText().toString(), "Password Recovery", "TODO: connect to database and send password if exists");
+                        eh.sendMail(text.getText().toString(), "Password Recovery", "TODO: connect to database and send password if exists"); //TODO fix system crash on email send
                         Toast.makeText(getActivity(),"Email sent...", Toast.LENGTH_SHORT);
                     }
                 });
@@ -103,19 +103,12 @@ public class LoginFragment extends FragmentView {
 
 
     private void logIn(){
-        Intent intent = new Intent(getActivity(), HomepageActivity.class);
+
+        Intent intent = new Intent(getContext(), HomepageActivity.class);
         startActivity(intent);
-        Toast.makeText(getActivity(), "Logged in...", Toast.LENGTH_SHORT).show();
-    }
 
-    public static FragmentView newInstance(int page) {
-        LoginFragment logFragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        logFragment.setArguments(args);
-        return logFragment;
-    }
 
+    }
 
 
 }

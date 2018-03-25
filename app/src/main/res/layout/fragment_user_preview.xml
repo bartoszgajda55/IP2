@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.quizapp.ip2.Activity.UserPreviewFragment"
+    android:backgroundTint="@color/colorLightGray"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="3dp">
+
+
+    <ImageView
+        android:id="@+id/imgBg"
+        android:layout_width="match_parent"
+
+        android:layout_height="40dp"
+        android:src="@drawable/rounded_rect"
+        />
+
+    <TextView
+        android:text="1"
+        android:id="@+id/place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:textSize="25dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="5dp"/>
+
+    <ImageView
+        android:id="@+id/imgPerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="8dp"
+        android:scaleX="1.8"
+        android:scaleY="1.8"
+        android:src="@drawable/icon_user"
+        android:tint="@color/colorDarkGray" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_toEndOf="@+id/imgPerson"
+        android:text="Username"
+        android:textSize="20dp" />
+
+    <ImageView
+        android:id="@+id/imgLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@id/imgBg"
+        android:layout_marginRight="57dp"
+        android:layout_marginTop="8dp"
+        android:scaleX="1.8"
+        android:scaleY="1.8"
+        android:src="@drawable/icon_level"
+        android:tint="@color/colorDarkGray" />
+
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="5dp"
+        android:text="333"
+        android:textSize="25dp" />
+
+</RelativeLayout>
