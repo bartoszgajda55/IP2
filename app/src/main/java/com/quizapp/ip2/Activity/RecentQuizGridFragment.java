@@ -20,7 +20,7 @@ import com.quizapp.ip2.R;
 
 //todo refactor this class - should be called RecentQuizGridFragment
 
-public class RecentQuizFragment extends Fragment {
+public class RecentQuizGridFragment extends Fragment {
 
     @Nullable
     @Override
@@ -35,7 +35,7 @@ public class RecentQuizFragment extends Fragment {
             RecentQuizPreviewFragment quizRecent = new RecentQuizPreviewFragment();
             Bundle recentBundle = new Bundle();
             String recentTitle = "Title"; //TODO Get quiz title from database
-            String recentImg = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO Get quiz image from database
+            String recentImg = "https://d30y9cdsu7xlg0.cloudfront.net/png/36442-200.png"; //TODO Get quiz image from database
             int recentColor = R.color.colorIntroBlue; //TODO Get quiz color from database
             recentBundle.putString("title", recentTitle);
             recentBundle.putString("img", recentImg);

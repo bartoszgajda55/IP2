@@ -138,15 +138,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="420dp">
 
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="65dp" />
+
                 <android.support.v4.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
 
                     <LinearLayout
                         android:id="@+id/friendLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
@@ -183,6 +193,7 @@
                                 android:tint="@color/colorDarkGray" />
 
                         </RelativeLayout>
+
 
                     </LinearLayout>
                 </android.support.v4.widget.NestedScrollView>
@@ -229,16 +240,6 @@
                     android:layout_marginTop="10dp"/>
 
                 <ImageView
-                    android:id="@+id/imgPowerIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:src="@drawable/icon_power"
-                    android:layout_marginBottom="20dp"
-                    android:tint="@color/colorDarkGray"/>
-
-                <ImageView
                     android:id="@+id/imgSettingsIcon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -249,6 +250,15 @@
                     android:layout_marginBottom="10dp"
                     />
 
+                <ImageView
+                    android:id="@+id/imgPowerIcon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:src="@drawable/icon_power"
+                    android:layout_marginBottom="20dp"
+                    android:tint="@color/colorDarkGray"/>
 
             </RelativeLayout>
 

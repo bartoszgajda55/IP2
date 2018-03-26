@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.quizapp.ip2.R;
@@ -21,31 +22,38 @@ import com.quizapp.ip2.R;
 
 public class UserFragment extends Fragment {
 
+
+    ProgressBar progressBar;
+    LinearLayout friendsLayout;
+    boolean friendsLoaded = false;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_fragment, container, false);
+        friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
 
-        //TODO Load Current Users Data and Update Page with it
-
-        LinearLayout friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
         ImageView powerImage = (ImageView) view.findViewById(R.id.imgPowerIcon);
         ImageView settingsImage = (ImageView) view.findViewById(R.id.imgSettingsIcon);
 
-        //To log users out when clicking on the power icon
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
         powerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Log out");
                 builder.setMessage("Are you sure you want to log out?");
+
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                     }
                 });
+
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which){
@@ -55,6 +63,8 @@ public class UserFragment extends Fragment {
                 });
                 AlertDialog ad = builder.create();
                 ad.show();
+
+
             }
         });
 
@@ -65,33 +75,36 @@ public class UserFragment extends Fragment {
             }
         });
 
-        for (int x = 0; x < 12; x++) {
-            UserPreviewFragment frag = new UserPreviewFragment();
-            Bundle bundle = new Bundle();
-            int place = x + 1;
-            String username = "User " + 1; //TODO get username from user query result
-            String level = "10"; //TODO calculate level from user query result (XP)
-            bundle.putInt("place", place);
-            bundle.putString("username", username);
-            bundle.putString("level", level);
-            bundle.putInt("color", R.color.colorLightGray);
-            bundle.putInt("textColor", R.color.colorDarkGray);
-            bundle.putFloat("alpha", 0.25F);
 
-            frag.setArguments(bundle);
-            RelativeLayout rel = new RelativeLayout(getContext());
-            rel.setId(View.generateViewId());
-            getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
-            friendsLayout.addView(rel);
-
-            //To open other users page on click
-            rel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO OPEN OTHER USERS PAGE
-                }
-            });
-        }
         return view;
+    }
+
+    public void populateFriends(){
+        if(!friendsLoaded) {
+            //TODO Add an async task for loading friends
+            for (int x = 0; x < 300; x++) {
+                UserPreviewFragment frag = new UserPreviewFragment();
+                Bundle bundle = new Bundle();
+                int place = x + 1;
+                String username = "User " + 1; //TODO get username from user query result
+                String level = "10"; //TODO calculate level from user query result (XP)
+                bundle.putInt("place", place);
+                bundle.putString("username", username);
+                bundle.putString("level", level);
+                bundle.putInt("color", R.color.colorLightGray);
+                bundle.putInt("textColor", R.color.colorDarkGray);
+                bundle.putFloat("alpha", 0.25F);
+
+                frag.setArguments(bundle);
+                RelativeLayout rel = new RelativeLayout(getContext());
+                rel.setId(View.generateViewId());
+                getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
+                friendsLayout.addView(rel);
+            }
+
+            progressBar.setVisibility(View.INVISIBLE);
+            friendsLoaded = true;
+
+        }
     }
 }

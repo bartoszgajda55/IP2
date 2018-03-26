@@ -79,7 +79,7 @@ public class QuizSearchActivity extends FragmentedActivity {
          Bundle bundle = new Bundle();
          String title = search; //TODO get from database
          String desc = "Description"; //TODO get from database
-         String img = "https://cdn3.iconfinder.com/data/icons/brain-games/1042/Quiz-Games-grey.png"; //TODO get from database
+         String img = "https://d30y9cdsu7xlg0.cloudfront.net/png/36442-200.png"; //TODO get from database
          int color = R.color.colorIntroGreen; //TODO get from database
          bundle.putString("title", title);
          bundle.putString("desc", desc);

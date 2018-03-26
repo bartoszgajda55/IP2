@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusableInTouchMode="true"
     android:focusable="true">
 
@@ -51,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 >
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -64,11 +66,33 @@
                     android:layout_height="275dp"
                     android:layout_marginTop="40dp">
 
-
                 </android.support.v4.view.ViewPager>
 
 
+                <android.support.design.widget.TabLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:id="@+id/tabFeaturedNavigationDots"
+                    android:layout_below="@id/featuredSlider"
+                    android:layout_centerHorizontal="true"
+                    app:tabBackground="@drawable/tab_selector"
+                    app:tabIndicatorHeight="0dp">
+
+
+                </android.support.design.widget.TabLayout>
+
+
+
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </RelativeLayout>
+
+
 
             <View
                 android:layout_width="match_parent"
@@ -96,9 +120,32 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="40dp"></android.support.v4.view.ViewPager>
 
+                <android.support.design.widget.TabLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:id="@+id/tabRecentNavigationDots"
+                    android:layout_below="@id/recentSlider"
+                    android:layout_centerHorizontal="true"
+                    app:tabBackground="@drawable/tab_selector"
+                    app:tabIndicatorHeight="0dp">
+
+
+                </android.support.design.widget.TabLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BROWSE ALL QUIZZES"
+                    android:theme="@style/buttonFlat"
+                    android:layout_below="@+id/tabRecentNavigationDots"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="25dp"/>
+
             </RelativeLayout>
 
         </LinearLayout>
+
 
     </ScrollView>
 </RelativeLayout>

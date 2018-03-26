@@ -4,12 +4,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by Allan on 20/03/2018.
+ * Created by Aaron on 20/03/2018.
  */
 
 public class StringHasher {
 
-    public String hashSting(String s){
+    public String hashString(String s){
         String hashed;
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");

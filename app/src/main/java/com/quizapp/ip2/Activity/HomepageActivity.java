@@ -1,17 +1,20 @@
 package com.quizapp.ip2.Activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.RelativeLayout;
 
-import com.quizapp.ip2.Helper.DBHandler;
 import com.quizapp.ip2.R;
 
 import java.util.ArrayList;
 
 public class HomepageActivity extends FragmentedActivity {
 
+    private RelativeLayout parent;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private int[] icons = {
@@ -23,6 +26,7 @@ public class HomepageActivity extends FragmentedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
 
+        parent = (RelativeLayout) findViewById(R.id.parentLayout);
         viewPager = (ViewPager) findViewById(R.id.slider);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
@@ -41,12 +45,14 @@ public class HomepageActivity extends FragmentedActivity {
         viewPager.setAdapter(sliderAdapter);
         viewPager.setCurrentItem(1);
         viewPager.setOffscreenPageLimit(2);
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                parent.requestFocus();
                 switch (position) {
                     case 0: //User
-                        //TODO load user page content
+                        userFragment.populateFriends();
                         break;
                     case 2: //Leaderboard
                         leaderboardFragment.populatePage();
@@ -55,10 +61,22 @@ public class HomepageActivity extends FragmentedActivity {
             }
 
             @Override
-            public void onPageSelected(int position) { }
+            public void onPageSelected(int position) {
 
+            }
+
+
+            //Prevent virtual keyboard persisting when page using keyboard is swiped away from
             @Override
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+                if(state == ViewPager.SCROLL_STATE_IDLE){
+                    final InputMethodManager imm = (InputMethodManager)getSystemService(
+                            Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
+                }
+
+
+            }
         });
 
         //Add tab icons to the navigation bar
