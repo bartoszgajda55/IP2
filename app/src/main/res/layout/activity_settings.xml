@@ -52,6 +52,7 @@
                 android:checked="true"
                 android:elevation="4dp"/>
             <TextView
+                android:id="@+id/txtLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Light theme"
@@ -80,6 +81,7 @@
                 android:elevation="4dp"/>
 
             <TextView
+                android:id="@+id/txtDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dark theme"
@@ -108,6 +110,7 @@
                 />
 
             <TextView
+                android:id="@+id/txtMono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Monochrome theme"
@@ -119,6 +122,16 @@
 
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnLogOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="LOG OUT"
+        android:theme="@style/buttonPrimary"
+        />
 
 
 

@@ -264,20 +264,11 @@
                     android:id="@+id/btnSettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_above="@id/btnLogOut"
-                    android:text="SETTINGS"
-                    android:theme="@style/buttonFlat"/>
-                <Button
-                    android:id="@+id/btnLogOut"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:text="LOG OUT"
-                    android:theme="@style/buttonPrimary"
+                    android:text="SETTINGS"
+                    android:theme="@style/buttonFlat"/>
 
-                    />
 
             </RelativeLayout>
 
