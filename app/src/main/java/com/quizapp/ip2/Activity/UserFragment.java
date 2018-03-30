@@ -33,8 +33,10 @@ public class UserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_fragment, container, false);
         friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
+
         ImageView powerImage = (ImageView) view.findViewById(R.id.imgPowerIcon);
         ImageView settingsImage = (ImageView) view.findViewById(R.id.imgSettingsIcon);
+
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -49,7 +51,6 @@ public class UserFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                     }
                 });
 

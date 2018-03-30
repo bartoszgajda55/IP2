@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class StringHasher {
 
-    public String hashSting(String s){
+    public String hashString(String s){
         String hashed;
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");

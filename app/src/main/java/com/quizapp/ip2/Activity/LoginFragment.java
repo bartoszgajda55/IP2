@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.EmailHandler;
@@ -46,7 +47,6 @@ public class LoginFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         logIn();
-
                     }
                 });
 
@@ -59,9 +59,7 @@ public class LoginFragment extends Fragment {
                 });
                 AlertDialog ad = builder.create();
                 ad.show();
-
-
-
+                
             }
         });
 
@@ -73,6 +71,7 @@ public class LoginFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Reset Password");
                 final EditText text = new EditText(getActivity());
+                text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 builder.setMessage("Forgotten your password? Enter your email below to receive an email containing your password");
                 builder.setView(text);
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){

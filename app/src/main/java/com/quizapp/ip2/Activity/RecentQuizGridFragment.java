@@ -20,7 +20,7 @@ import com.quizapp.ip2.R;
 
 //todo refactor this class - should be called RecentQuizGridFragment
 
-public class RecentQuizFragment extends Fragment {
+public class RecentQuizGridFragment extends Fragment {
 
     @Nullable
     @Override

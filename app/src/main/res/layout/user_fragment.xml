@@ -240,16 +240,6 @@
                     android:layout_marginTop="10dp"/>
 
                 <ImageView
-                    android:id="@+id/imgPowerIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:src="@drawable/icon_power"
-                    android:layout_marginBottom="20dp"
-                    android:tint="@color/colorDarkGray"/>
-
-                <ImageView
                     android:id="@+id/imgSettingsIcon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -260,6 +250,15 @@
                     android:layout_marginBottom="10dp"
                     />
 
+                <ImageView
+                    android:id="@+id/imgPowerIcon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:src="@drawable/icon_power"
+                    android:layout_marginBottom="20dp"
+                    android:tint="@color/colorDarkGray"/>
 
             </RelativeLayout>
 

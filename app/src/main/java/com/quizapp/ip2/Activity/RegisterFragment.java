@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.quizapp.ip2.Helper.StringHasher;
 import com.quizapp.ip2.R;
 
 /**
@@ -20,68 +21,85 @@ import com.quizapp.ip2.R;
 public class RegisterFragment extends Fragment {
 
 
-    EditText username;
-    EditText firstName;
-    EditText surname;
-    EditText password;
-    EditText passwordConfirm;
+    EditText usernameField;
+    EditText firstNameField;
+    EditText surnameField;
+    EditText passwordField;
+    EditText passwordConfirmField;
+    EditText emailField;
+
+    String username;
+    String firstName;
+    String surname;
     String email;
-    String emailPattern;
+
+    //String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    String emailPattern = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.register_fragment, container, false);
 
-
-        final EditText emailValidate = (EditText) view.findViewById(R.id.txtEmail);
-        email = emailValidate.getText().toString().trim();
-        emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        username = (EditText) view.findViewById(R.id.txtUsername);
-        firstName = (EditText) view.findViewById(R.id.txtFirstname);
-        surname = (EditText) view.findViewById(R.id.txtSurname);
-        password = (EditText) view.findViewById(R.id.txtPassword);
-        passwordConfirm = (EditText) view.findViewById(R.id.txtConfirmPassword);
-
+        usernameField = (EditText) view.findViewById(R.id.txtUsername);
+        firstNameField = (EditText) view.findViewById(R.id.txtFirstname);
+        surnameField = (EditText) view.findViewById(R.id.txtSurname);
+        passwordField = (EditText) view.findViewById(R.id.txtPassword);
+        passwordConfirmField = (EditText) view.findViewById(R.id.txtConfirmPassword);
+        emailField = (EditText) view.findViewById(R.id.txtEmail);
 
         //SUCCESS
         Button btnRegister = (Button) view.findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Authenticate Register and Add to database
-                register();
+                tryRegister();
             }
         });
 
         return view;
     }
 
-    public void register() {
+    public void tryRegister() {
 
-        if (username.length() > 32) {
-            Toast.makeText(getActivity(), "No more than 32 characters!",
-                    Toast.LENGTH_SHORT).show();
+        username = usernameField.getText().toString();
+        firstName = firstNameField.getText().toString();
+        surname = surnameField.getText().toString();
+        email = emailField.getText().toString();
+
+
+        //TODO CHECK IF EMAIL ALREADY EXISTS
+        /*if (!email.matches(emailPattern)) {
+            Toast.makeText(getContext(), "Invalid email address...", Toast.LENGTH_SHORT).show();
+            return;
+        }*/
+
+        if (username.length() > 32 || username.length() < 3) { //TODO CHECK IF USERNAME ALREADY EXISTS
+            Toast.makeText(getActivity(), "Username is invalid...", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        if (email.matches(emailPattern)) {
-            Toast.makeText(getContext(), "valid email address", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
+        if (firstName.length() > 255 || firstName.length() < 3) {
+            Toast.makeText(getActivity(), "First name is invalid...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (surname.length() > 255 || surname.length() < 3) {
+            Toast.makeText(getActivity(), "Surname is invalid...", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        if (firstName.length() > 255) {
-            Toast.makeText(getActivity(), "Character limit exceeded!",
-                    Toast.LENGTH_SHORT).show();
+        //TODO ENSURE PASSWORD HAS ATLEAST 1 NUMBER
+        if(passwordField.getText().length() < 3){
+            Toast.makeText(getActivity(), "Password is invalid (reqs)...", Toast.LENGTH_SHORT).show();
+            return;
         }
-        if (surname.length() > 255) {
-            Toast.makeText(getActivity(), "Character limit exceeded!",
-                    Toast.LENGTH_SHORT).show();
+        if (passwordField.getText().toString() == passwordConfirmField.getText().toString()) {
+            Toast.makeText(getActivity(), "Passwords do not match...", Toast.LENGTH_SHORT).show();
+            return;
         }
-        if (password.length() > 255 && password == passwordConfirm) {
-            Toast.makeText(getActivity(), "Character limit exceeded!",
-                    Toast.LENGTH_SHORT).show();
-        }
+
+        String hashedPassword = new StringHasher().hashString(passwordField.getText().toString());
+        System.out.println(hashedPassword);
 
         Intent intent = new Intent(getContext(), TutorialActivity.class);
         startActivity(intent);
