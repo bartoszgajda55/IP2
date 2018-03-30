@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -34,13 +35,15 @@ public class UserFragment extends Fragment {
         View view = inflater.inflate(R.layout.user_fragment, container, false);
         friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
 
-        ImageView powerImage = (ImageView) view.findViewById(R.id.imgPowerIcon);
-        ImageView settingsImage = (ImageView) view.findViewById(R.id.imgSettingsIcon);
+        //ImageView powerImage = (ImageView) view.findViewById(R.id.imgPowerIcon);
+        Button btnLogOut = (Button) view.findViewById(R.id.btnLogOut);
+        //ImageView settingsImage = (ImageView) view.findViewById(R.id.imgSettingsIcon);
+        Button btnSettings = (Button) view.findViewById(R.id.btnSettings);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
-        powerImage.setOnClickListener(new View.OnClickListener() {
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -68,10 +71,11 @@ public class UserFragment extends Fragment {
             }
         });
 
-        settingsImage.setOnClickListener(new View.OnClickListener() {
+        btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Take to Settings Page
+                Intent intent = new Intent(getContext(), SettingsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -82,7 +86,7 @@ public class UserFragment extends Fragment {
     public void populateFriends(){
         if(!friendsLoaded) {
             //TODO Add an async task for loading friends
-            for (int x = 0; x < 300; x++) {
+            for (int x = 0; x < 30; x++) {
                 UserPreviewFragment frag = new UserPreviewFragment();
                 Bundle bundle = new Bundle();
                 int place = x + 1;

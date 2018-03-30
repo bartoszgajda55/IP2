@@ -133,6 +133,7 @@
                 </android.support.design.widget.TabLayout>
 
                 <Button
+                    android:id="@+id/btnBrowseAll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="BROWSE ALL QUIZZES"

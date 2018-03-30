@@ -89,4 +89,5 @@ public class HomepageActivity extends FragmentedActivity {
             tabLayout.getTabAt(i).setIcon(icons[i]);
         }
     }
+
 }

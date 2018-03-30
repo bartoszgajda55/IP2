@@ -30,6 +30,7 @@
             android:hardwareAccelerated="false">
         </activity>
         <activity android:name=".Activity.QuizSearchActivity"/>
+        <activity android:name=".Activity.SettingsActivity"/>
     </application>
 
 </manifest>

@@ -239,7 +239,7 @@
                     android:theme="@style/textNormal"
                     android:layout_marginTop="10dp"/>
 
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/imgSettingsIcon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -248,9 +248,9 @@
                     android:tint="@color/colorDarkGray"
                     android:src="@drawable/icon_settings"
                     android:layout_marginBottom="10dp"
-                    />
+                    />-->
 
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/imgPowerIcon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -258,7 +258,26 @@
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/icon_power"
                     android:layout_marginBottom="20dp"
-                    android:tint="@color/colorDarkGray"/>
+                    android:tint="@color/colorDarkGray"/>-->
+
+                <Button
+                    android:id="@+id/btnSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_above="@id/btnLogOut"
+                    android:text="SETTINGS"
+                    android:theme="@style/buttonFlat"/>
+                <Button
+                    android:id="@+id/btnLogOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="LOG OUT"
+                    android:theme="@style/buttonPrimary"
+
+                    />
 
             </RelativeLayout>
 
