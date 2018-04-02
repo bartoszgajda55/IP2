@@ -20,8 +20,10 @@ android {
 }
 
 
+
 dependencies {
     implementation 'com.android.support:support-v4:25.4.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile files('libs/javax.mail.jar')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

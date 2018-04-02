@@ -181,6 +181,7 @@
                                 android:layout_marginRight="10dp"
                                 android:layout_toRightOf="@id/txtFriendsTitle"
                                 android:hint="Search for Users"
+                                android:theme="@style/textNormal"
                                 android:maxLines="1"
                                 android:singleLine="true" />
 

@@ -10,8 +10,6 @@
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
 
-        <item name="android:buttonStyle">@style/buttonPrimary</item>
-
     </style>
 
     <style name="AppThemeDark" parent="Theme.AppCompat.Light.NoActionBar">

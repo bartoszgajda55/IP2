@@ -16,21 +16,28 @@
         android:roundIcon="@drawable/logo_small"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.Splash" android:noHistory="true">
+        <activity
+            android:name=".Activity.Splash"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.AuthenticationActivity" android:noHistory="true"/>
-        <activity android:name=".Activity.HomepageActivity"></activity>
-        <activity android:name=".Activity.TutorialActivity"
-            android:noHistory="true"
-            android:hardwareAccelerated="false">
-        </activity>
-        <activity android:name=".Activity.QuizSearchActivity"/>
-        <activity android:name=".Activity.SettingsActivity"  android:noHistory="true"/>
+        <activity
+            android:name=".Activity.AuthenticationActivity"
+            android:noHistory="true" />
+        <activity android:name=".Activity.HomepageActivity" />
+        <activity
+            android:name=".Activity.TutorialActivity"
+            android:hardwareAccelerated="false"
+            android:noHistory="true"></activity>
+        <activity android:name=".Activity.QuizSearchActivity" />
+        <activity
+            android:name=".Activity.SettingsActivity"
+            android:noHistory="true" />
+        <activity android:name=".Activity.QuizActivity"></activity>
     </application>
 
 </manifest>
