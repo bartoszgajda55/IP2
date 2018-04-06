@@ -32,12 +32,13 @@
         <activity
             android:name=".Activity.TutorialActivity"
             android:hardwareAccelerated="false"
-            android:noHistory="true"></activity>
+            android:noHistory="true" />
         <activity android:name=".Activity.QuizSearchActivity" />
         <activity
             android:name=".Activity.SettingsActivity"
             android:noHistory="true" />
-        <activity android:name=".Activity.QuizActivity"></activity>
+        <activity android:name=".Activity.QuizActivity" />
+        <activity android:name=".Activity.QuizEndActivity"></activity>
     </application>
 
 </manifest>

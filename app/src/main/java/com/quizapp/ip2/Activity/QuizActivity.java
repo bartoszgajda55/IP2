@@ -36,6 +36,13 @@ public class QuizActivity extends AppCompatActivity {
         progressBarCorrect.setMax(10);
         progressBar.setProgress(getIntent().getExtras().getInt("question"));
         progressBarCorrect.setProgress(getIntent().getExtras().getInt("correct"));
+        if (getIntent().getExtras().getInt("question")==10){
+            Intent intent = new Intent(getApplicationContext(), QuizEndActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("correct", progressBarCorrect.getProgress());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
 
         //TODO Set toolbar colour to Quiz Colour, Title to quiz name
         txtQuestion.setText("Example Question"); //TODO Set question text
