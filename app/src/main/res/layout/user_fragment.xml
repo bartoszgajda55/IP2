@@ -181,6 +181,7 @@
                                 android:layout_marginRight="10dp"
                                 android:layout_toRightOf="@id/txtFriendsTitle"
                                 android:hint="Search for Users"
+                                android:theme="@style/textNormal"
                                 android:maxLines="1"
                                 android:singleLine="true" />
 
@@ -225,7 +226,7 @@
                     android:id="@+id/txtQuizzesComplete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Quizzes Completed: 1872"
+                    android:text="Quizzes Completed: 18"
                     android:layout_below="@id/txtStatisticsTitle"
                     android:theme="@style/textNormal"
                     android:layout_marginTop="10dp"/>
@@ -234,40 +235,31 @@
                     android:id="@+id/txtCorrectAnswers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Correct Answers: 54"
+                    android:text="Correct Answers: 72"
                     android:layout_below="@id/txtQuizzesComplete"
                     android:theme="@style/textNormal"
                     android:layout_marginTop="10dp"/>
 
-                <!--<ImageView
-                    android:id="@+id/imgSettingsIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_above="@id/imgPowerIcon"
-                    android:tint="@color/colorDarkGray"
-                    android:src="@drawable/icon_settings"
-                    android:layout_marginBottom="10dp"
-                    />-->
-
-                <!--<ImageView
-                    android:id="@+id/imgPowerIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:src="@drawable/icon_power"
-                    android:layout_marginBottom="20dp"
-                    android:tint="@color/colorDarkGray"/>-->
 
                 <Button
                     android:id="@+id/btnSettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
                     android:text="SETTINGS"
-                    android:theme="@style/buttonFlat"/>
+                    android:theme="@style/buttonFlat"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="20dp"/>
+
+                <Button
+                    android:id="@+id/btnAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="ADMIN"
+                    android:theme="@style/buttonFlat"
+                    android:layout_toRightOf="@+id/btnSettings"/>
 
 
             </RelativeLayout>

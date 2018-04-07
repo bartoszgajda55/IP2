@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 
 //import com.quizapp.ip2.Helper.LoadImageHelper;
 
+import com.quizapp.ip2.Helper.DownloadImageTask;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -25,7 +27,7 @@ public class Quiz {
         this.title = title;
         this.description = description;
         this.color = color;
-       // this.image = new LoadImageHelper(context).load(image);
+        //this.image = new DownloadImageTask().load(image);
     }
 
 

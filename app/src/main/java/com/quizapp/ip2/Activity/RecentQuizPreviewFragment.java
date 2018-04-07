@@ -1,5 +1,6 @@
 package com.quizapp.ip2.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,18 @@ public class RecentQuizPreviewFragment extends Fragment {
         new DownloadImageTask(imgQuizImg).execute(txt);
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
         DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), R.color.colorIntroBlue)); //TODO set color to database color //this.getArguments().getInt("color"))
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), QuizActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("question", 0);
+                bundle.putInt("correct", 0);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
