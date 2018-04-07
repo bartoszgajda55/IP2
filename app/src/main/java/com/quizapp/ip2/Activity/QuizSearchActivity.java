@@ -31,7 +31,11 @@ public class QuizSearchActivity extends FragmentedActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         final EditText textSearch = (EditText) findViewById(R.id.txtSearch);
 
-        toolbar.setTitle("Showing results for: " + "\"" + search + "\"");
+        if(!b.getBoolean("all")) {
+            toolbar.setTitle("Showing results for: " + "\"" + search + "\"");
+        } else {
+            toolbar.setTitle("Showing all quizzes");
+        }
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
 
         Drawable whiteArrow = getDrawable(R.drawable.arrow_back);
@@ -72,24 +76,24 @@ public class QuizSearchActivity extends FragmentedActivity {
                 return false;
             }
         });
-
-         //TODO display quizzes that match search term
+        
+        //TODO rewrite this method to work with database, and work with all quizzes search ("all" true)
          for (int x=0; x<3; x++){
-         QuizPreviewFragment frag = new QuizPreviewFragment();
-         Bundle bundle = new Bundle();
-         String title = search; //TODO get from database
-         String desc = "Description"; //TODO get from database
-         String img = "https://d30y9cdsu7xlg0.cloudfront.net/png/36442-200.png"; //TODO get from database
-         int color = R.color.colorIntroGreen; //TODO get from database
-         bundle.putString("title", title);
-         bundle.putString("desc", desc);
-         bundle.putString("img", img);
-         bundle.putInt("color", color);
-         frag.setArguments(bundle);
-         RelativeLayout rel = new RelativeLayout(this);
-         rel.setId(View.generateViewId());
-         getSupportFragmentManager().beginTransaction().add(rel.getId(),frag).commit();
-         linearLayout.addView(rel);
+            QuizPreviewFragment frag = new QuizPreviewFragment();
+            Bundle bundle = new Bundle();
+            String title = search; //TODO get from database
+            String desc = "Description"; //TODO get from database
+            String img = "https://d30y9cdsu7xlg0.cloudfront.net/png/36442-200.png"; //TODO get from database
+            int color = R.color.colorIntroGreen; //TODO get from database
+            bundle.putString("title", title);
+            bundle.putString("desc", desc);
+            bundle.putString("img", img);
+            bundle.putInt("color", color);
+            frag.setArguments(bundle);
+            RelativeLayout rel = new RelativeLayout(this);
+            rel.setId(View.generateViewId());
+            getSupportFragmentManager().beginTransaction().add(rel.getId(),frag).commit();
+            linearLayout.addView(rel);
          }
     }
 

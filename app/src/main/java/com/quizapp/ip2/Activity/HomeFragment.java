@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.quizapp.ip2.R;
@@ -31,6 +32,7 @@ public class HomeFragment extends Fragment {
     private ViewPager recentPager;
     private TabLayout featuredNavigationDots;
     private TabLayout recentNavigationDots;
+    private Button btnBrowseAll;
 
     @Nullable
     @Override
@@ -42,6 +44,7 @@ public class HomeFragment extends Fragment {
         featuredNavigationDots = (TabLayout) view.findViewById(R.id.tabFeaturedNavigationDots);
         recentNavigationDots = (TabLayout) view.findViewById(R.id.tabRecentNavigationDots);
         final EditText searchText = (EditText) view.findViewById(R.id.txtSearch);
+        btnBrowseAll = (Button) view.findViewById(R.id.btnBrowseAll);
 
         //Listen for search submit (click ENTER/RETURN)
         searchText.setOnKeyListener(new View.OnKeyListener() {
@@ -57,6 +60,8 @@ public class HomeFragment extends Fragment {
                             Intent intent = new Intent(getContext(), QuizSearchActivity.class);
                             Bundle b = new Bundle();
                             b.putString("search", searchText.getText().toString());
+                            //"all" key is a boolean value, if true, will show every quiz in the database. Else the query will be used.
+                            b.putBoolean("all", false);
                             intent.putExtras(b);
                             startActivity(intent);
                             return true;
@@ -67,6 +72,8 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+
+
 
         //To display the featured quizzes in a slider
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
@@ -89,6 +96,8 @@ public class HomeFragment extends Fragment {
         featuredPager.setAdapter(featuredAdapter);
         featuredNavigationDots.setupWithViewPager(featuredPager, true);
 
+
+        //Display recent quizzes in a slider
         ArrayList<Fragment> fragmentsRecentGrid = new ArrayList<>();
         for(int x=0; x<2; x++){
             RecentQuizGridFragment recentGrid = new RecentQuizGridFragment();
@@ -99,6 +108,20 @@ public class HomeFragment extends Fragment {
         recentPager.setAdapter(recentAdapter);
         recentNavigationDots.setupWithViewPager(recentPager, true);
 
+
+        //Listen for button click to show all quizzes
+        btnBrowseAll.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getContext(), QuizSearchActivity.class);
+                Bundle b = new Bundle();
+                b.putString("search", "all");
+                //"all" key is a boolean value, if true, will show every quiz in the database. Else the query will be used.
+                b.putBoolean("all", true);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.EmailHandler;
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.R;
 
 /**
@@ -29,6 +31,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
         Button btnLogin = (Button) view.findViewById(R.id.btnLogin);
+        final RequestTask rq = new RequestTask();
 
         //Button pressed
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +39,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 //TODO Authenticate login
                 //if statement
+                Log.d("Response: ", rq.sendGetRequest("https://ip2-api.herokuapp.com/api/user"));
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Remember me");
                 builder.setMessage("Do you want Quizzy to remember your password?");

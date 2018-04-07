@@ -1,6 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.5"
+
+        android:src="@drawable/background_cubes_light"/>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:title="Settings"
+        app:titleTextColor="@color/colorLight"
+        android:elevation="4dp"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_below="@id/toolbar">
+
+        <TextView
+            android:id="@+id/txtAppearance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/textTitle"
+            android:text="Appearance"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/layoutLight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtAppearance"
+            android:layout_marginBottom="5dp">
+            <Switch
+                android:id="@+id/switchLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtAppearance"
+                android:checked="true"
+                android:elevation="4dp"/>
+            <TextView
+                android:id="@+id/txtLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Light theme"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layoutDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layoutLight"
+            android:layout_marginBottom="5dp">
+
+
+
+            <Switch
+                android:id="@+id/switchDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/switchLight"
+                android:checked="false"
+                android:elevation="4dp"/>
+
+            <TextView
+                android:id="@+id/txtDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dark theme"
+                android:textSize="18dp"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/layoutMono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layoutDark"
+            android:layout_marginBottom="5dp">
+
+            <Switch
+                android:id="@+id/switchMono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/switchDark"
+                android:checked="false"
+                android:layout_marginBottom="5dp"
+                android:elevation="4dp"
+                />
+
+            <TextView
+                android:id="@+id/txtMono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monochrome theme"
+                android:textSize="18dp"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnLogOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="LOG OUT"
+        android:theme="@style/buttonPrimary"
+        />
+
+
+
+    <!--<View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/imgSettingsIcon" />-->
 </RelativeLayout>
