@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusableInTouchMode="true"
+    android:focusable="true">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -10,6 +13,7 @@
         android:layout_centerHorizontal="true">
 
         <LinearLayout
+            android:id="@+id/layoutLinear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -18,17 +22,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 >
-            <EditText
-                android:id="@+id/txtSearch"
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Search for a Quiz"
-                android:textAlignment="center"
-                android:singleLine="true"
-                />
+                <EditText
+                    android:id="@+id/txtSearch"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Search for a Quiz"
+                    android:textColor="@color/colorPrimary"
+                    android:textAlignment="center"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -45,8 +51,9 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 >
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -57,18 +64,90 @@
                 <android.support.v4.view.ViewPager
                     android:id="@+id/featuredSlider"
                     android:layout_width="wrap_content"
-                    android:layout_height="300dp">
-
-
+                    android:layout_height="275dp"
+                    android:layout_marginTop="40dp">
 
                 </android.support.v4.view.ViewPager>
+
+
+                <android.support.design.widget.TabLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:id="@+id/tabFeaturedNavigationDots"
+                    android:layout_below="@id/featuredSlider"
+                    android:layout_centerHorizontal="true"
+                    app:tabBackground="@drawable/tab_selector"
+                    app:tabIndicatorHeight="0dp">
+
+
+                </android.support.design.widget.TabLayout>
+
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
 
             </RelativeLayout>
 
 
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@android:color/darker_gray"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Recent Quizzes"
+                    android:textAlignment="center"
+                    android:theme="@style/textTitle" />
+
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/recentSlider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="450dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"></android.support.v4.view.ViewPager>
+
+                <android.support.design.widget.TabLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:id="@+id/tabRecentNavigationDots"
+                    android:layout_below="@id/recentSlider"
+                    android:layout_centerHorizontal="true"
+                    app:tabBackground="@drawable/tab_selector"
+                    app:tabIndicatorHeight="0dp">
+
+
+                </android.support.design.widget.TabLayout>
+
+                <Button
+                    android:id="@+id/btnBrowseAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BROWSE ALL QUIZZES"
+                    android:theme="@style/buttonFlat"
+                    android:layout_below="@+id/tabRecentNavigationDots"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="25dp"/>
+
+            </RelativeLayout>
+
         </LinearLayout>
+
 
     </ScrollView>
 </RelativeLayout>

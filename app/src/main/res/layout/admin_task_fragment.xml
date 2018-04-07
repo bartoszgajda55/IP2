@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/colorSliderBackground">
+
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:padding="7dp"
+        android:src="@drawable/rounded_rect"
+        android:backgroundTintMode="src_in"
+        android:backgroundTint="@color/colorLightGray"
+        android:alpha="0.5"/>
+
+    <ImageView
+        android:id="@+id/imgTask"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/notfound" />
+
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgTask"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="Title"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/txtDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:text="Description" />
+
+</RelativeLayout>

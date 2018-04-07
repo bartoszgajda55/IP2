@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quizapp.ip2">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo_small"
@@ -9,15 +16,30 @@
         android:roundIcon="@drawable/logo_small"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.Splash" android:noHistory="true">
+        <activity
+            android:name=".Activity.Splash"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.AuthenticationActivity" />
-        <activity android:name=".Activity.HomepageActivity"></activity>
+        <activity
+            android:name=".Activity.AuthenticationActivity"
+            android:noHistory="true" />
+        <activity android:name=".Activity.HomepageActivity" />
+        <activity
+            android:name=".Activity.TutorialActivity"
+            android:hardwareAccelerated="false"
+            android:noHistory="true" />
+        <activity android:name=".Activity.QuizSearchActivity" />
+        <activity
+            android:name=".Activity.SettingsActivity"
+            android:noHistory="true" />
+        <activity android:name=".Activity.QuizActivity" />
+        <activity android:name=".Activity.QuizEndActivity" />
+        <activity android:name=".Activity.AdminActivity"></activity>
     </application>
 
 </manifest>

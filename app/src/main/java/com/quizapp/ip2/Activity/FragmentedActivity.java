@@ -20,12 +20,12 @@ public abstract class FragmentedActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
     }
 
-    //Log in Adapter inner class
+    //Adapter inner class
     public static class SliderAdapter extends FragmentPagerAdapter {
         protected int NUM_ITEMS = 1;
-        protected ArrayList<FragmentView> fragments;
+        protected ArrayList<Fragment> fragments;
 
-        public SliderAdapter(FragmentManager fragmentManager, int number, ArrayList<FragmentView> fragments) {
+        public SliderAdapter(FragmentManager fragmentManager, int number, ArrayList<Fragment> fragments) {
             super(fragmentManager);
             this.NUM_ITEMS = number;
             this.fragments = fragments;

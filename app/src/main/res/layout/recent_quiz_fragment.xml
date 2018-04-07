@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="174dp"
+        android:layout_marginTop="291dp"
+        android:backgroundTint="@color/colorPrimary" />
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rowCount="2"
+        android:columnCount="2">
+
+    </GridLayout>
+
+</RelativeLayout>
