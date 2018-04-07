@@ -33,6 +33,8 @@ public class SettingsActivity extends Activity {
         final Switch switchDark = (Switch) findViewById(R.id.switchDark);
         final Switch switchMono = (Switch) findViewById(R.id.switchMono);
 
+        final Switch switchSound = (Switch) findViewById(R.id.switchSound); //TODO Implement sound toggle
+
         final TextView txtLight = (TextView) findViewById(R.id.txtLight);
         final TextView txtDark = (TextView) findViewById(R.id.txtDark);
         final TextView txtMono = (TextView) findViewById(R.id.txtMono);

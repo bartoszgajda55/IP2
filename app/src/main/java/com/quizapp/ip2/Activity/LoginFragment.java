@@ -3,6 +3,7 @@ package com.quizapp.ip2.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -87,8 +88,8 @@ public class LoginFragment extends Fragment {
                         dialog.dismiss();
 
                         //TODO Check if email exists in the users table, if so:
-                        EmailHandler eh = new EmailHandler();
-                        eh.sendMail(text.getText().toString(), "Password Recovery", "TODO: connect to database and send password if exists"); //TODO fix system crash on email send
+                        //EmailHandler eh = new EmailHandler();
+                        //eh(text.getText().toString(), "Password Recovery", "TODO: connect to database and send password if exists");
                         Toast.makeText(getActivity(),"Email sent...", Toast.LENGTH_SHORT);
                     }
                 });
@@ -108,6 +109,7 @@ public class LoginFragment extends Fragment {
 
 
     }
+
 
 
 }

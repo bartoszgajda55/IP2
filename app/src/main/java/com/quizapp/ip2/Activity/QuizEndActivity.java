@@ -28,17 +28,28 @@ public class QuizEndActivity extends AppCompatActivity {
         Button endButton = (Button) findViewById(R.id.btnEnd);
 
         //TODO load quiz image and set
+        //TODO set background color to quiz color
 
-        int correct = getIntent().getExtras().getInt("correct");
+        int correct = getIntent().getExtras().getInt("correct"); //TODO ADD to user statistics
         rating.setMax(10);
         rating.setProgress(correct);
 
-        //TODO Calcualte XP
+        //TODO Calculate XP
         int xp=(correct*10);
 
-
-        message.setText("You got "+correct+" out of 10");
-        messageXP.setText(xp+"XP Earned!");
+        if (correct>7){
+            message.setText("Well Done!" +"\n"+" You got "+correct+" out of 10");
+            messageXP.setText(xp+"XP Earned!");}
+        else if(correct>4 && correct<7){
+            message.setText("Not bad."+"\n"+" You got "+correct+" out of 10");
+            messageXP.setText(xp+"XP Earned!");
+        }else if(correct>0 && correct<=4){
+            message.setText("Oh Dear."+"\n"+" You got "+correct+" out of 10");
+            messageXP.setText(xp+"XP Earned!");
+        }else{
+            message.setText("Oh no!"+"\n"+" You got no answers correct");
+            messageXP.setText("No XP Earned.");
+        } //TODO add xp to user
 
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override

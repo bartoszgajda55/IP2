@@ -38,7 +38,8 @@
             android:name=".Activity.SettingsActivity"
             android:noHistory="true" />
         <activity android:name=".Activity.QuizActivity" />
-        <activity android:name=".Activity.QuizEndActivity"></activity>
+        <activity android:name=".Activity.QuizEndActivity" />
+        <activity android:name=".Activity.AdminActivity"></activity>
     </application>
 
 </manifest>

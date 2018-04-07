@@ -45,7 +45,7 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         //TODO Set toolbar colour to Quiz Colour, Title to quiz name
-        txtQuestion.setText("Example Question"); //TODO Set question text
+        txtQuestion.setText("Example Question"); //TODO Set question text and Randomise order of buttons
         button1.setText("Answer 1");
         button2.setText("Correct Answer");
         button3.setText("Answer 3");

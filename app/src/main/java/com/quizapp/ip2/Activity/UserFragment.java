@@ -32,14 +32,25 @@ public class UserFragment extends Fragment {
         View view = inflater.inflate(R.layout.user_fragment, container, false);
         friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
         Button btnSettings = (Button) view.findViewById(R.id.btnSettings);
+        Button btnAdmin = (Button) view.findViewById(R.id.btnAdmin);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
+
+        //TODO check if user is not admin, if so set btnAdmin to invisible
 
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AdminActivity.class);
                 startActivity(intent);
             }
         });

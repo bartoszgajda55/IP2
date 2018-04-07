@@ -119,6 +119,78 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/txtSound"
+            android:layout_below="@id/layoutMono"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/textTitle"
+            android:text="Sound"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/layoutSound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtSound"
+            android:layout_marginBottom="5dp">
+
+            <Switch
+                android:id="@+id/switchSound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:layout_marginBottom="5dp"
+                android:elevation="4dp"
+                />
+
+            <TextView
+                android:id="@+id/txtSoundSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sound (OFF/ON)"
+                android:textSize="18dp"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtNotification"
+            android:layout_below="@id/layoutSound"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/textTitle"
+            android:text="Notifications"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/layoutNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtNotification"
+            android:layout_marginBottom="5dp">
+
+            <Switch
+                android:id="@+id/switchNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:layout_marginBottom="5dp"
+                android:elevation="4dp"
+                />
+
+            <TextView
+                android:id="@+id/txtNotificationSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notifications (OFF/ON)"
+                android:textSize="18dp"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
 
 
     </RelativeLayout>
@@ -133,11 +205,4 @@
         android:theme="@style/buttonPrimary"
         />
 
-
-
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@id/imgSettingsIcon" />-->
 </RelativeLayout>
