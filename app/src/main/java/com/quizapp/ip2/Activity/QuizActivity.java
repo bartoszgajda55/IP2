@@ -1,11 +1,14 @@
 package com.quizapp.ip2.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -16,6 +19,14 @@ import com.quizapp.ip2.R;
 
 public class QuizActivity extends AppCompatActivity {
     ProgressBar progressBar;
+
+    @ColorInt
+    int darkenColor(@ColorInt int color){
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= 0.75f;
+        return Color.HSVToColor(hsv);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +63,14 @@ public class QuizActivity extends AppCompatActivity {
         button3.setText("Answer 3");
         button4.setText("Answer 4");
 
-        toolbar.setTitle("Quiz Title");
+        Bundle b = getIntent().getExtras();
+        toolbar.setTitle(b.getString("title") + " Quiz");
+        toolbar.setBackgroundColor(b.getInt("color"));
+
+        //Set status bar to darker color variant
+        Window window = getWindow();
+        window.setStatusBarColor(darkenColor(b.getInt("color")));
+
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
         Drawable whiteArrow = getDrawable(R.drawable.arrow_back);
         whiteArrow.setTint(getResources().getColor(R.color.colorLight));

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ public class RegisterFragment extends Fragment {
     //String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     String emailPattern = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
 
+    PostTask pt;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -61,17 +64,16 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+        pt = new PostTask();
         return view;
     }
 
     public void tryRegister() {
 
-        final PostTask pt = new PostTask();
-
         username = usernameField.getText().toString();
         firstName = firstNameField.getText().toString();
         surname = surnameField.getText().toString();
-        email = emailField.getText().toString();
+        email = emailField.getText().toString().toLowerCase();
 
 
         //TODO CHECK IF EMAIL ALREADY EXISTS
@@ -95,11 +97,11 @@ public class RegisterFragment extends Fragment {
         }
 
         //TODO ENSURE PASSWORD HAS ATLEAST 1 NUMBER
-        if(passwordField.getText().length() < 3){
-            Toast.makeText(getActivity(), "Password is invalid (reqs)...", Toast.LENGTH_SHORT).show();
+        if(passwordField.getText().length() > 255 || passwordField.getText().length() < 3 || (!passwordField.getText().toString().matches(".*\\d+.*"))){
+            Toast.makeText(getActivity(), "Passwords must have more than 3 characters and at least 1 number...", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (passwordField.getText().toString() == passwordConfirmField.getText().toString()) {
+        if (!passwordField.getText().toString().equals(passwordConfirmField.getText().toString())) {
             Toast.makeText(getActivity(), "Passwords do not match...", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -111,13 +113,12 @@ public class RegisterFragment extends Fragment {
             jsonObject.put("firstname",firstName);
             jsonObject.put("surname",surname);
             jsonObject.put("password",new StringHasher().hashString(passwordField.getText().toString()));
-
             String[] response = pt.sendPostRequest("user/register", jsonObject.toString());
 
+            Log.e("REGISTRATION CODE", response[0]);
             if(response[0].equals("201")){
                 Intent intent = new Intent(getContext(), TutorialActivity.class);
                 startActivity(intent);
-
 
             }else{
                 Toast.makeText(getActivity(), "Registration error...", Toast.LENGTH_SHORT).show();

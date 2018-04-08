@@ -36,7 +36,6 @@ public class QuizPreviewFragment extends Fragment {
 
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
 
-        //DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), this.getArguments().getInt("color"))); //TODO set color to database color
         DrawableCompat.setTint(backgroundShape.getDrawable(), this.getArguments().getInt("color"));
 
         view.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +43,8 @@ public class QuizPreviewFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), QuizActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putString("title", QuizPreviewFragment.this.getArguments().getString("title"));
+                bundle.putInt("color", QuizPreviewFragment.this.getArguments().getInt("color"));
                 bundle.putInt("question", 0);
                 bundle.putInt("correct", 0);
                 intent.putExtras(bundle);

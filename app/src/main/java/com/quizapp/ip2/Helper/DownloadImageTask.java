@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -25,6 +26,15 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         try {
             InputStream inputStream = new URL(urlDisplay).openStream();
             image = BitmapFactory.decodeStream(inputStream);
+        } catch (MalformedURLException e){
+
+            try {
+                InputStream inputStream = new URL("http://45.32.238.58/quizzy/img/res/notfound.png").openStream();
+                image = BitmapFactory.decodeStream(inputStream);
+            } catch (Exception e2){
+                e2.printStackTrace();
+            }
+
         } catch (Exception e){
             e.printStackTrace();
         }

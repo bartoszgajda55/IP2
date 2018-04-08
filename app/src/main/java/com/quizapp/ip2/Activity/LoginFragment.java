@@ -44,7 +44,8 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("email", txtEmail.getText());
+                    String email = txtEmail.getText().toString().toLowerCase();
+                    jsonObject.put("email", email);
                     jsonObject.put("password", new StringHasher().hashString(txtPassword.getText().toString()));
 
                     String[] response = pt.sendPostRequest("user/login", jsonObject.toString());

@@ -87,7 +87,6 @@ public class HomeFragment extends Fragment {
 
         final RequestTask rt = new RequestTask();
 
-        System.out.println("QUIZ PRINT: " + rt.sendGetRequest("quiz"));
         try {
             JSONArray resultset = new JSONArray(rt.sendGetRequest("quiz"));
             for(int i = 0; i < resultset.length(); i++){
@@ -104,6 +103,7 @@ public class HomeFragment extends Fragment {
                 featuredBundle.putString("desc", featuredDesc);
                 featuredBundle.putString("img", featuredImg);
                 featuredBundle.putInt("color", featuredColor);
+
                 quizPreview.setArguments(featuredBundle);
                 fragments.add(quizPreview);
 
@@ -116,6 +116,9 @@ public class HomeFragment extends Fragment {
         featuredAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragments.size(), fragments);
         featuredPager.setAdapter(featuredAdapter);
         featuredNavigationDots.setupWithViewPager(featuredPager, true);
+        if(featuredNavigationDots.getTabCount() < 2){
+            featuredNavigationDots.setVisibility(View.INVISIBLE);
+        }
 
 
         //Display recent quizzes in a slider
@@ -128,7 +131,9 @@ public class HomeFragment extends Fragment {
         recentAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragmentsRecentGrid.size(), fragmentsRecentGrid);
         recentPager.setAdapter(recentAdapter);
         recentNavigationDots.setupWithViewPager(recentPager, true);
-
+        if(recentNavigationDots.getTabCount() < 2){
+            recentNavigationDots.setVisibility(View.INVISIBLE);
+        }
 
         //Listen for button click to show all quizzes
         btnBrowseAll.setOnClickListener(new View.OnClickListener(){

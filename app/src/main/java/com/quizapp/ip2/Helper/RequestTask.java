@@ -6,9 +6,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class RequestTask {
 
@@ -29,11 +30,11 @@ public class RequestTask {
     private class JsonTask extends AsyncTask<String, String, String> {
 
         protected String doInBackground(String... params) {
-            HttpURLConnection connection = null;
+            HttpsURLConnection connection = null;
             BufferedReader reader = null;
             try {
                 URL url = new URL(params[0]);
-                connection = (HttpURLConnection) url.openConnection();
+                connection = (HttpsURLConnection) url.openConnection();
                 connection.connect();
 
                 InputStream stream = connection.getInputStream();

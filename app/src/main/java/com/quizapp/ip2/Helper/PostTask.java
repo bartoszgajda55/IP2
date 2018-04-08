@@ -37,7 +37,7 @@ public class PostTask {
     private class JsonTask extends AsyncTask<String, String, String[]>{
 
         protected String[] doInBackground(String... params){
-            HttpURLConnection connection = null;
+            HttpsURLConnection connection = null;
             String response[] = {"404","Error"};
 
             try {
@@ -56,7 +56,7 @@ public class PostTask {
 
                 InputStream is = null;
 
-                if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                if(connection.getResponseCode() == HttpURLConnection.HTTP_OK || connection.getResponseCode() == HttpURLConnection.HTTP_CREATED){
                     is = connection.getInputStream();
                 } else {
                     is = connection.getErrorStream();
@@ -66,6 +66,7 @@ public class PostTask {
 
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+
                     StringBuilder sb = new StringBuilder();
                     String line = null;
                     while((line = reader.readLine()) != null){

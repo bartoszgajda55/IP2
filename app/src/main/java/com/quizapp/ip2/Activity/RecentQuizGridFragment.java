@@ -17,9 +17,6 @@ import com.quizapp.ip2.R;
  * Created by Allan on 14/03/2018.
  */
 
-
-//todo refactor this class - should be called RecentQuizGridFragment
-
 public class RecentQuizGridFragment extends Fragment {
 
     @Nullable
@@ -30,8 +27,9 @@ public class RecentQuizGridFragment extends Fragment {
         ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
+
         for(int x=0; x<4; x++) {
-            //TODO Load 5 featured quizzes from database
+            //TODO Load recent quizzes from database
             RecentQuizPreviewFragment quizRecent = new RecentQuizPreviewFragment();
             Bundle recentBundle = new Bundle();
             String recentTitle = "Title"; //TODO Get quiz title from database
