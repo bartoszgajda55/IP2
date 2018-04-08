@@ -1,16 +1,23 @@
 package com.quizapp.ip2.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Allan on 15/03/2018.
@@ -76,25 +83,43 @@ public class QuizSearchActivity extends FragmentedActivity {
                 return false;
             }
         });
-        
-        //TODO rewrite this method to work with database, and work with all quizzes search ("all" true)
-         for (int x=0; x<3; x++){
-            QuizPreviewFragment frag = new QuizPreviewFragment();
-            Bundle bundle = new Bundle();
-            String title = search; //TODO get from database
-            String desc = "Description"; //TODO get from database
-            String img = "https://d30y9cdsu7xlg0.cloudfront.net/png/36442-200.png"; //TODO get from database
-            int color = R.color.colorIntroGreen; //TODO get from database
-            bundle.putString("title", title);
-            bundle.putString("desc", desc);
-            bundle.putString("img", img);
-            bundle.putInt("color", color);
-            frag.setArguments(bundle);
-            RelativeLayout rel = new RelativeLayout(this);
-            rel.setId(View.generateViewId());
-            getSupportFragmentManager().beginTransaction().add(rel.getId(),frag).commit();
-            linearLayout.addView(rel);
-         }
+
+        //ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+        final RequestTask rt = new RequestTask();
+
+        System.out.println("QUIZ PRINT: " + rt.sendGetRequest("quiz"));
+        try {
+            JSONArray resultset = new JSONArray(rt.sendGetRequest("quiz"));
+            for (int i = 0; i < resultset.length(); i++) {
+                JSONObject result = resultset.getJSONObject(i);
+
+                QuizPreviewFragment quizPreview = new QuizPreviewFragment();
+                Bundle searchBundle = new Bundle();
+                String searchTitle = result.getString("QuizName");
+                String searchDesc = result.getString("QuizDescription");
+                String searcImg = result.getString("QuizImage");
+                System.out.println(Color.parseColor("#"+result.getString("QuizColor")));
+                int searchColor = Color.parseColor("#" + result.getString("QuizColor"));
+                //int searchColor = R.color.colorPrimary;
+
+                searchBundle.putString("title", searchTitle);
+                searchBundle.putString("desc", searchDesc);
+                searchBundle.putString("img", searcImg);
+                searchBundle.putInt("color", searchColor);
+                quizPreview.setArguments(searchBundle);
+                RelativeLayout rel = new RelativeLayout(this);
+                rel.setId(View.generateViewId());
+                getSupportFragmentManager().beginTransaction().add(rel.getId(),quizPreview).commit();
+                linearLayout.addView(rel);
+
+               // fragments.add(quizPreview);
+
+
+            }
+        } catch (JSONException e){
+            Log.e("ERROR", "Invalid JSON");
+        }
+
     }
 
 }

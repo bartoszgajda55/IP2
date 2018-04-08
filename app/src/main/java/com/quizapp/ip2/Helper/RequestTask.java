@@ -1,7 +1,6 @@
 package com.quizapp.ip2.Helper;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,12 +12,14 @@ import java.util.concurrent.ExecutionException;
 
 public class RequestTask {
 
+    public static final String BASE_URL = "https://ip2-api.herokuapp.com/api/";
+
     public RequestTask() {
     }
 
-    public String sendGetRequest(String url) {
+    public String sendGetRequest(String path) {
         try {
-            return new JsonTask().execute(url).get();
+            return new JsonTask().execute(BASE_URL + path).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

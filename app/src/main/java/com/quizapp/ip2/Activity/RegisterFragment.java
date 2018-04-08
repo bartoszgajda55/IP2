@@ -11,8 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.StringHasher;
 import com.quizapp.ip2.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by aaron on 08/03/2018.
@@ -62,6 +66,8 @@ public class RegisterFragment extends Fragment {
 
     public void tryRegister() {
 
+        final PostTask pt = new PostTask();
+
         username = usernameField.getText().toString();
         firstName = firstNameField.getText().toString();
         surname = surnameField.getText().toString();
@@ -98,11 +104,28 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        String hashedPassword = new StringHasher().hashString(passwordField.getText().toString());
-        System.out.println(hashedPassword);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("username",username);
+            jsonObject.put("email",email);
+            jsonObject.put("firstname",firstName);
+            jsonObject.put("surname",surname);
+            jsonObject.put("password",new StringHasher().hashString(passwordField.getText().toString()));
 
-        Intent intent = new Intent(getContext(), TutorialActivity.class);
-        startActivity(intent);
+            String[] response = pt.sendPostRequest("user/register", jsonObject.toString());
+
+            if(response[0].equals("201")){
+                Intent intent = new Intent(getContext(), TutorialActivity.class);
+                startActivity(intent);
+
+
+            }else{
+                Toast.makeText(getActivity(), "Registration error...", Toast.LENGTH_SHORT).show();
+            }
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 }
 

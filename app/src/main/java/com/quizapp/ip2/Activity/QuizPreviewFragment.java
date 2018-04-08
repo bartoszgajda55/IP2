@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,8 @@ public class QuizPreviewFragment extends Fragment {
 
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
 
-        DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), this.getArguments().getInt("color"))); //TODO set color to database color
+        //DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), this.getArguments().getInt("color"))); //TODO set color to database color
+        DrawableCompat.setTint(backgroundShape.getDrawable(), this.getArguments().getInt("color"));
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,8 +53,5 @@ public class QuizPreviewFragment extends Fragment {
 
         return view;
     }
-
-    //TODO onClick to open quiz associated with fragment
-    //TODO add Navigation dots
 
 }

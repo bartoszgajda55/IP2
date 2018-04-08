@@ -3,11 +3,9 @@ package com.quizapp.ip2.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +14,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.quizapp.ip2.Helper.EmailHandler;
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.PostTask;
+import com.quizapp.ip2.Helper.StringHasher;
 import com.quizapp.ip2.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by aaron on 08/03/2018.
@@ -32,38 +33,51 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
         Button btnLogin = (Button) view.findViewById(R.id.btnLogin);
-        final RequestTask rq = new RequestTask();
+
+        final EditText txtEmail = (EditText) view.findViewById(R.id.txtEmail);
+        final EditText txtPassword = (EditText) view.findViewById(R.id.txtPassword);
+        final PostTask pt = new PostTask();
 
         //Button pressed
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Authenticate login
-                //if statement
-                Log.d("Response: ", rq.sendGetRequest("https://ip2-api.herokuapp.com/api/user"));
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Remember me");
-                builder.setMessage("Do you want Quizzy to remember your password?");
-                //else
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("email", txtEmail.getText());
+                    jsonObject.put("password", new StringHasher().hashString(txtPassword.getText().toString()));
 
+                    String[] response = pt.sendPostRequest("user/login", jsonObject.toString());
+                    if(response[0].equals("200")){
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        logIn();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Remember me");
+                        builder.setMessage("Do you want Quizzy to remember your password?");
+
+                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                logIn();
+                            }
+                        });
+
+                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which){
+                                //TODO Store user login on local system file. Ensure password is hashed/salted -- do not store plaintext password in file
+                                logIn();
+                            }
+                        });
+                        AlertDialog ad = builder.create();
+                        ad.show();
+                    }else{
+                        Toast.makeText(getActivity(), "Unknown email or password...", Toast.LENGTH_SHORT).show();
                     }
-                });
 
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which){
-                        //TODO Store user login on local system file. Ensure password is hashed/salted -- do not store plaintext password in file
-                        logIn();
-                    }
-                });
-                AlertDialog ad = builder.create();
-                ad.show();
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
                 
             }
         });

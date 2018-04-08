@@ -1,12 +1,14 @@
 package com.quizapp.ip2.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +16,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -77,21 +84,35 @@ public class HomeFragment extends Fragment {
 
         //To display the featured quizzes in a slider
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-        for(int x=0; x<5; x++){
-            //TODO Load 5 featured quizzes from database -- FeaturedQuiz table, move to a new thread - make use of spinners
-            QuizPreviewFragment quizPreview = new QuizPreviewFragment();
-            Bundle featuredBundle = new Bundle();
-            String featuredTitle = ("Featured Quiz "+(x+1)); //TODO Get quiz title from the database
-            String featuredDesc = "Description";//TODO Get quiz description from database
-            String featuredImg = "https://d30y9cdsu7xlg0.cloudfront.net/png/36442-200.png"; //TODO Get quiz image from database
-            int featuredColor = R.color.colorPrimary; //TODO Get quiz color from database
-            featuredBundle.putString("title", featuredTitle);
-            featuredBundle.putString("desc", featuredDesc);
-            featuredBundle.putString("img", featuredImg);
-            featuredBundle.putInt("color", featuredColor);
-            quizPreview.setArguments(featuredBundle);
-            fragments.add(quizPreview);
+
+        final RequestTask rt = new RequestTask();
+
+        System.out.println("QUIZ PRINT: " + rt.sendGetRequest("quiz"));
+        try {
+            JSONArray resultset = new JSONArray(rt.sendGetRequest("quiz"));
+            for(int i = 0; i < resultset.length(); i++){
+                JSONObject result = resultset.getJSONObject(i);
+
+                QuizPreviewFragment quizPreview = new QuizPreviewFragment();
+                Bundle featuredBundle = new Bundle();
+                String featuredTitle = result.getString("QuizName");
+                String featuredDesc = result.getString("QuizDescription");
+                String featuredImg = result.getString("QuizImage");
+                int featuredColor = Color.parseColor("#" + result.getString("QuizColor"));
+
+                featuredBundle.putString("title", featuredTitle);
+                featuredBundle.putString("desc", featuredDesc);
+                featuredBundle.putString("img", featuredImg);
+                featuredBundle.putInt("color", featuredColor);
+                quizPreview.setArguments(featuredBundle);
+                fragments.add(quizPreview);
+
+            }
+        } catch (JSONException e){
+            Log.e("ERROR", "Invalid JSON");
         }
+
+
         featuredAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragments.size(), fragments);
         featuredPager.setAdapter(featuredAdapter);
         featuredNavigationDots.setupWithViewPager(featuredPager, true);
