@@ -9,19 +9,15 @@ import android.view.View;
 
 import com.quizapp.ip2.R;
 
-import java.util.ArrayList;
 
-public class AddQuizActivity extends AppCompatActivity {
-
-    //TODO EVERYTHING
+public class AddAdminActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_quiz);
+        setContentView(R.layout.activity_add_admin);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
 
         Drawable whiteArrow = getDrawable(R.drawable.arrow_back);
         whiteArrow.setTint(getResources().getColor(R.color.colorLight));

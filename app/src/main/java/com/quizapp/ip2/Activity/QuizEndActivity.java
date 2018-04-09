@@ -1,18 +1,20 @@
 package com.quizapp.ip2.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.R;
-
-import org.w3c.dom.Text;
 
 public class QuizEndActivity extends AppCompatActivity {
 
@@ -26,17 +28,24 @@ public class QuizEndActivity extends AppCompatActivity {
         TextView message = (TextView) findViewById(R.id.message);
         TextView messageXP = (TextView) findViewById(R.id.messageXP);
         Button endButton = (Button) findViewById(R.id.btnEnd);
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.layoutRelative);
 
-        //TODO load quiz image and set
-        //TODO set background color to quiz color
+        new DownloadImageTask(imgQuiz).execute(getIntent().getExtras().getString("img"));
 
         int correct = getIntent().getExtras().getInt("correct"); //TODO ADD to user statistics
         rating.setMax(10);
         rating.setProgress(correct);
 
+        relativeLayout.setBackgroundColor(getIntent().getExtras().getInt("color"));
+
+        //Set status bar to darker color variant
+        Window window = getWindow();
+        window.setStatusBarColor(darkenColor(getIntent().getExtras().getInt("color")));
+
         //TODO Calculate XP
         int xp=(correct*10);
 
+        //Give different messages depending on score
         if (correct>7){
             message.setText("Well Done!" +"\n"+" You got "+correct+" out of 10");
             messageXP.setText(xp+"XP Earned!");}
@@ -51,6 +60,8 @@ public class QuizEndActivity extends AppCompatActivity {
             messageXP.setText("No XP Earned.");
         } //TODO add xp to user
 
+
+        endButton.setBackgroundColor(darkenColor(getIntent().getExtras().getInt("color")));
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,5 +69,13 @@ public class QuizEndActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @ColorInt
+    int darkenColor(@ColorInt int color){
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= 0.75f;
+        return Color.HSVToColor(hsv);
     }
 }

@@ -19,6 +19,12 @@ import com.quizapp.ip2.R;
 
 public class QuizActivity extends AppCompatActivity {
     ProgressBar progressBar;
+    ProgressBar progressBarCorrect;
+    Button button1;
+    Button button2;
+    Button button3;
+    Button button4;
+    Bundle b;
 
     @ColorInt
     int darkenColor(@ColorInt int color){
@@ -33,37 +39,48 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
+        b = getIntent().getExtras();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView imgQuiz = (ImageView) findViewById(R.id.imgQuiz);
         TextView txtQuestion = (TextView) findViewById(R.id.txtQuestion);
-        final Button button1 = (Button) findViewById(R.id.button1);
-        final Button button2 = (Button) findViewById(R.id.button2);
-        final Button button3 = (Button) findViewById(R.id.button3);
-        final Button button4 = (Button) findViewById(R.id.button4);
+        button1 = (Button) findViewById(R.id.button1);
+        button2 = (Button) findViewById(R.id.button2);
+        button3 = (Button) findViewById(R.id.button3);
+        button4 = (Button) findViewById(R.id.button4);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        final ProgressBar progressBarCorrect = (ProgressBar) findViewById(R.id.progressBarCorrect);
+        progressBarCorrect = (ProgressBar) findViewById(R.id.progressBarCorrect);
 
         progressBar.setMax(10);
         progressBarCorrect.setMax(10);
         progressBar.setProgress(getIntent().getExtras().getInt("question"));
         progressBarCorrect.setProgress(getIntent().getExtras().getInt("correct"));
+
+        //IF ALL QUESTIONS ANSWERED GO TO QUIZ END
         if (getIntent().getExtras().getInt("question")==10){
             Intent intent = new Intent(getApplicationContext(), QuizEndActivity.class);
             Bundle bundle = new Bundle();
             bundle.putInt("correct", progressBarCorrect.getProgress());
+            bundle.putInt("color", b.getInt("color"));
+            bundle.putString("img", b.getString("img"));
             intent.putExtras(bundle);
             startActivity(intent);
         }
 
+        //Set button background color to neutral color
+        button1.setBackgroundColor(darkenColor(b.getInt("color")));
+        button2.setBackgroundColor(darkenColor(b.getInt("color")));
+        button3.setBackgroundColor(darkenColor(b.getInt("color")));
+        button4.setBackgroundColor(darkenColor(b.getInt("color")));
 
-        //TODO Set toolbar colour to Quiz Colour, Title to quiz name
+
         txtQuestion.setText("Example Question"); //TODO Set question text and Randomise order of buttons
         button1.setText("Answer 1");
         button2.setText("Correct Answer");
         button3.setText("Answer 3");
         button4.setText("Answer 4");
 
-        Bundle b = getIntent().getExtras();
+        //Set toolbar title and color
         toolbar.setTitle(b.getString("title") + " Quiz");
         toolbar.setBackgroundColor(b.getInt("color"));
 
@@ -71,6 +88,7 @@ public class QuizActivity extends AppCompatActivity {
         Window window = getWindow();
         window.setStatusBarColor(darkenColor(b.getInt("color")));
 
+        //Set toolbar back arrow and it's listener
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
         Drawable whiteArrow = getDrawable(R.drawable.arrow_back);
         whiteArrow.setTint(getResources().getColor(R.color.colorLight));
@@ -83,63 +101,54 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        new DownloadImageTask(imgQuiz).execute("https://d30y9cdsu7xlg0.cloudfront.net/png/36442-200.png");
+        //Set quiz image
+        new DownloadImageTask(imgQuiz).execute(b.getString("img"));
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.incrementProgressBy(1);
-                button2.setBackgroundColor(getResources().getColor(R.color.colorIntroGreen));
-                Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("question", progressBar.getProgress());
-                bundle.putInt("correct", progressBarCorrect.getProgress());
-                intent.putExtras(bundle);
-                startActivity(intent);
+                onButtonClick();
             }
         });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.incrementProgressBy(1);
-                progressBarCorrect.incrementProgressBy(1);
-                button2.setBackgroundColor(getResources().getColor(R.color.colorIntroGreen));
-                Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("question", progressBar.getProgress());
-                bundle.putInt("correct", progressBarCorrect.getProgress());
-                intent.putExtras(bundle);
-                startActivity(intent);
+                onButtonClickCorrect();
             }
         });
 
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.incrementProgressBy(1);
-                button2.setBackgroundColor(getResources().getColor(R.color.colorIntroGreen));
-                Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("question", progressBar.getProgress());
-                bundle.putInt("correct", progressBarCorrect.getProgress());
-                intent.putExtras(bundle);
-                startActivity(intent);
+                onButtonClick();
             }
         });
 
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.incrementProgressBy(1);
-                button2.setBackgroundColor(getResources().getColor(R.color.colorIntroGreen));
-                Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("question", progressBar.getProgress());
-                bundle.putInt("correct", progressBarCorrect.getProgress());
-                intent.putExtras(bundle);
-                startActivity(intent);
+                onButtonClick();
             }
         });
+    }
+
+    public void onButtonClick(){
+        progressBar.incrementProgressBy(1);
+        button2.setBackgroundColor(getResources().getColor(R.color.colorIntroGreen));
+        Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("question", progressBar.getProgress());
+        bundle.putInt("correct", progressBarCorrect.getProgress());
+        bundle.putInt("color", b.getInt("color"));
+        bundle.putString("title", b.getString("title"));
+        bundle.putString("img", b.getString("img"));
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    public void onButtonClickCorrect(){
+        progressBarCorrect.incrementProgressBy(1);
+        onButtonClick();
     }
 }

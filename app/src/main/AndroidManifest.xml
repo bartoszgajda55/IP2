@@ -39,7 +39,12 @@
             android:noHistory="true" />
         <activity android:name=".Activity.QuizActivity" />
         <activity android:name=".Activity.QuizEndActivity" />
-        <activity android:name=".Activity.AdminActivity"></activity>
+        <activity android:name=".Activity.AdminActivity" />
+        <activity android:name=".Activity.AddQuizActivity" />
+        <activity android:name=".Activity.DeleteQuizActivity" />
+        <activity android:name=".Activity.EditQuizActivity" />
+        <activity android:name=".Activity.BanUserActivity" />
+        <activity android:name=".Activity.AddAdminActivity"></activity>
     </application>
 
 </manifest>

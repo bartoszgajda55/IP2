@@ -14,10 +14,11 @@
 
     <ImageView
         android:id="@+id/imgQuizImg"
-        android:layout_width="150dp"
+        android:layout_width="185dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="7dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/notfound" />
 
 

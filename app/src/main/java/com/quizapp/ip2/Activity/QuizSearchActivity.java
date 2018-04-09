@@ -90,24 +90,18 @@ public class QuizSearchActivity extends FragmentedActivity {
 
         try {
             JSONArray resultset = new JSONArray(rt.sendGetRequest("quiz"));
-
-
             ArrayList<RelativeLayout> foundQuizzes = new ArrayList<>();
 
             for (int i = 0; i < resultset.length(); i++) {
 
                 JSONObject result = resultset.getJSONObject(i);
 
-
                 QuizPreviewFragment quizPreview = new QuizPreviewFragment();
                 Bundle searchBundle = new Bundle();
                 String searchTitle = result.getString("QuizName"); //Load name to search by name
                 String searchDesc = result.getString("QuizDescription"); //Load description to search by description
 
-
-
                 if(searchTitle.toLowerCase().contains(search.toLowerCase()) || searchDesc.toLowerCase().contains(search.toLowerCase())){
-
 
                     String searcImg = result.getString("QuizImage");
                     int searchColor = Color.parseColor("#" + result.getString("QuizColor"));

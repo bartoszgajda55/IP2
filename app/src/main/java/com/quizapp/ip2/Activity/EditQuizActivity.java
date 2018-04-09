@@ -11,14 +11,12 @@ import com.quizapp.ip2.R;
 
 import java.util.ArrayList;
 
-public class AddQuizActivity extends AppCompatActivity {
-
-    //TODO EVERYTHING
+public class EditQuizActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_quiz);
+        setContentView(R.layout.activity_edit_quiz);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 

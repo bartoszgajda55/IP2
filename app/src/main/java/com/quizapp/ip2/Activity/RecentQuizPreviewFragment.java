@@ -60,7 +60,5 @@ public class RecentQuizPreviewFragment extends Fragment {
     }
 
 
-    //TODO OnClick method to open Quiz associated with Fragment
-
 
 }
