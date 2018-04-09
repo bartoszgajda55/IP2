@@ -46,6 +46,9 @@ public class RecentQuizPreviewFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), QuizActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putString("title", RecentQuizPreviewFragment.this.getArguments().getString("title"));
+                bundle.putInt("color", RecentQuizPreviewFragment.this.getArguments().getInt("color"));
+                bundle.putString("img", RecentQuizPreviewFragment.this.getArguments().getString("img"));
                 bundle.putInt("question", 0);
                 bundle.putInt("correct", 0);
                 intent.putExtras(bundle);
