@@ -45,6 +45,7 @@ public class QuizPreviewFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", QuizPreviewFragment.this.getArguments().getString("title"));
                 bundle.putInt("color", QuizPreviewFragment.this.getArguments().getInt("color"));
+                bundle.putString("img", QuizPreviewFragment.this.getArguments().getString("img"));
                 bundle.putInt("question", 0);
                 bundle.putInt("correct", 0);
                 intent.putExtras(bundle);
