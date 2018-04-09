@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by Allan on 15/03/2018.
  */
@@ -84,36 +86,44 @@ public class QuizSearchActivity extends FragmentedActivity {
             }
         });
 
-        //ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         final RequestTask rt = new RequestTask();
 
-        System.out.println("QUIZ PRINT: " + rt.sendGetRequest("quiz"));
         try {
             JSONArray resultset = new JSONArray(rt.sendGetRequest("quiz"));
+
+
+            ArrayList<RelativeLayout> foundQuizzes = new ArrayList<>();
+
             for (int i = 0; i < resultset.length(); i++) {
+
                 JSONObject result = resultset.getJSONObject(i);
+
 
                 QuizPreviewFragment quizPreview = new QuizPreviewFragment();
                 Bundle searchBundle = new Bundle();
-                String searchTitle = result.getString("QuizName");
-                String searchDesc = result.getString("QuizDescription");
-                String searcImg = result.getString("QuizImage");
-                System.out.println(Color.parseColor("#"+result.getString("QuizColor")));
-                int searchColor = Color.parseColor("#" + result.getString("QuizColor"));
-                //int searchColor = R.color.colorPrimary;
+                String searchTitle = result.getString("QuizName"); //Load name to search by name
+                String searchDesc = result.getString("QuizDescription"); //Load description to search by description
 
-                searchBundle.putString("title", searchTitle);
-                searchBundle.putString("desc", searchDesc);
-                searchBundle.putString("img", searcImg);
-                searchBundle.putInt("color", searchColor);
-                quizPreview.setArguments(searchBundle);
-                RelativeLayout rel = new RelativeLayout(this);
-                rel.setId(View.generateViewId());
-                getSupportFragmentManager().beginTransaction().add(rel.getId(),quizPreview).commit();
-                linearLayout.addView(rel);
 
-               // fragments.add(quizPreview);
 
+                if(searchTitle.toLowerCase().contains(search.toLowerCase()) || searchDesc.toLowerCase().contains(search.toLowerCase())){
+
+
+                    String searcImg = result.getString("QuizImage");
+                    int searchColor = Color.parseColor("#" + result.getString("QuizColor"));
+
+                    searchBundle.putString("title", searchTitle);
+                    searchBundle.putString("desc", searchDesc);
+                    searchBundle.putString("img", searcImg);
+                    searchBundle.putInt("color", searchColor);
+
+                    quizPreview.setArguments(searchBundle);
+                    RelativeLayout rel = new RelativeLayout(this);
+                    rel.setId(View.generateViewId());
+                    getSupportFragmentManager().beginTransaction().add(rel.getId(),quizPreview).commit();
+                    linearLayout.addView(rel);
+
+                }
 
             }
         } catch (JSONException e){
