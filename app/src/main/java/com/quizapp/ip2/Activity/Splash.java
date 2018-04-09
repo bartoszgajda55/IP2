@@ -1,12 +1,11 @@
 package com.quizapp.ip2.Activity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.RelativeLayout;
+        import android.content.Intent;
+        import android.os.Bundle;
+        import android.os.Handler;
+        import android.support.v7.app.AppCompatActivity;
 
-import  com.quizapp.ip2.R;
+        import  com.quizapp.ip2.R;
 
 public class Splash extends AppCompatActivity {
 
@@ -29,4 +28,5 @@ public class Splash extends AppCompatActivity {
             }
         }, 1000);
     }
+
 }

@@ -13,7 +13,7 @@
         android:src="@drawable/rounded_rect"
         android:backgroundTintMode="src_in"
         android:backgroundTint="@color/colorLightGray"
-        android:alpha="0.5"/>
+        android:alpha="0.3"/>
 
     <ImageView
         android:id="@+id/imgTask"
@@ -21,7 +21,9 @@
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:src="@drawable/notfound" />
+        android:src="@drawable/notfound"
+        android:tintMode="src_in"
+        android:tint="@color/colorDarkGray"/>
 
 
     <TextView

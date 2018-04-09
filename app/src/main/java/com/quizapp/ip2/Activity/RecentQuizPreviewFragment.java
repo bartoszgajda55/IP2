@@ -39,7 +39,7 @@ public class RecentQuizPreviewFragment extends Fragment {
 
         new DownloadImageTask(imgQuizImg).execute(txt);
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
-        DrawableCompat.setTint(backgroundShape.getDrawable(), ContextCompat.getColor(getContext(), R.color.colorIntroBlue)); //TODO set color to database color //this.getArguments().getInt("color"))
+        DrawableCompat.setTint(backgroundShape.getDrawable(), this.getArguments().getInt("color")); //TODO set color to database color //this.getArguments().getInt("color"))
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,12 +11,20 @@ import android.graphics.drawable.Drawable;
 
 public class User {
 
+    private int userID;
     private String username;
     private String email;
     private String firstName;
     private String surname;
     private String password;
+    private int adminStatus;
     private Drawable userImage;
+    private int xp;
+    private int quizzessCompleted;
+    private int correctAnswers;
+
+    public User() {
+    }
 
     public User(String username, String email, String firstName, String surname, String password) {
         this.username = username;
@@ -33,6 +41,20 @@ public class User {
         this.surname = surname;
         this.password = password;
        // this.userImage = new LoadImageHelper(context).load(userImage);
+    }
+
+    public User(int userID, String username, String email, String firstName, String surname, String password, int adminStatus, Drawable userImage, int xp, int quizzessCompleted, int correctAnswers) {
+        this.userID = userID;
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.password = password;
+        this.adminStatus = adminStatus;
+        this.userImage = userImage;
+        this.xp = xp;
+        this.quizzessCompleted = quizzessCompleted;
+        this.correctAnswers = correctAnswers;
     }
 
     public Drawable getUserImage() {
@@ -81,5 +103,45 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public int getAdminStatus() {
+        return adminStatus;
+    }
+
+    public void setAdminStatus(int adminStatus) {
+        this.adminStatus = adminStatus;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public int getQuizzessCompleted() {
+        return quizzessCompleted;
+    }
+
+    public void setQuizzessCompleted(int quizzessCompleted) {
+        this.quizzessCompleted = quizzessCompleted;
+    }
+
+    public int getCorrectAnswers() {
+        return correctAnswers;
+    }
+
+    public void setCorrectAnswers(int correctAnswers) {
+        this.correctAnswers = correctAnswers;
     }
 }

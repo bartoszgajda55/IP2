@@ -44,6 +44,7 @@ public class QuizSearchActivity extends FragmentedActivity {
             toolbar.setTitle("Showing results for: " + "\"" + search + "\"");
         } else {
             toolbar.setTitle("Showing all quizzes");
+            search ="";
         }
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
 

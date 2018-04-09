@@ -10,11 +10,11 @@ public class LevelParser {
     //Takes integer, returns integer
 
     int level;
-
+    int xp;
     static final double CONSTANT = 0.25;
 
     public LevelParser(int xp){
-
+        this.xp=xp;
         Double calclevel = CONSTANT * Math.sqrt(xp);
         this.level = calclevel.intValue();
 
@@ -22,5 +22,14 @@ public class LevelParser {
 
     public int getLevel(){
         return this.level;
+    }
+
+    public int nextLevel(){
+        double nextLevel = (CONSTANT * Math.sqrt(xp));
+        System.out.println("LEVEL : "+nextLevel);
+        int x = Double.toString(nextLevel).indexOf(".");
+        String string = Double.toString((nextLevel)).substring(x+1,x+2);
+        int perc = Integer.parseInt(string);
+        return perc;
     }
 }

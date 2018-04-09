@@ -1,5 +1,6 @@
 package com.quizapp.ip2.Activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,7 +35,7 @@ public class RecentQuizGridFragment extends Fragment {
             Bundle recentBundle = new Bundle();
             String recentTitle = "Title"; //TODO Get quiz title from database
             String recentImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4QvV3dBSyaOLlo6SzULcSh-TflvDUjua3lvZ69UcFMc5BiZBIJg"; //TODO Get quiz image from database
-            int recentColor = R.color.colorIntroBlue; //TODO Get quiz color from database
+            int recentColor = Color.parseColor("#3d3d3d"); //TODO Get quiz color from database
             recentBundle.putString("title", recentTitle);
             recentBundle.putString("img", recentImg);
             recentBundle.putInt("color", recentColor);

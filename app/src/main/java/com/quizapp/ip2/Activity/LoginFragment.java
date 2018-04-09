@@ -16,8 +16,11 @@ import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.StringHasher;
+import com.quizapp.ip2.Helper.UserHelper;
+import com.quizapp.ip2.Model.User;
 import com.quizapp.ip2.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,6 +53,22 @@ public class LoginFragment extends Fragment {
 
                     String[] response = pt.sendPostRequest("user/login", jsonObject.toString());
                     if(response[0].equals("200")){
+
+                        //Set UserHelper to user
+                        JSONArray jsonResponseArray = new JSONArray(response[1]);
+                        JSONObject jsonResponse = (jsonResponseArray.getJSONObject(0));
+                        User user = new User();
+                        user.setUserID(jsonResponse.getInt("UserID"));
+                        user.setUsername(jsonResponse.getString("Username"));
+                        user.setEmail(jsonResponse.getString("Email"));
+                        user.setFirstName(jsonResponse.getString("Firstname"));
+                        user.setSurname(jsonResponse.getString("Surname"));
+                        user.setAdminStatus(jsonResponse.getInt("AdminStatus"));
+                        user.setXp(jsonResponse.getInt("XP"));
+                        user.setQuizzessCompleted(jsonResponse.getInt("QuizzessCompleted"));
+                        user.setCorrectAnswers(jsonResponse.getInt("CorrectAnswers"));
+
+                        UserHelper.setUser(user);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setTitle("Remember me");

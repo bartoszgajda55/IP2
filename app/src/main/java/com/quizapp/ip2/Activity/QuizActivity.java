@@ -51,6 +51,7 @@ public class QuizActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBarCorrect = (ProgressBar) findViewById(R.id.progressBarCorrect);
 
+        //Set progress bar values
         progressBar.setMax(10);
         progressBarCorrect.setMax(10);
         progressBar.setProgress(getIntent().getExtras().getInt("question"));
@@ -73,8 +74,8 @@ public class QuizActivity extends AppCompatActivity {
         button3.setBackgroundColor(darkenColor(b.getInt("color")));
         button4.setBackgroundColor(darkenColor(b.getInt("color")));
 
-
-        txtQuestion.setText("Example Question"); //TODO Set question text and Randomise order of buttons
+        //TODO Set question text and Randomise order of buttons
+        txtQuestion.setText("Example Question");
         button1.setText("Answer 1");
         button2.setText("Correct Answer");
         button3.setText("Answer 3");

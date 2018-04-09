@@ -8,11 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.quizapp.ip2.Helper.LevelParser;
+import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
+
+import java.util.logging.Level;
 
 /**
  * Created by Aaron on 10/03/2018.
@@ -34,10 +40,39 @@ public class UserFragment extends Fragment {
         Button btnSettings = (Button) view.findViewById(R.id.btnSettings);
         Button btnAdmin = (Button) view.findViewById(R.id.btnAdmin);
 
+        TextView txtUsername = (TextView) view.findViewById(R.id.txtUsername);
+        ImageView imgUser = (ImageView) view.findViewById(R.id.imgUserIcon);
+        TextView txtEmail =(TextView) view.findViewById(R.id.txtEmail);
+        TextView txtLevel =(TextView) view.findViewById(R.id.txtLevel);
+        TextView txtFirstname =(TextView) view.findViewById(R.id.txtFirstname);
+        TextView txtSurname =(TextView) view.findViewById(R.id.txtSurname);
+
+        TextView txtQuizzesComplete =(TextView) view.findViewById(R.id.txtQuizzesComplete);
+        TextView txtCorrectAnswers =(TextView) view.findViewById(R.id.txtCorrectAnswers);
+
+        //SET VALUES
+        txtUsername.setText(UserHelper.getUser().getUsername());
+        txtEmail.setText(UserHelper.getUser().getEmail());
+
+        //Calculate level and then set
+        LevelParser lvl = new LevelParser(UserHelper.getUser().getXp());
+        int level = lvl.getLevel();
+        txtLevel.setText(Integer.toString(level));
+
+        txtFirstname.setText("Firstname: "+UserHelper.getUser().getFirstName());
+        txtSurname.setText("Surname: "+UserHelper.getUser().getSurname());
+        txtCorrectAnswers.setText("Correct Answers: "+Integer.toString(UserHelper.getUser().getCorrectAnswers()));
+        txtQuizzesComplete.setText("Quizzess Completed: "+Integer.toString(UserHelper.getUser().getQuizzessCompleted()));
+
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
+        progressBar.setMax(100);
+        progressBar.setProgress(lvl.nextLevel());
 
-        //TODO check if user is not admin, if so set btnAdmin to invisible
+        //IF USEER IS NOT ADMIN MAKE btnAdmin invisible
+        if (UserHelper.getUser().getAdminStatus()==0){
+            btnAdmin.setVisibility(View.INVISIBLE);
+        }
 
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +97,7 @@ public class UserFragment extends Fragment {
     public void populateFriends(){
         if(!friendsLoaded) {
             //TODO Add an async task for loading friends
-            for (int x = 0; x < 30; x++) {
+            for (int x = 0; x < 12; x++) {
                 UserPreviewFragment frag = new UserPreviewFragment();
                 Bundle bundle = new Bundle();
                 int place = x + 1;

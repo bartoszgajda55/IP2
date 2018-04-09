@@ -85,6 +85,18 @@
                     android:text="Level"
                     android:theme="@style/textNormal" />
 
+                <ProgressBar
+                    android:id="@+id/progressLevel"
+                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtEmail"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@+id/txtLevel"
+                    android:scaleX="3"
+                    android:scaleY="3" />
+
                 <ImageView
                     android:id="@+id/imgLevelIcon"
                     android:layout_width="30dp"
