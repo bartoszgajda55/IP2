@@ -33,6 +33,8 @@ public class QuizSearchActivity extends FragmentedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_search);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
         Bundle b = getIntent().getExtras();
         search = b.getString("search");
 

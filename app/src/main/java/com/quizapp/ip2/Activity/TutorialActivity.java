@@ -105,6 +105,8 @@ public class TutorialActivity extends FragmentedActivity {
     public void onSkipClick(View v){
         Intent intent = new Intent(this, HomepageActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+
     }
 
 }

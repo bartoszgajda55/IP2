@@ -13,6 +13,7 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
     }
 
     @Override
@@ -25,6 +26,8 @@ public class Splash extends AppCompatActivity {
             public void run() {
                 Intent intent = new Intent(Splash.this, AuthenticationActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
             }
         }, 1000);
     }

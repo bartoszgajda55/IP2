@@ -39,6 +39,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
+
         b = getIntent().getExtras();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,6 +67,7 @@ public class QuizActivity extends AppCompatActivity {
             bundle.putString("img", b.getString("img"));
             intent.putExtras(bundle);
             startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
 
         //Set button background color to neutral color
@@ -99,6 +101,8 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
             }
         });
 
@@ -146,6 +150,7 @@ public class QuizActivity extends AppCompatActivity {
         bundle.putString("img", b.getString("img"));
         intent.putExtras(bundle);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_horiz_in, R.anim.slide_horiz_out);
     }
 
     public void onButtonClickCorrect(){

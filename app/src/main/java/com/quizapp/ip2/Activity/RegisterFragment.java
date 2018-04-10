@@ -119,11 +119,9 @@ public class RegisterFragment extends Fragment {
             if(response[0].equals("201")){
                 Intent intent = new Intent(getContext(), TutorialActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
 
-                /*JSONObject jsonResponseArray = new JSONObject(response[1]);
-                Iterator<String> keys = jsonResponseArray.keys();
-                String responseName = keys.next();
-                JSONObject jsonResponse = jsonResponseArray.getJSONObject(responseName);*/
+
                 JSONArray jsonResponseArray = new JSONArray(response[1]);
                 JSONObject jsonResponse = jsonResponseArray.getJSONObject(0);
 

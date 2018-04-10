@@ -53,6 +53,8 @@ public class RecentQuizPreviewFragment extends Fragment {
                 bundle.putInt("correct", 0);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
             }
         });
 

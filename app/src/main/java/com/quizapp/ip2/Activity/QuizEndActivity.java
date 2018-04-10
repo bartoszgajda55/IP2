@@ -56,7 +56,7 @@ public class QuizEndActivity extends AppCompatActivity {
         UserHelper.getUser().addCorrectAnswers(correct);
         UserHelper.getUser().addQuizzessCompleted(1);
         int newLevel = new LevelParser(UserHelper.getUser().getXp()).getLevel();
-       // if(newLevel > prevLevel) {
+        if(newLevel > prevLevel) {
             //User has levelled up...
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(QuizEndActivity.this);
@@ -75,7 +75,6 @@ public class QuizEndActivity extends AppCompatActivity {
 
             builder.setView(view);
 
-            //refactor
             AlertDialog ad = builder.create();
 
 
@@ -83,7 +82,7 @@ public class QuizEndActivity extends AppCompatActivity {
             ad.show();
 
 
-       // }
+        }
 
         //todo sync to database -- upload
 
@@ -109,6 +108,8 @@ public class QuizEndActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HomepageActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
             }
         });
     }

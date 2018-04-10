@@ -27,6 +27,7 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         final Switch switchLight = (Switch) findViewById(R.id.switchLight);
@@ -50,6 +51,8 @@ public class SettingsActivity extends Activity {
             public void onClick(View v){
                 Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
             }
         });
 
@@ -132,6 +135,7 @@ public class SettingsActivity extends Activity {
                     public void onClick(DialogInterface dialog, int which){
                         Intent intent = new Intent(SettingsActivity.this, AuthenticationActivity.class);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     }
                 });
                 AlertDialog ad = builder.create();
