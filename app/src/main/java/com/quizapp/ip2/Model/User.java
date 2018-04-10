@@ -144,4 +144,16 @@ public class User {
     public void setCorrectAnswers(int correctAnswers) {
         this.correctAnswers = correctAnswers;
     }
+
+    public void addXp(int i){
+        this.xp += i;
+    }
+
+    public void addQuizzessCompleted(int i){
+        this.quizzessCompleted += i;
+    }
+
+    public void addCorrectAnswers(int i){
+        this.correctAnswers += i;
+    }
 }

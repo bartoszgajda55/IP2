@@ -60,7 +60,7 @@
         android:scaleX="1.8"
         android:scaleY="1.8"
         android:src="@drawable/icon_level"
-        android:tint="@color/colorDarkGray" />
+        android:tint="@color/colorGold" />
 
     <TextView
         android:id="@+id/level"

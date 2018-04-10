@@ -37,7 +37,7 @@ public class UserPreviewFragment extends Fragment {
 
         DrawableCompat.setTint(imgBg.getDrawable(), ContextCompat.getColor(getContext(), this.getArguments().getInt("color")));
         DrawableCompat.setTint(imgUserIcon.getDrawable(), ContextCompat.getColor(getContext(), this.getArguments().getInt("textColor")));
-        DrawableCompat.setTint(imgLevelIcon.getDrawable(), ContextCompat.getColor(getContext(), this.getArguments().getInt("textColor")));
+        //DrawableCompat.setTint(imgLevelIcon.getDrawable(), ContextCompat.getColor(getContext(), this.getArguments().getInt("textColor")));
 
         imgBg.setAlpha(this.getArguments().getFloat("alpha"));
 

@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.quizapp.ip2.Helper.DownloadImageTask;
+import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
 
 public class QuizEndActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class QuizEndActivity extends AppCompatActivity {
 
         new DownloadImageTask(imgQuiz).execute(getIntent().getExtras().getString("img"));
 
-        int correct = getIntent().getExtras().getInt("correct"); //TODO ADD to user statistics
+        int correct = getIntent().getExtras().getInt("correct");
         rating.setMax(10);
         rating.setProgress(correct);
 
@@ -44,6 +45,11 @@ public class QuizEndActivity extends AppCompatActivity {
 
         //TODO Calculate XP
         int xp=(correct*10);
+
+        UserHelper.getUser().addXp(xp);
+        UserHelper.getUser().addCorrectAnswers(correct);
+        UserHelper.getUser().addQuizzessCompleted(1);
+        //todo sync to database -- upload
 
         //Give different messages depending on score
         if (correct>7){

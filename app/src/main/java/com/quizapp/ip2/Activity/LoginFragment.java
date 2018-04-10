@@ -55,8 +55,14 @@ public class LoginFragment extends Fragment {
                     if(response[0].equals("200")){
 
                         //Set UserHelper to user
+
+                        /*JSONObject jsonResponseArray = new JSONObject(response[1]);
+                        Iterator<String> keys = jsonResponseArray.keys();
+                        String responseName = keys.next();
+                        JSONObject jsonResponse = jsonResponseArray.getJSONObject(responseName);*/
                         JSONArray jsonResponseArray = new JSONArray(response[1]);
-                        JSONObject jsonResponse = (jsonResponseArray.getJSONObject(0));
+                        JSONObject jsonResponse = jsonResponseArray.getJSONObject(0);
+
                         User user = new User();
                         user.setUserID(jsonResponse.getInt("UserID"));
                         user.setUsername(jsonResponse.getString("Username"));

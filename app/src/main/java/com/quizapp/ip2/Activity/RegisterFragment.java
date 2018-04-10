@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,11 @@ import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.StringHasher;
+import com.quizapp.ip2.Helper.UserHelper;
+import com.quizapp.ip2.Model.User;
 import com.quizapp.ip2.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,16 +89,15 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        if (firstName.length() > 255 || firstName.length() < 3) {
+        if (firstName.length() > 255 || firstName.length() < 3) { //TODO ENSURE ONLY LETTERS
             Toast.makeText(getActivity(), "First name is invalid...", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (surname.length() > 255 || surname.length() < 3) {
+        if (surname.length() > 255 || surname.length() < 3) { //TODO ENSURE ONLY LETTERS
             Toast.makeText(getActivity(), "Surname is invalid...", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        //TODO ENSURE PASSWORD HAS ATLEAST 1 NUMBER
         if(passwordField.getText().length() > 255 || passwordField.getText().length() < 3 || (!passwordField.getText().toString().matches(".*\\d+.*"))){
             Toast.makeText(getActivity(), "Passwords must have more than 3 characters and at least 1 number...", Toast.LENGTH_SHORT).show();
             return;
@@ -115,10 +116,29 @@ public class RegisterFragment extends Fragment {
             jsonObject.put("password",new StringHasher().hashString(passwordField.getText().toString()));
             String[] response = pt.sendPostRequest("user/register", jsonObject.toString());
 
-            Log.e("REGISTRATION CODE", response[0]);
             if(response[0].equals("201")){
                 Intent intent = new Intent(getContext(), TutorialActivity.class);
                 startActivity(intent);
+
+                /*JSONObject jsonResponseArray = new JSONObject(response[1]);
+                Iterator<String> keys = jsonResponseArray.keys();
+                String responseName = keys.next();
+                JSONObject jsonResponse = jsonResponseArray.getJSONObject(responseName);*/
+                JSONArray jsonResponseArray = new JSONArray(response[1]);
+                JSONObject jsonResponse = jsonResponseArray.getJSONObject(0);
+
+                User user = new User();
+                user.setUserID(jsonResponse.getInt("UserID"));
+                user.setUsername(jsonResponse.getString("Username"));
+                user.setEmail(jsonResponse.getString("Email"));
+                user.setFirstName(jsonResponse.getString("Firstname"));
+                user.setSurname(jsonResponse.getString("Surname"));
+                user.setAdminStatus(jsonResponse.getInt("AdminStatus"));
+                user.setXp(jsonResponse.getInt("XP"));
+                user.setQuizzessCompleted(jsonResponse.getInt("QuizzessCompleted"));
+                user.setCorrectAnswers(jsonResponse.getInt("CorrectAnswers"));
+
+                UserHelper.setUser(user);
 
             }else{
                 Toast.makeText(getActivity(), "Registration error...", Toast.LENGTH_SHORT).show();

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.quizapp.ip2.Helper.LevelParser;
 import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
 
 import org.json.JSONArray;
@@ -82,12 +83,11 @@ public class LeaderboardFragment extends Fragment {
             }
 
             //Add current user's ranking/score to bottom of page
-            //TODO load data from local user object - created on login/registration
                 UserPreviewFragment frag = new UserPreviewFragment();
                 Bundle bundle = new Bundle();
-                int place = 201; //TODO Calculate user's place in the world
+                int place = 201; //todo later
                 String username = "You";  //Username is hardcoded "You"
-                String level = "1"; //TODO Calculate user's level from XP
+                String level = String.valueOf(new LevelParser(UserHelper.getUser().getXp()).getLevel());
                 bundle.putInt("place", place);
                 bundle.putString("username", username);
                 bundle.putString("level", level);
