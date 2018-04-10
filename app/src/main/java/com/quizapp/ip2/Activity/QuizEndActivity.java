@@ -2,9 +2,12 @@ package com.quizapp.ip2.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -14,8 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.quizapp.ip2.Helper.DownloadImageTask;
+import com.quizapp.ip2.Helper.LevelParser;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
+import com.quizapp.ip2.Views.GifImageView;
 
 public class QuizEndActivity extends AppCompatActivity {
 
@@ -46,9 +51,40 @@ public class QuizEndActivity extends AppCompatActivity {
         //TODO Calculate XP
         int xp=(correct*10);
 
+        int prevLevel = new LevelParser(UserHelper.getUser().getXp()).getLevel();
         UserHelper.getUser().addXp(xp);
         UserHelper.getUser().addCorrectAnswers(correct);
         UserHelper.getUser().addQuizzessCompleted(1);
+        int newLevel = new LevelParser(UserHelper.getUser().getXp()).getLevel();
+       // if(newLevel > prevLevel) {
+            //User has levelled up...
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(QuizEndActivity.this);
+            LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+            View view = inflater.inflate(R.layout.levelup_dialog, null);
+
+
+
+            GifImageView gif = (GifImageView) view.findViewById(R.id.gifLevelUp);
+            TextView levelText = (TextView) view.findViewById(R.id.textView2);
+            levelText.setText("You are now level " + newLevel + "...");
+            gif.setBackground(getResources().getDrawable(R.drawable.rounded));
+            gif.setGifImageResource(R.drawable.level_up);
+            gif.setClipToOutline(true);
+
+
+            builder.setView(view);
+
+            //refactor
+            AlertDialog ad = builder.create();
+
+
+            ad.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ad.show();
+
+
+       // }
+
         //todo sync to database -- upload
 
         //Give different messages depending on score
