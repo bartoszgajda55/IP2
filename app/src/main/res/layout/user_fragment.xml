@@ -147,7 +147,7 @@
             <RelativeLayout
                 android:id="@+id/layoutFriends"
                 android:layout_width="match_parent"
-                android:layout_height="420dp">
+                android:layout_height="400dp">
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -186,15 +186,16 @@
                                 android:theme="@style/textNormal" />
 
                             <EditText
+                                android:id="@+id/userSearch"
                                 android:layout_width="280dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_toRightOf="@id/txtFriendsTitle"
                                 android:hint="Search for Users"
-                                android:theme="@style/textNormal"
                                 android:maxLines="1"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:theme="@style/textNormal" />
 
                             <ImageView
                                 android:layout_width="30dp"
@@ -202,7 +203,9 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_marginTop="10dp"
                                 android:src="@drawable/icon_friends"
-                                android:tint="@color/colorDarkGray" />
+                                android:tint="@color/colorDarkGray"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"/>
 
                         </RelativeLayout>
 

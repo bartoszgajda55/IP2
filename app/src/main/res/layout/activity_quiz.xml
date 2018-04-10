@@ -29,12 +29,13 @@
 
     <TextView
         android:id="@+id/txtQuestion"
-        android:layout_below="@+id/imgQuiz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/imgQuiz"
         android:layout_centerHorizontal="true"
-        android:theme="@style/textTitle"/>
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:textSize="18dp"/>
 
     <Button
         android:id="@+id/button1"
@@ -42,7 +43,6 @@
         android:layout_marginTop="40dp"
         android:layout_width="150dp"
         android:layout_height="60dp"
-        android:theme="@style/buttonPrimary"
         android:layout_alignParentStart="true"
         android:layout_marginStart="40dp"/>
 
@@ -52,8 +52,7 @@
         android:layout_height="60dp"
         android:layout_alignBottom="@+id/button1"
         android:layout_toRightOf="@+id/button1"
-        android:layout_marginLeft="40dp"
-        android:theme="@style/buttonPrimary" />
+        android:layout_marginLeft="40dp" />
 
     <Button
         android:id="@+id/button3"
@@ -61,7 +60,6 @@
         android:layout_height="60dp"
         android:layout_below="@+id/button1"
         android:layout_marginLeft="40dp"
-        android:theme="@style/buttonPrimary"
         android:layout_alignParentStart="true"
         android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"/>
@@ -72,8 +70,7 @@
         android:layout_height="60dp"
         android:layout_alignBottom="@+id/button3"
         android:layout_toRightOf="@+id/button3"
-        android:layout_marginLeft="40dp"
-        android:theme="@style/buttonPrimary" />
+        android:layout_marginLeft="40dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"

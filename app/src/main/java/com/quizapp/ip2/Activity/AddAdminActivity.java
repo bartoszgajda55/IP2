@@ -27,6 +27,7 @@ public class AddAdminActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = new Intent(getBaseContext(), AdminActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_left);
             }
         });
     }

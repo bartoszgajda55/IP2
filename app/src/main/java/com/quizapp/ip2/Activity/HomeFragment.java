@@ -32,7 +32,6 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
 
-    //todo move
     private FragmentPagerAdapter featuredAdapter;
     private FragmentPagerAdapter recentAdapter;
     private ViewPager featuredPager;
@@ -97,11 +96,13 @@ public class HomeFragment extends Fragment {
                 String featuredTitle = result.getString("QuizName");
                 String featuredDesc = result.getString("QuizDescription");
                 String featuredImg = result.getString("QuizImage");
+                int featuredId = result.getInt("QuizID");
                 int featuredColor = Color.parseColor("#" + result.getString("QuizColor"));
 
                 featuredBundle.putString("title", featuredTitle);
                 featuredBundle.putString("desc", featuredDesc);
                 featuredBundle.putString("img", featuredImg);
+                featuredBundle.putInt("id", featuredId);
                 featuredBundle.putInt("color", featuredColor);
 
                 quizPreview.setArguments(featuredBundle);

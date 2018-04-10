@@ -27,7 +27,10 @@ public class UserPreviewFragment extends Fragment {
         ImageView imgUserIcon = (ImageView) view.findViewById(R.id.imgPerson);
         ImageView imgLevelIcon = (ImageView) view.findViewById(R.id.imgLevel);
 
-        username.setText(this.getArguments().getString("username"));
+        if(this.getArguments().getString("username").length()>16){
+            username.setText((this.getArguments().getString("username").substring(0,16)+"..."));
+        }else{
+        username.setText(this.getArguments().getString("username"));}
         level.setText(this.getArguments().getString("level"));
         place.setText(Integer.toString(this.getArguments().getInt("place")));
 

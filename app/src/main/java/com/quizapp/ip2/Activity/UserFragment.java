@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,18 @@ import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.LevelParser;
 import com.quizapp.ip2.Helper.PostTask;
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Helper.StringHasher;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.regex.Matcher;
 
 /**
  * Created by Aaron on 10/03/2018.
@@ -52,13 +59,14 @@ public class UserFragment extends Fragment {
     TextView txtSurname;
     TextView txtQuizzesComplete;
     TextView txtCorrectAnswers;
+    EditText userSearch;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.user_fragment, container, false);
         friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
-        Button btnSettings = (Button) view.findViewById(R.id.btnSettings);
+        final Button btnSettings = (Button) view.findViewById(R.id.btnSettings);
         btnAdmin = (Button) view.findViewById(R.id.btnAdmin);
         Button btnEditDetails = (Button) view.findViewById(R.id.btnEditDetails);
 
@@ -69,16 +77,43 @@ public class UserFragment extends Fragment {
         txtFirstname =(TextView) view.findViewById(R.id.txtFirstname);
         txtSurname =(TextView) view.findViewById(R.id.txtSurname);
 
+        userSearch =(EditText) view.findViewById(R.id.userSearch);
+
         txtQuizzesComplete =(TextView) view.findViewById(R.id.txtQuizzesComplete);
         txtCorrectAnswers=(TextView) view.findViewById(R.id.txtCorrectAnswers);
 
         loadDetails();
+
+        //Listen for search submit (click ENTER/RETURN)
+        userSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+
+
+                            populateFriendsSearch(userSearch.getText().toString());
+
+
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
 
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), SettingsActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
             }
         });
 
@@ -87,6 +122,7 @@ public class UserFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), AdminActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
             }
         });
 
@@ -199,7 +235,6 @@ public class UserFragment extends Fragment {
         builder.setPositiveButton("APPLY", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
-                //TODO add field validation like register
                 String email = txtEditEmail.getText().toString();
                 String firstname = txtEditFirstName.getText().toString();
                 String surname = txtEditSurname.getText().toString();
@@ -208,42 +243,61 @@ public class UserFragment extends Fragment {
 
                 JSONObject jsonEdittedDetails = new JSONObject();
 
-                //TODO Email pattern check
                 try {
                     if (email.length() > 0) {
-                        jsonEdittedDetails.put("email", email);
-                    }
 
-                    if(firstname.length() > 0) {
-                        if(firstname.length() > 2 && firstname.length() < 256){ //TODO ENSURE ONLY LETTERS
-                            jsonEdittedDetails.put("firstname", firstname);
-                            UserHelper.getUser().setFirstName(firstname);
-                        } else {
-                            Toast.makeText(getContext(), "Invalid first name...", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                        JSONObject jsonObj = new JSONObject();
+                        PostTask ptUsername = new PostTask();
 
-                    if(surname.length() > 0) {
-                        if(surname.length() > 2 && surname.length() < 256) { //TODO ENSURE ONLY LETTERS
-                            jsonEdittedDetails.put("surname", surname);
-                            UserHelper.getUser().setSurname(surname);
-                        }else {
-                            Toast.makeText(getContext(), "Invalid surname...", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                        jsonObj.put("email", email);
+                        String[] response = ptUsername.sendPostRequest("user/find", jsonObj.toString());
+                        if (response[0].equals("200")) {
 
-                    if(password.length() > 0) {
-                        if(password.equals(confirmPassword)){
-                            if(password.matches(".*\\d+.*")){
-                                jsonEdittedDetails.put("password", new StringHasher().hashString(password));
-                                UserHelper.getUser().setPassword(new StringHasher().hashString(password));
+                            // Check if email matches pattern
+                            Matcher matcher = RegisterFragment.VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+                            if(matcher.find()){
+                                jsonEdittedDetails.put("email", email);
                             }else{
-                                Toast.makeText(getActivity(), "Passwords must have more than 3 characters and at least 1 number...", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Email is invalid..", Toast.LENGTH_SHORT).show();
                             }
-                        } else{
-                            Toast.makeText(getContext(), "Passwords do not match...", Toast.LENGTH_SHORT).show();
+
+                        }else{
+                            Toast.makeText(getContext(), "Email is taken...", Toast.LENGTH_SHORT).show();
                         }
                     }
+
+
+                        if (firstname.length() > 0) {
+                            if (firstname.length() > 2 && firstname.length() < 256 && (!(firstname.matches(".*\\d+.*")))) {
+                                jsonEdittedDetails.put("firstname", firstname);
+                                UserHelper.getUser().setFirstName(firstname);
+                            } else {
+                                Toast.makeText(getContext(), "Invalid first name...", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        if (surname.length() > 0) {
+                            if (surname.length() > 2 && surname.length() < 256 && (!(surname.matches(".*\\d+.*")))){
+                                jsonEdittedDetails.put("surname", surname);
+                                UserHelper.getUser().setSurname(surname);
+                            } else {
+                                Toast.makeText(getContext(), "Invalid surname...", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        if (password.length() > 0) {
+                            if (password.equals(confirmPassword)) {
+                                if (password.matches(".*\\d+.*")) {
+                                    jsonEdittedDetails.put("password", new StringHasher().hashString(password));
+                                    UserHelper.getUser().setPassword(new StringHasher().hashString(password));
+                                } else {
+                                    Toast.makeText(getActivity(), "Passwords must have more than 3 characters and at least 1 number...", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getContext(), "Passwords do not match...", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
                 } catch (JSONException e){
                     Log.e("JSON ERROR", "Invalid JSON");
                 }
@@ -266,13 +320,37 @@ public class UserFragment extends Fragment {
 
     public void populateFriends(){
         if(!friendsLoaded) {
-            //TODO Add an async task for loading friends
-            for (int x = 0; x < 12; x++) {
+
+            RequestTask rt = new RequestTask();
+
+
+            try{
+
+            JSONArray resultset = new JSONArray(rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends"));
+
+            Log.e("RESULT SET",""+resultset);
+
+            if(resultset.length()>0){
+            for(int i=0; i<resultset.length(); i++) {
+                JSONObject jsonObject = resultset.getJSONObject(i);
                 UserPreviewFragment frag = new UserPreviewFragment();
                 Bundle bundle = new Bundle();
-                int place = x + 1;
-                String username = "User " + 1; //TODO get username from user query result
-                String level = "10"; //TODO calculate level from user query result (XP)
+                int place = i + 1;
+
+                JSONArray resultUserArray;
+
+                //If user 1 = user ELSE user 2 = user
+                if(jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())){
+                    resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User2ID"))));
+                }else{
+                    resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User1ID"))));
+                }
+
+
+                JSONObject jsonFriend = resultUserArray.getJSONObject(0);
+
+                String username =  jsonFriend.getString("Username");
+                String level = Integer.toString(new LevelParser(jsonFriend.getInt("XP")).getLevel());
                 bundle.putInt("place", place);
                 bundle.putString("username", username);
                 bundle.putString("level", level);
@@ -285,11 +363,65 @@ public class UserFragment extends Fragment {
                 rel.setId(View.generateViewId());
                 getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
                 friendsLayout.addView(rel);
+            }}
+
+            }catch(Exception e){
+                Log.e("ERROR","No friends");
             }
 
             progressBar.setVisibility(View.INVISIBLE);
             friendsLoaded = true;
 
         }
+    }
+
+    public void populateFriendsSearch(String search){
+            friendsLayout.removeViews(1, friendsLayout.getChildCount()-1);
+
+            RequestTask rt = new RequestTask();
+
+            try{
+
+                JSONArray resultset = new JSONArray(rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends"));
+                if(resultset.length()>0){
+                for(int i=0; i<resultset.length(); i++) {
+                    JSONObject jsonObject = resultset.getJSONObject(i);
+                    UserPreviewFragment frag = new UserPreviewFragment();
+                    Bundle bundle = new Bundle();
+                    int place = i + 1;
+
+                    RequestTask rtUser = new RequestTask();
+                    JSONArray resultUserArray;
+
+                    //If user 1 = user ELSE user 2 = user
+                    if(jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())){
+                        resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User2ID"))));
+                    }else{
+                        resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User1ID"))));
+                    }
+
+                    JSONObject jsonFriend = resultUserArray.getJSONObject(0);
+
+                    String username =  jsonFriend.getString("Username");
+                    if(username.toLowerCase().contains(search.toLowerCase())){
+                    String level = Integer.toString(new LevelParser(jsonFriend.getInt("XP")).getLevel());
+                    bundle.putInt("place", place);
+                    bundle.putString("username", username);
+                    bundle.putString("level", level);
+                    bundle.putInt("color", R.color.colorLightGray);
+                    bundle.putInt("textColor", R.color.colorDarkGray);
+                    bundle.putFloat("alpha", 0.25F);
+
+                    frag.setArguments(bundle);
+                    RelativeLayout rel = new RelativeLayout(getContext());
+                    rel.setId(View.generateViewId());
+                    getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
+                    friendsLayout.addView(rel);}}
+                }
+
+            }catch(JSONException e){
+                Log.e("JSON ERROR","Invalid json");
+            }
+
     }
 }

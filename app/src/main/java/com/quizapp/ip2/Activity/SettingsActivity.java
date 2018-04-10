@@ -27,7 +27,6 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         final Switch switchLight = (Switch) findViewById(R.id.switchLight);

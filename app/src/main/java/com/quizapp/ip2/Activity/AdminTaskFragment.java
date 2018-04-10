@@ -45,22 +45,27 @@ public class AdminTaskFragment extends Fragment {
                 if(title.equals("Add Quiz")){
                     Intent intent = new Intent(getContext(), AddQuizActivity.class);
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }else if(title.equals("Delete Quiz")){
                     Intent intent = new Intent(getContext(), DeleteQuizActivity.class);
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }else if(title.equals("Edit Quiz")){
                     Intent intent = new Intent(getContext(), EditQuizActivity.class);
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }else if(title.equals("Ban User")){
                     Intent intent = new Intent(getContext(), BanUserActivity.class);
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }else{
                     Intent intent = new Intent(getContext(), AddAdminActivity.class);
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }
 

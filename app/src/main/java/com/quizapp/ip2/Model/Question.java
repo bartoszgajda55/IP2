@@ -15,12 +15,45 @@ public class Question {
 
     private String correctAnswer;
     private ArrayList<String> wrongAnswers = new ArrayList<>();
-    private Drawable questionImage;
+    private String questionImage;
+    private int questionId;
+    private String questionString;
 
-    public Question(String correctAnswer, ArrayList<String> wrongAnswers, String questionImage, Context context){
+
+    public String getQuestionString() {
+        return questionString;
+    }
+
+    public void setQuestionString(String questionString) {
+        this.questionString = questionString;
+    }
+
+    public Question(String correctAnswer, ArrayList<String> wrongAnswers, String questionImage, int questionId, String questionString) {
         this.correctAnswer = correctAnswer;
         this.wrongAnswers = wrongAnswers;
-       // this.questionImage = new LoadImageHelper(context).load(questionImage);
+        this.questionImage = questionImage;
+        this.questionId = questionId;
+        this.questionString = questionString;
+    }
+
+    public Question(String correctAnswer, ArrayList<String> wrongAnswers, String questionImage, int questionId) {
+        this.correctAnswer = correctAnswer;
+        this.wrongAnswers = wrongAnswers;
+        this.questionImage = questionImage;
+        this.questionId = questionId;
+    }
+
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
+
+    public Question(String correctAnswer, ArrayList<String> wrongAnswers, String questionImage){
+        this.correctAnswer = correctAnswer;
+        this.wrongAnswers = wrongAnswers;
     }
 
     public String getCorrectAnswer() {
@@ -39,11 +72,11 @@ public class Question {
         this.wrongAnswers = wrongAnswers;
     }
 
-    public Drawable getQuestionImage() {
+    public String getQuestionImage() {
         return questionImage;
     }
 
-    public void setQuestionImage(Drawable questionImage) {
+    public void setQuestionImage(String questionImage) {
         this.questionImage = questionImage;
     }
 }

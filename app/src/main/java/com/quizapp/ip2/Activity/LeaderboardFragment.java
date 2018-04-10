@@ -50,7 +50,7 @@ public class LeaderboardFragment extends Fragment {
             final RequestTask rt = new RequestTask();
 
             try {
-                JSONArray resultset = new JSONArray(rt.sendGetRequest("user"));
+                JSONArray resultset = new JSONArray(rt.sendGetRequest("user?term=XP&order=desc&limit=101"));
 
                 for(int i = 0; i < resultset.length(); i++){
                     if(i < 101){

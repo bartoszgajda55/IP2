@@ -22,19 +22,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 >
+
                 <EditText
                     android:id="@+id/txtSearch"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="30dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:hint="Search for a Quiz"
-                    android:textColor="@color/colorPrimary"
-                    android:textAlignment="center"
-                    android:singleLine="true"
                     android:maxLines="1"
-                    />
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary" />
 
                 <ImageView
                     android:layout_width="wrap_content"

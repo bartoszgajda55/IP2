@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,9 @@ import com.quizapp.ip2.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by aaron on 08/03/2018.
@@ -40,8 +44,7 @@ public class RegisterFragment extends Fragment {
     String surname;
     String email;
 
-    //String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-    String emailPattern = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
+    final static Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     PostTask pt;
 
@@ -77,23 +80,51 @@ public class RegisterFragment extends Fragment {
         surname = surnameField.getText().toString();
         email = emailField.getText().toString().toLowerCase();
 
-
-        //TODO CHECK IF EMAIL ALREADY EXISTS
-        /*if (!email.matches(emailPattern)) {
-            Toast.makeText(getContext(), "Invalid email address...", Toast.LENGTH_SHORT).show();
+        // Check if email matches pattern
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        if(!matcher.find()){
+            Toast.makeText(getActivity(), "Email is invalid..", Toast.LENGTH_SHORT).show();
             return;
-        }*/
+        }
 
-        if (username.length() > 32 || username.length() < 3) { //TODO CHECK IF USERNAME ALREADY EXISTS
+
+        JSONObject jsonObj = new JSONObject();
+        PostTask ptUsername = new PostTask();
+
+
+        //Check to see if username of email is taken
+        try {
+                jsonObj.put("email",email);
+                String[] response = ptUsername.sendPostRequest("user/find", jsonObj.toString());
+                if(response[0].equals("400")){
+                    Toast.makeText(getActivity(), "Email is taken...", Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+                    jsonObj.remove("email");
+                    jsonObj.put("username",username);
+                    String[] response2 = ptUsername.sendPostRequest("user/find", jsonObj.toString());
+
+                    if(response2[0].equals("400")){
+                        Toast.makeText(getActivity(), "Username is taken...", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+        }catch(JSONException e){
+            Log.e("JSON Error", "Invalid Json");
+            return;
+        }
+
+        if (username.length() > 32 || username.length() < 3) {
             Toast.makeText(getActivity(), "Username is invalid...", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (firstName.length() > 255 || firstName.length() < 3) { //TODO ENSURE ONLY LETTERS
+        if (firstName.length() > 255 || firstName.length() < 3 || firstName.matches(".*\\d+.*")) {
             Toast.makeText(getActivity(), "First name is invalid...", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (surname.length() > 255 || surname.length() < 3) { //TODO ENSURE ONLY LETTERS
+        if (surname.length() > 255 || surname.length() < 3 || surname.matches(".*\\d+.*")) {
             Toast.makeText(getActivity(), "Surname is invalid...", Toast.LENGTH_SHORT).show();
             return;
         }

@@ -18,7 +18,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.Splash"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,24 +28,36 @@
         </activity>
         <activity
             android:name=".Activity.AuthenticationActivity"
+            android:screenOrientation="portrait"
             android:noHistory="true" />
-        <activity android:name=".Activity.HomepageActivity" />
+        <activity android:name=".Activity.HomepageActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.TutorialActivity"
+            android:screenOrientation="portrait"
             android:hardwareAccelerated="false"
             android:noHistory="true" />
-        <activity android:name=".Activity.QuizSearchActivity" />
+        <activity android:name=".Activity.QuizSearchActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.SettingsActivity"
             android:noHistory="true" />
-        <activity android:name=".Activity.QuizActivity" />
-        <activity android:name=".Activity.QuizEndActivity" />
-        <activity android:name=".Activity.AdminActivity" />
-        <activity android:name=".Activity.AddQuizActivity" />
-        <activity android:name=".Activity.DeleteQuizActivity" />
-        <activity android:name=".Activity.EditQuizActivity" />
-        <activity android:name=".Activity.BanUserActivity" />
-        <activity android:name=".Activity.AddAdminActivity"></activity>
+        <activity android:name=".Activity.QuizActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.QuizEndActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.AdminActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.AddQuizActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.DeleteQuizActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.EditQuizActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.BanUserActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.AddAdminActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

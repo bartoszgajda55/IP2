@@ -48,7 +48,6 @@ public class QuizEndActivity extends AppCompatActivity {
         Window window = getWindow();
         window.setStatusBarColor(darkenColor(getIntent().getExtras().getInt("color")));
 
-        //TODO Calculate XP
         int xp=(correct*10);
 
         int prevLevel = new LevelParser(UserHelper.getUser().getXp()).getLevel();
