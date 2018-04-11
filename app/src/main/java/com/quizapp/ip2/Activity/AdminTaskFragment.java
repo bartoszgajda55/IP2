@@ -57,8 +57,8 @@ public class AdminTaskFragment extends Fragment {
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-                }else if(title.equals("Ban User")){
-                    Intent intent = new Intent(getContext(), BanUserActivity.class);
+                }else if(title.equals("Lookup/Edit User")){
+                    Intent intent = new Intent(getContext(), LookupUserActivity.class);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 

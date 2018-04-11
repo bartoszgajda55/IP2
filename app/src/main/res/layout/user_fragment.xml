@@ -28,7 +28,8 @@
                     android:id="@+id/imgProfilePicture"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:src="@drawable/icon_user" />
+                    android:src="@drawable/icon_user"
+                    android:scaleType="centerCrop"/>
 
                 <TextView
                     android:id="@+id/txtUsername"

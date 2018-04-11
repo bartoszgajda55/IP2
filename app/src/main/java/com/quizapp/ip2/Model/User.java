@@ -1,8 +1,5 @@
 package com.quizapp.ip2.Model;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-
 //import com.quizapp.ip2.Helper.LoadImageHelper;
 
 /**
@@ -18,7 +15,7 @@ public class User {
     private String surname;
     private String password;
     private int adminStatus;
-    private Drawable userImage;
+    private String profileImage;
     private int xp;
     private int quizzessCompleted;
     private int correctAnswers;
@@ -34,16 +31,7 @@ public class User {
         this.password = password;
     }
 
-    public User(String username, String email, String firstName, String surname, String password, String userImage, Context context) {
-        this.username = username;
-        this.email = email;
-        this.firstName = firstName;
-        this.surname = surname;
-        this.password = password;
-       // this.userImage = new LoadImageHelper(context).load(userImage);
-    }
-
-    public User(int userID, String username, String email, String firstName, String surname, String password, int adminStatus, Drawable userImage, int xp, int quizzessCompleted, int correctAnswers) {
+    public User(int userID, String username, String email, String firstName, String surname, String password, int adminStatus, String profileImage, int xp, int quizzessCompleted, int correctAnswers) {
         this.userID = userID;
         this.username = username;
         this.email = email;
@@ -51,18 +39,18 @@ public class User {
         this.surname = surname;
         this.password = password;
         this.adminStatus = adminStatus;
-        this.userImage = userImage;
+        this.profileImage = profileImage;
         this.xp = xp;
         this.quizzessCompleted = quizzessCompleted;
         this.correctAnswers = correctAnswers;
     }
 
-    public Drawable getUserImage() {
-        return userImage;
+    public String getProfilePicture() {
+        return profileImage;
     }
 
-    public void setUserImage(Drawable userImage) {
-        this.userImage = userImage;
+    public void setProfilePicture(String userImage) {
+        this.profileImage = userImage;
     }
 
     public String getUsername() {

@@ -83,7 +83,8 @@ public class QuizEndActivity extends AppCompatActivity {
 
         }
 
-        //todo sync to database -- upload
+        //Upload local user data to database
+        UserHelper.uploadUser();
 
         //Give different messages depending on score
         if (correct>7){
@@ -98,7 +99,7 @@ public class QuizEndActivity extends AppCompatActivity {
         }else{
             message.setText("Oh no!"+"\n"+" You got no answers correct");
             messageXP.setText("No XP Earned.");
-        } //TODO add xp to user
+        }
 
 
         endButton.setBackgroundColor(darkenColor(getIntent().getExtras().getInt("color")));

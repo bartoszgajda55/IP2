@@ -37,11 +37,18 @@ public class UserHelper {
             jsonUser.put("firstname", getUser().getFirstName());
             jsonUser.put("surname", getUser().getSurname());
             jsonUser.put("password", getUser().getPassword());
+            jsonUser.put("profileimage", getUser().getProfilePicture());
             jsonUser.put("adminstatus", getUser().getAdminStatus());
-            //jsonUser.put("xp", getUser().getXp());
-            //jsonUser.put("quizzescompleted", getUser().getQuizzessCompleted());
-            //jsonUser.put("correctanswers", getUser().getCorrectAnswers());
+            jsonUser.put("xp", getUser().getXp());
+            jsonUser.put("quizzesscompleted", getUser().getQuizzessCompleted());
+            jsonUser.put("correctanswers", getUser().getCorrectAnswers());
 
+            PostTask pt = new PostTask();
+            String[] response = pt.sendPostRequest("user/"+getUser().getUserID()+"/edit", jsonUser.toString());
+
+            if(!response[0].equals("200")){
+                Log.e("POST ERROR", "Could not post... " + response[0] + " " + response[1]);
+            }
         } catch (JSONException e){
             Log.e("JSON Error", "Error parsing json");
         }

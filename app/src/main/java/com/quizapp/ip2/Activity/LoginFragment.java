@@ -1,8 +1,10 @@
 package com.quizapp.ip2.Activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -30,7 +32,6 @@ import org.json.JSONObject;
 
 public class LoginFragment extends Fragment {
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    String email = txtEmail.getText().toString().toLowerCase();
+                    final String email = txtEmail.getText().toString().toLowerCase();
                     jsonObject.put("email", email);
                     jsonObject.put("password", new StringHasher().hashString(txtPassword.getText().toString()));
 
@@ -55,11 +56,6 @@ public class LoginFragment extends Fragment {
                     if(response[0].equals("200")){
 
                         //Set UserHelper to user
-
-                        /*JSONObject jsonResponseArray = new JSONObject(response[1]);
-                        Iterator<String> keys = jsonResponseArray.keys();
-                        String responseName = keys.next();
-                        JSONObject jsonResponse = jsonResponseArray.getJSONObject(responseName);*/
                         JSONArray jsonResponseArray = new JSONArray(response[1]);
                         JSONObject jsonResponse = jsonResponseArray.getJSONObject(0);
 
@@ -69,6 +65,7 @@ public class LoginFragment extends Fragment {
                         user.setEmail(jsonResponse.getString("Email"));
                         user.setFirstName(jsonResponse.getString("Firstname"));
                         user.setSurname(jsonResponse.getString("Surname"));
+                        user.setProfilePicture(jsonResponse.getString("ProfileImage"));
                         user.setAdminStatus(jsonResponse.getInt("AdminStatus"));
                         user.setXp(jsonResponse.getInt("XP"));
                         user.setQuizzessCompleted(jsonResponse.getInt("QuizzessCompleted"));
@@ -83,6 +80,12 @@ public class LoginFragment extends Fragment {
                         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences loginPreferences = getActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
+
+                                loginPrefsEditor.clear();
+                                loginPrefsEditor.apply();
+
                                 dialog.dismiss();
                                 logIn();
                             }
@@ -91,7 +94,15 @@ public class LoginFragment extends Fragment {
                         builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialog, int which){
-                                //TODO Store user login on local system file. Ensure password is hashed/salted -- do not store plaintext password in file
+
+                                //TODO Store user login on local system file.
+                                SharedPreferences loginPreferences = getActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
+
+                                loginPrefsEditor.putString("email", email.toLowerCase());
+                                loginPrefsEditor.putString("password", new StringHasher().hashString(txtPassword.getText().toString()));
+                                loginPrefsEditor.apply();
+
                                 logIn();
                             }
                         });

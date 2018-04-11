@@ -46,7 +46,6 @@ public class LeaderboardFragment extends Fragment {
     public void populatePage(){
         if(!pageLoaded) {
             //TODO Add an async task for loading leaderboards
-            //TODO Descending order
             final RequestTask rt = new RequestTask();
 
             try {
@@ -85,7 +84,14 @@ public class LeaderboardFragment extends Fragment {
             //Add current user's ranking/score to bottom of page
                 UserPreviewFragment frag = new UserPreviewFragment();
                 Bundle bundle = new Bundle();
-                int place = 201; //todo later
+                RequestTask rankingRequest = new RequestTask();
+                int place = 0;
+                try {
+                    JSONObject jsonRanking = new JSONObject(String.valueOf(rankingRequest.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/ranking")));
+                    place = jsonRanking.getInt("position")+1;
+                } catch (JSONException e){
+                    Log.e("JSON ERROR", "Error parsing json");
+                }
                 String username = "You";  //Username is hardcoded "You"
                 String level = String.valueOf(new LevelParser(UserHelper.getUser().getXp()).getLevel());
                 bundle.putInt("place", place);

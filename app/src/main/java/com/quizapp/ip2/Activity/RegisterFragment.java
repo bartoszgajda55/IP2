@@ -1,6 +1,10 @@
 package com.quizapp.ip2.Activity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -145,35 +149,81 @@ public class RegisterFragment extends Fragment {
             jsonObject.put("firstname",firstName);
             jsonObject.put("surname",surname);
             jsonObject.put("password",new StringHasher().hashString(passwordField.getText().toString()));
-            String[] response = pt.sendPostRequest("user/register", jsonObject.toString());
+            final String[] response = pt.sendPostRequest("user/register", jsonObject.toString());
 
             if(response[0].equals("201")){
-                Intent intent = new Intent(getContext(), TutorialActivity.class);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Remember me");
+                builder.setMessage("Do you want Quizzy to remember your password?");
 
-                JSONArray jsonResponseArray = new JSONArray(response[1]);
-                JSONObject jsonResponse = jsonResponseArray.getJSONObject(0);
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences loginPreferences = getActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
 
-                User user = new User();
-                user.setUserID(jsonResponse.getInt("UserID"));
-                user.setUsername(jsonResponse.getString("Username"));
-                user.setEmail(jsonResponse.getString("Email"));
-                user.setFirstName(jsonResponse.getString("Firstname"));
-                user.setSurname(jsonResponse.getString("Surname"));
-                user.setAdminStatus(jsonResponse.getInt("AdminStatus"));
-                user.setXp(jsonResponse.getInt("XP"));
-                user.setQuizzessCompleted(jsonResponse.getInt("QuizzessCompleted"));
-                user.setCorrectAnswers(jsonResponse.getInt("CorrectAnswers"));
+                        loginPrefsEditor.clear();
+                        loginPrefsEditor.apply();
 
-                UserHelper.setUser(user);
+                        dialog.dismiss();
+                        logIn(response);
+                    }
+                });
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+
+                        SharedPreferences loginPreferences = getActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
+
+                        loginPrefsEditor.putString("email", email.toLowerCase());
+                        loginPrefsEditor.putString("password", new StringHasher().hashString(passwordField.getText().toString()));
+                        loginPrefsEditor.apply();
+
+                        logIn(response);
+                    }
+                });
+                AlertDialog ad = builder.create();
+                ad.show();
+
+                /////////
+
 
             }else{
                 Toast.makeText(getActivity(), "Registration error...", Toast.LENGTH_SHORT).show();
             }
 
         }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void logIn(String[] response){
+        Intent intent = new Intent(getContext(), TutorialActivity.class);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+
+
+        try {
+            JSONArray jsonResponseArray = new JSONArray(response[1]);
+            JSONObject jsonResponse = jsonResponseArray.getJSONObject(0);
+
+            User user = new User();
+            user.setUserID(jsonResponse.getInt("UserID"));
+            user.setUsername(jsonResponse.getString("Username"));
+            user.setEmail(jsonResponse.getString("Email"));
+            user.setFirstName(jsonResponse.getString("Firstname"));
+            user.setSurname(jsonResponse.getString("Surname"));
+            user.setProfilePicture(jsonResponse.getString("ProfileImage"));
+            user.setAdminStatus(jsonResponse.getInt("AdminStatus"));
+            user.setXp(jsonResponse.getInt("XP"));
+            user.setQuizzessCompleted(jsonResponse.getInt("QuizzessCompleted"));
+            user.setCorrectAnswers(jsonResponse.getInt("CorrectAnswers"));
+
+            UserHelper.setUser(user);
+        } catch (JSONException e){
             e.printStackTrace();
         }
     }

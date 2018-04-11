@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -16,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.quizapp.ip2.Helper.DownloadImageTask;
-import com.quizapp.ip2.Helper.QuizHelper;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.R;
 
@@ -34,6 +32,7 @@ public class QuizActivity extends AppCompatActivity {
     public static ArrayList<Question> questions;
     private ArrayList answers;
     private String correctAnswer;
+    ImageView image;
 
     @ColorInt
     int darkenColor(@ColorInt int color){
@@ -52,7 +51,6 @@ public class QuizActivity extends AppCompatActivity {
         b = getIntent().getExtras();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        ImageView imgQuiz = (ImageView) findViewById(R.id.imgQuiz);
         TextView txtQuestion = (TextView) findViewById(R.id.txtQuestion);
         button1 = (Button) findViewById(R.id.button1);
         button2 = (Button) findViewById(R.id.button2);
@@ -60,6 +58,7 @@ public class QuizActivity extends AppCompatActivity {
         button4 = (Button) findViewById(R.id.button4);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBarCorrect = (ProgressBar) findViewById(R.id.progressBarCorrect);
+        image = (ImageView) findViewById(R.id.imgQuiz);
 
         //Set progress bar values
         progressBar.setMax(10);
@@ -68,7 +67,7 @@ public class QuizActivity extends AppCompatActivity {
         progressBarCorrect.setProgress(getIntent().getExtras().getInt("correct"));
 
         //IF ALL QUESTIONS ANSWERED GO TO QUIZ END
-        if (getIntent().getExtras().getInt("question")==10){
+        if (getIntent().getExtras().getInt("question") == 10) {
             Intent intent = new Intent(getApplicationContext(), QuizEndActivity.class);
             Bundle bundle = new Bundle();
             bundle.putInt("correct", progressBarCorrect.getProgress());
@@ -85,12 +84,14 @@ public class QuizActivity extends AppCompatActivity {
         button3.setBackgroundColor(darkenColor(b.getInt("color")));
         button4.setBackgroundColor(darkenColor(b.getInt("color")));
 
-
-        Log.e("INDEX","index: "+progressBar.getProgress());
-        txtQuestion.setText(""+questions.get(progressBar.getProgress()).getQuestionString());
+        txtQuestion.setText("" + questions.get(progressBar.getProgress()).getQuestionString());
 
         answers = new ArrayList<>();
-
+        if (questions.get(progressBar.getProgress()).getQuestionImage().equals("")){
+            new DownloadImageTask(image).execute(b.getString("img"));
+        } else {
+            new DownloadImageTask(image).execute(questions.get(progressBar.getProgress()).getQuestionImage());
+        }
         correctAnswer = questions.get(progressBar.getProgress()).getCorrectAnswer();
         answers.add(correctAnswer);
 
@@ -125,9 +126,6 @@ public class QuizActivity extends AppCompatActivity {
 
             }
         });
-
-        //Set quiz image
-        new DownloadImageTask(imgQuiz).execute(b.getString("img"));
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override

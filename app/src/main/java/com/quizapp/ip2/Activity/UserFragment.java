@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Helper.LevelParser;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.RequestTask;
@@ -32,8 +33,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 
 /**
@@ -50,6 +49,8 @@ public class UserFragment extends Fragment {
     boolean friendsLoaded = false;
 
     Button btnAdmin;
+
+    ImageView profileImage;
 
     TextView txtUsername;
     ImageView imgUser;
@@ -69,6 +70,10 @@ public class UserFragment extends Fragment {
         final Button btnSettings = (Button) view.findViewById(R.id.btnSettings);
         btnAdmin = (Button) view.findViewById(R.id.btnAdmin);
         Button btnEditDetails = (Button) view.findViewById(R.id.btnEditDetails);
+
+        profileImage = (ImageView) view.findViewById(R.id.imgProfilePicture);
+        profileImage.setBackground(getResources().getDrawable(R.drawable.rounded));
+        profileImage.setClipToOutline(true);
 
         txtUsername = (TextView) view.findViewById(R.id.txtUsername);
         imgUser = (ImageView) view.findViewById(R.id.imgUserIcon);
@@ -105,6 +110,13 @@ public class UserFragment extends Fragment {
                     }
                 }
                 return false;
+            }
+        });
+
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO LOAD IMAGE FROM GALLERY, UPLOAD TO SERVER, NAME FILE pic_id.jpg in folder img/usr/
             }
         });
 
@@ -168,8 +180,11 @@ public class UserFragment extends Fragment {
             txtSurname.setText("Surname: " + UserHelper.getUser().getSurname().substring(0, 14) + "...");
         }
 
+        new DownloadImageTask(profileImage).execute(UserHelper.getUser().getProfilePicture());
+
+
         txtCorrectAnswers.setText("Correct Answers: "+Integer.toString(UserHelper.getUser().getCorrectAnswers()));
-        txtQuizzesComplete.setText("Quizzess Completed: "+Integer.toString(UserHelper.getUser().getQuizzessCompleted()));
+        txtQuizzesComplete.setText("Quizzes Completed: "+Integer.toString(UserHelper.getUser().getQuizzessCompleted()));
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -327,8 +342,6 @@ public class UserFragment extends Fragment {
             try{
 
             JSONArray resultset = new JSONArray(rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends"));
-
-            Log.e("RESULT SET",""+resultset);
 
             if(resultset.length()>0){
             for(int i=0; i<resultset.length(); i++) {

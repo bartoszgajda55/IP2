@@ -9,12 +9,12 @@ import android.view.View;
 
 import com.quizapp.ip2.R;
 
-public class BanUserActivity extends AppCompatActivity {
+public class LookupUserActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ban_user);
+        setContentView(R.layout.activity_user_lookup);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
