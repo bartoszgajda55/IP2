@@ -87,7 +87,7 @@ public class QuizEndActivity extends AppCompatActivity {
         UserHelper.uploadUser();
 
         //Give different messages depending on score
-        if (correct>7){
+        if (correct>=7){
             message.setText("Well Done!" +"\n"+" You got "+correct+" out of 10");
             messageXP.setText(xp+"XP Earned!");}
         else if(correct>4 && correct<7){
