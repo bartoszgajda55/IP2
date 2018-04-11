@@ -383,10 +383,11 @@
                         android:textSize="18dp"/>
 
                     <Switch
+                        android:id="@+id/switchAdmin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="2dp"
-                        android:layout_toRightOf="@id/txtAdminLabel" />
+                        android:layout_toRightOf="@id/txtAdminLabel"
+                        android:paddingTop="2dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -415,10 +416,11 @@
                         android:textSize="18dp"/>
 
                     <Switch
+                        android:id="@+id/switchBanned"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="2dp"
-                        android:layout_toRightOf="@id/txtBanLabel" />
+                        android:layout_toRightOf="@id/txtBanLabel"
+                        android:paddingTop="2dp" />
                 </RelativeLayout>
 
 
@@ -430,11 +432,12 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:text="Save USER"
-        android:textColor="@color/colorLight"/>
+        android:textColor="@color/colorLight" />
 
 
 

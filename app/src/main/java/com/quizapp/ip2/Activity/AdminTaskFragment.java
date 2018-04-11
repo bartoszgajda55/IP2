@@ -58,6 +58,7 @@ public class AdminTaskFragment extends Fragment {
                     getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }else if(title.equals("Lookup/Edit User")){
+                    //todo alert dialog, ask for username or email, use find api to get user id and all details, pass in as bundle.
                     Intent intent = new Intent(getContext(), LookupUserActivity.class);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
