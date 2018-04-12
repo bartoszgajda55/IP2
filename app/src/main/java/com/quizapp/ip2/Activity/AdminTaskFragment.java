@@ -195,11 +195,6 @@ public class AdminTaskFragment extends Fragment {
                     AlertDialog ad = builder.create();
                     ad.show();
 
-                }else{
-                    Intent intent = new Intent(getContext(), AddAdminActivity.class);
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
                 }
 
             }

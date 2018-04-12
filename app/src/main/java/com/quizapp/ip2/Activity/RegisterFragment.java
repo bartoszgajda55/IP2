@@ -100,7 +100,7 @@ public class RegisterFragment extends Fragment {
         try {
                 jsonObj.put("email",email);
                 String[] response = ptUsername.sendPostRequest("user/find", jsonObj.toString());
-                if(response[0].equals("400")){
+                if(response[0].equals("200")){ //400?
                     Toast.makeText(getActivity(), "Email is taken...", Toast.LENGTH_SHORT).show();
                     return;
                 }else{
@@ -108,7 +108,7 @@ public class RegisterFragment extends Fragment {
                     jsonObj.put("username",username);
                     String[] response2 = ptUsername.sendPostRequest("user/find", jsonObj.toString());
 
-                    if(response2[0].equals("400")){
+                    if(response2[0].equals("200")){ //400?
                         Toast.makeText(getActivity(), "Username is taken...", Toast.LENGTH_SHORT).show();
                         return;
                     }
