@@ -28,36 +28,46 @@
         </activity>
         <activity
             android:name=".Activity.AuthenticationActivity"
-            android:screenOrientation="portrait"
-            android:noHistory="true" />
-        <activity android:name=".Activity.HomepageActivity"
-            android:screenOrientation="portrait"/>
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HomepageActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.TutorialActivity"
-            android:screenOrientation="portrait"
             android:hardwareAccelerated="false"
-            android:noHistory="true" />
-        <activity android:name=".Activity.QuizSearchActivity"
-            android:screenOrientation="portrait"/>
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.QuizSearchActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.SettingsActivity"
             android:noHistory="true" />
-        <activity android:name=".Activity.QuizActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.QuizEndActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.AdminActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.AddQuizActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.DeleteQuizActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.EditQuizActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.LookupUserActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.AddAdminActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.QuizActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.QuizEndActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.AdminActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.AddQuizActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.DeleteQuizActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.EditQuizActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.LookupUserActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.AdminShowQuizzesActivity" />
+        <activity android:name=".Activity.AdminEditQuizActivity" />
+        <activity android:name=".Activity.AdminEditQuestionActivity"></activity>
     </application>
 
 </manifest>

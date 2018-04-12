@@ -43,6 +43,7 @@ public class LoginFragment extends Fragment {
         final PostTask pt = new PostTask();
 
         //Button pressed
+        //TODO Prevent banned users from logging in
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

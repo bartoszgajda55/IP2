@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.quizapp.ip2.Helper.DownloadImageTask;
-import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizHelper;
 import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Model.Question;
@@ -32,10 +31,11 @@ import java.util.ArrayList;
 
 public class QuizPreviewFragment extends Fragment {
 
+    View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.quiz_preview_fragment, container, false);
+        view = inflater.inflate(R.layout.quiz_preview_fragment, container, false);
         TextView txtQuizTitle = (TextView) view.findViewById(R.id.txtTitle);
         TextView txtQuizDesc = (TextView) view.findViewById(R.id.txtDesc);
         ImageView imgQuizImg = (ImageView) view.findViewById(R.id.imgQuizImg);
@@ -49,6 +49,14 @@ public class QuizPreviewFragment extends Fragment {
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
 
         DrawableCompat.setTint(backgroundShape.getDrawable(), this.getArguments().getInt("color"));
+
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,25 +115,40 @@ public class QuizPreviewFragment extends Fragment {
                     Log.e("JSON ERROR", "Invalid Json");
                 }
 
-                QuizHelper.setQuiz(quiz);
 
-                Intent intent = new Intent(getContext(), QuizActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("title", title);
-                bundle.putInt("color", color);
-                bundle.putString("img", img);
-                bundle.putInt("question", 0);
-                bundle.putInt("correct", 0);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                if(!getActivity().getClass().equals(AdminShowQuizzesActivity.class)) {
 
-                QuizActivity.questions = new ArrayList(QuizHelper.getQuiz().getQuizQuestions());
+                    QuizHelper.setQuiz(quiz);
+
+                    Intent intent = new Intent(getContext(), QuizActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", title);
+                    bundle.putInt("color", color);
+                    bundle.putString("img", img);
+                    bundle.putInt("question", 0);
+                    bundle.putInt("correct", 0);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                    QuizActivity.questions = new ArrayList(QuizHelper.getQuiz().getQuizQuestions());
+
+                } else { //only run this code if it is pressed from adminshowquizzes activity
+                    //ADD BUNDLE FOR QUIZZES??? //TODO
+                    Intent intent = new Intent(getContext(), AdminEditQuizActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", title);
+                    bundle.putString("desc", desc);
+                    bundle.putInt("color", color);
+                    bundle.putParcelableArrayList("questions", arrayList);
+                    intent.putExtras(bundle);
+
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                }
+
 
             }
         });
-
-        return view;
     }
-
 }

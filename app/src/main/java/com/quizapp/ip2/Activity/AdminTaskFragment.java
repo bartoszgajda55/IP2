@@ -3,9 +3,9 @@ package com.quizapp.ip2.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.quizapp.ip2.Helper.LevelParser;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.RequestTask;
-import com.quizapp.ip2.Model.User;
 import com.quizapp.ip2.R;
 
 import org.json.JSONArray;
@@ -56,53 +55,14 @@ public class AdminTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(title.equals("Add Quiz")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("Quiz Name");
-                    final EditText text = new EditText(getActivity());
-                    text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    builder.setMessage("Enter the quiz title...");
-                    builder.setView(text);
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-                        @Override
-                        public void onClick(DialogInterface dialog, int which){
-                            dialog.dismiss();
-                        }
-                    });
+                if(title.equals("Quizzes")){
 
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                    Intent intent = new Intent(getContext(), AdminShowQuizzesActivity.class);
 
-
-                            Bundle b = new Bundle();
-                            b.putString("title", text.getText().toString());
-
-                            Intent intent = new Intent(getContext(), AddQuizActivity.class);
-                            intent.putExtras(b);
-
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        }
-                    });
-
-                    Intent intent = new Intent(getContext(), AddQuizActivity.class);
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
-                }else if(title.equals("Delete Quiz")){
-                    Intent intent = new Intent(getContext(), DeleteQuizActivity.class);
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
-                }else if(title.equals("Edit Quiz")){
-                    Intent intent = new Intent(getContext(), EditQuizActivity.class);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }else if(title.equals("Lookup/Edit User")){
-                    //todo alert dialog, ask for username, use find api to get user id and all details, pass in as bundle.
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Lookup User");
@@ -162,6 +122,7 @@ public class AdminTaskFragment extends Fragment {
                                         b.putInt("ranking", 0);
                                     }
 
+                                    //TODO Ban the user from UI
                                     RequestTask requestBanned = new RequestTask();
                                     String banResponse = requestBanned.sendGetRequest("blacklist/"+jsonResponse.getInt("UserID"));
                                     boolean banBool;
@@ -195,13 +156,7 @@ public class AdminTaskFragment extends Fragment {
                     AlertDialog ad = builder.create();
                     ad.show();
 
-                }else{
-                    Intent intent = new Intent(getContext(), AddAdminActivity.class);
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
                 }
-
             }
         });
 
