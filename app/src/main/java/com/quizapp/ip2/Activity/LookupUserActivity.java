@@ -8,10 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Helper.PostTask;
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.R;
 
 import org.json.JSONException;
@@ -26,9 +29,11 @@ public class LookupUserActivity extends AppCompatActivity {
 
         Button btnSave = (Button) findViewById(R.id.btnSave);
 
-        Bundle args = this.getIntent().getExtras();
+        Bundle args = getIntent().getExtras();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        TextView txtUsername = (TextView) findViewById(R.id.txtUsername);
         final TextView txtUserId = (TextView) findViewById(R.id.txtUserId);
         TextView txtEmail= (TextView) findViewById(R.id.txtEmail);
         TextView txtName = (TextView) findViewById(R.id.txtName);
@@ -36,15 +41,24 @@ public class LookupUserActivity extends AppCompatActivity {
         TextView txtTotalXP = (TextView) findViewById(R.id.txtXP);
         TextView txtLevel = (TextView) findViewById(R.id.txtLevel);
         TextView txtRanking = (TextView) findViewById(R.id.txtRank);
-        TextView txtQuizzesComplete = (TextView) findViewById(R.id.txtQuizzesComplete);
-        TextView txtCorrectAnswers = (TextView) findViewById(R.id.txtCorrectAnswers);
+        TextView txtQuizzesComplete = (TextView) findViewById(R.id.txtComplete);
+        TextView txtCorrectAnswers = (TextView) findViewById(R.id.txtCorrect);
 
         final Switch switchAdmin = (Switch) findViewById(R.id.switchAdmin);
         Switch switchBanned = (Switch) findViewById(R.id.switchBanned);
 
+        ImageView imgProfilePic = (ImageView) findViewById(R.id.imgProfilePic);
+        imgProfilePic.setBackground(getResources().getDrawable(R.drawable.rounded));
+        imgProfilePic.setClipToOutline(true);
+
+        txtUsername.setText(args.getString("username"));
         txtUserId.setText(String.valueOf(args.getInt("userid")));
+
         txtEmail.setText(args.getString("email"));
         txtName.setText(args.getString("firstname") + " " + args.getString("surname"));
+
+        new DownloadImageTask(imgProfilePic).execute(args.getString("profilepic"));
+
 
         txtTotalXP.setText(String.valueOf(args.getInt("xp")));
         txtLevel.setText(String.valueOf(args.getInt("level")));
@@ -52,7 +66,7 @@ public class LookupUserActivity extends AppCompatActivity {
         txtQuizzesComplete.setText(String.valueOf(args.getInt("quizzesscomplete")));
         txtCorrectAnswers.setText(String.valueOf(args.getInt("correctanswers")));
 
-        switchAdmin.setChecked(args.getBoolean("admin"));
+        switchAdmin.setChecked(args.getBoolean("adminstatus"));
         switchBanned.setChecked(args.getBoolean("banned"));
 
         Drawable whiteArrow = getDrawable(R.drawable.arrow_back);
@@ -86,10 +100,7 @@ public class LookupUserActivity extends AppCompatActivity {
                     Log.e("JSON ERROR", "Bad JSON");
                 }
                 String[] adminResponse = pt.sendPostRequest("user/" + txtUserId.getText().toString() + "/edit", jsonUser.toString());
-                String[] banResponse = pt.sendPostRequest("blacklist/", jsonBan.toString());
 
-
-                //if banned post ban
             }
         });
 
