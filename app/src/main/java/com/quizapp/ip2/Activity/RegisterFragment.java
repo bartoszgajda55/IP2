@@ -93,33 +93,41 @@ public class RegisterFragment extends Fragment {
 
 
         JSONObject jsonObj = new JSONObject();
-        PostTask ptUsername = new PostTask();
+        PostTask ptAvailable = new PostTask();
 
 
         //Check to see if username of email is taken
         try {
-                jsonObj.put("email",email);
-                String[] response = ptUsername.sendPostRequest("user/find", jsonObj.toString());
-                if(response[0].equals("400")){
+                jsonObj.put("type","email");
+                jsonObj.put("term",email);
+
+                String[] emailResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString());
+                if(emailResponse[0].equals("200")){
                     Toast.makeText(getActivity(), "Email is taken...", Toast.LENGTH_SHORT).show();
                     return;
-                }else{
-                    jsonObj.remove("email");
-                    jsonObj.put("username",username);
-                    String[] response2 = ptUsername.sendPostRequest("user/find", jsonObj.toString());
-
-                    if(response2[0].equals("400")){
-                        Toast.makeText(getActivity(), "Username is taken...", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
                 }
+
+                jsonObj.remove("type");
+                jsonObj.remove("term");
+
+                jsonObj.put("type", "username");
+                jsonObj.put("term",username);
+                String[] usernameResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString());
+
+                if(usernameResponse[0].equals("200")){
+                    Toast.makeText(getActivity(), "Username is taken...", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+                Log.i("RESPONSES: ", emailResponse[0] + " " + usernameResponse[0]);
 
         }catch(JSONException e){
             Log.e("JSON Error", "Invalid Json");
             return;
         }
 
-        if (username.length() > 32 || username.length() < 3) {
+        if (username.length() > 32 || username.length() < 3 || username.contains(" ")) {
             Toast.makeText(getActivity(), "Username is invalid...", Toast.LENGTH_SHORT).show();
             return;
         }

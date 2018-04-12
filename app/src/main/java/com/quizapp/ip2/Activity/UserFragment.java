@@ -262,16 +262,18 @@ public class UserFragment extends Fragment {
                     if (email.length() > 0) {
 
                         JSONObject jsonObj = new JSONObject();
-                        PostTask ptUsername = new PostTask();
+                        PostTask ptAvailable = new PostTask();
 
-                        jsonObj.put("email", email);
-                        String[] response = ptUsername.sendPostRequest("user/find", jsonObj.toString());
-                        if (response[0].equals("200")) {
+                        jsonObj.put("type","email");
+                        jsonObj.put("term", email);
+
+                        String[] emailResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString());
+                        if (emailResponse[0].equals("404")) {
 
                             // Check if email matches pattern
                             Matcher matcher = RegisterFragment.VALID_EMAIL_ADDRESS_REGEX.matcher(email);
                             if(matcher.find()){
-                                jsonEdittedDetails.put("email", email);
+                                jsonEdittedDetails.put("email",email);
                             }else{
                                 Toast.makeText(getActivity(), "Email is invalid..", Toast.LENGTH_SHORT).show();
                             }
