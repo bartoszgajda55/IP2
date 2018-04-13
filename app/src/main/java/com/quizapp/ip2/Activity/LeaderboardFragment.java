@@ -49,7 +49,8 @@ public class LeaderboardFragment extends Fragment {
             final RequestTask rt = new RequestTask();
 
             try {
-                JSONArray resultset = new JSONArray(rt.sendGetRequest("user?term=XP&order=desc&limit=101"));
+                String[] response = rt.sendGetRequest("user?term=XP&order=desc&limit=101");
+                JSONArray resultset = new JSONArray(response[1]);
 
                 for(int i = 0; i < resultset.length(); i++){
                     if(i < 101){
@@ -87,7 +88,8 @@ public class LeaderboardFragment extends Fragment {
                 RequestTask rankingRequest = new RequestTask();
                 int place = 0;
                 try {
-                    JSONObject jsonRanking = new JSONObject(String.valueOf(rankingRequest.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/ranking")));
+                    String[] rankResponse = rt.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/ranking");
+                    JSONObject jsonRanking = new JSONObject(rankResponse[1]);
                     place = jsonRanking.getInt("position")+1;
                 } catch (JSONException e){
                     Log.e("JSON ERROR", "Error parsing json");

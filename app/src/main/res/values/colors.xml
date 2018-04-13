@@ -22,12 +22,4 @@
 
     <color name ="colorGold">#f5c053</color>
 
-    <string-array name="quiz_colors">
-        <item>Quiz Color</item>
-        <item>Color1</item>
-        <item>Color2</item>
-        <item>Color3</item>
-        <item>Color4</item>
-
-    </string-array>
 </resources>

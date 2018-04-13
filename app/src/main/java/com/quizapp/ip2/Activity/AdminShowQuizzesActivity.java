@@ -1,5 +1,6 @@
 package com.quizapp.ip2.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -32,13 +34,17 @@ public class AdminShowQuizzesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_show_quizzes);
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layoutLinear);
+
+        Button btnCreateQuiz = (Button) findViewById(R.id.btnCreateQuiz);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
         //Load the quizzes
         final RequestTask rt = new RequestTask();
         try {
-            JSONArray resultset = new JSONArray(rt.sendGetRequest("quiz"));
+            String[] response = rt.sendGetRequest("quiz");
+            JSONArray resultset = new JSONArray(response[1]);
             ArrayList<RelativeLayout> foundQuizzes = new ArrayList<>();
 
             for (int i = 0; i < resultset.length(); i++) {
@@ -47,11 +53,13 @@ public class AdminShowQuizzesActivity extends AppCompatActivity {
 
                 QuizPreviewFragment quizPreview = new QuizPreviewFragment();
                 Bundle quizBundle = new Bundle();
+                int quizId = result.getInt("QuizID");
                 String quizTitle = result.getString("QuizName"); //Load name to search by name
                 String quizDesc = result.getString("QuizDescription"); //Load description to search by description
                 String quizImg = result.getString("QuizImage");
                 int quizColor = Color.parseColor("#" + result.getString("QuizColor"));
 
+                quizBundle.putInt("id", quizId);
                 quizBundle.putString("title", quizTitle);
                 quizBundle.putString("desc", quizDesc);
                 quizBundle.putString("img", quizImg);
@@ -81,6 +89,15 @@ public class AdminShowQuizzesActivity extends AppCompatActivity {
                 //todo YES/NO DIALOG, progress lost etc
                 //TODO activity leave animation
                 finish();
+            }
+        });
+
+        btnCreateQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AdminCreateQuizActivity.class);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                startActivity(intent);
             }
         });
     }

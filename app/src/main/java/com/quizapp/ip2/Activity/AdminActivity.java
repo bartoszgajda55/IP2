@@ -1,6 +1,5 @@
 package com.quizapp.ip2.Activity;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -30,8 +29,7 @@ public class AdminActivity extends FragmentedActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
-                startActivity(intent);
+                finish(); //todo animation?
             }
         });
 

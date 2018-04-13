@@ -26,6 +26,7 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        android:elevation="4dp"
         app:theme="@style/toolbarStyle">
     </android.support.v7.widget.Toolbar >
 

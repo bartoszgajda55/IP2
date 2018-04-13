@@ -25,30 +25,26 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class AdminEditQuizActivity extends AppCompatActivity {
+public class AdminCreateQuizActivity extends AppCompatActivity {
 
 
     /***
-     * This class is used when a user clicks on a quiz from the AdminShowQuizzesActivity activity.
-     * It has a button for deleting the quiz and posting the quiz
+     * This class is used when a user clicks on Create quiz from the AdminShowQuizzesActivity activity.
+     * It has a button for posting the quiz
      * It has a scrolling list of question cards associated with the quiz
      *
      * In the future, allow the user to save the quiz without publishing (e.g. may not have 10+ questions, the requirement for a quiz)
      ***/
 
     LinearLayout layoutQuestions;
-    Bundle b;
 
     EditText txtName;
     EditText txtDescription;
 
     Button btnUploadImage;
     Button btnNewQuestion;
-    Button btnRemoveImage;
 
-    Button btnRemoveQuiz;
-    Button btnSave;
-
+    Button btnCreate;
 
     Spinner spinnerColor;
     Spinner spinnerDifficulty;
@@ -57,16 +53,14 @@ public class AdminEditQuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_edit_quiz);
+        setContentView(R.layout.activity_admin_create_quiz);
 
         txtName = (EditText) findViewById(R.id.txtQuizName);
         txtDescription = (EditText) findViewById(R.id.txtQuizDescription);
 
         btnUploadImage = (Button) findViewById(R.id.btnUploadQuizImage);
         btnNewQuestion = (Button) findViewById(R.id.btnNewQuestion);
-        btnRemoveQuiz = (Button) findViewById(R.id.btnDeleteQuiz);
-        btnRemoveImage = (Button) findViewById(R.id.btnDeleteQuizImage);
-        btnSave = (Button) findViewById(R.id.btnSave);
+        btnCreate = (Button) findViewById(R.id.btnCreate);
 
         spinnerColor = (Spinner) findViewById(R.id.spinnerColor);
         spinnerDifficulty = (Spinner) findViewById(R.id.spinnerDifficulty);
@@ -74,6 +68,16 @@ public class AdminEditQuizActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         layoutQuestions = (LinearLayout) findViewById(R.id.layoutQuestions);
+
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
+        toolbar.setTitle("Create Quiz");
+        toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        btnUploadImage.setTextColor(new DarkenColorHelper().darkenColor(getResources().getColor(R.color.colorPrimary)));
+
+        btnCreate.setBackgroundColor(new DarkenColorHelper().darkenColor(getResources().getColor(R.color.colorPrimary)));
+        btnNewQuestion.setBackgroundColor(new DarkenColorHelper().darkenColor(getResources().getColor(R.color.colorPrimary)));
+
 
         Drawable whiteArrow = getDrawable(R.drawable.arrow_back);
         whiteArrow.setTint(getResources().getColor(R.color.colorLight));
@@ -95,41 +99,19 @@ public class AdminEditQuizActivity extends AppCompatActivity {
             }
         });
 
-        btnRemoveImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PostTask imagePost = new PostTask();
-                JSONObject jsonNoImage = new JSONObject();
-                try {
-                    jsonNoImage.put("quizimage", "");
-                } catch (JSONException e) {
-                    Log.e("RESULT: ", "Bad JSON");
-                }
-                String[] response = imagePost.sendPostRequest("quiz/" + getIntent().getExtras().getInt("id") + "/edit", jsonNoImage.toString());
-
-                if (response[0].equals("200")){
-                    Toast.makeText(getApplicationContext(), "Quiz image removed...", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PostTask quizPost = new PostTask();
                 JSONObject jsonQuiz = new JSONObject();
 
                 try {
-                    if((!(txtName.getText().toString().equals("") || txtDescription.getText().toString().equals(""))) && txtName.length() <= 32 && txtDescription.length() <= 230){
+                    if(!(txtName.getText().toString().equals("") || txtDescription.getText().toString().equals(""))){
                         jsonQuiz.put("quizname", txtName.getText().toString());
                         if(!(spinnerDifficulty.getSelectedItem().equals("Quiz Difficulty"))){
                             String difficulty, description;
                             difficulty = spinnerDifficulty.getSelectedItem().toString();
                             description = txtDescription.getText().toString() + ", DIFFICULTY: " + difficulty;
-
 
                             jsonQuiz.put("quizdescription", description);
 
@@ -156,7 +138,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
                         }
 
                     }else{
-                        Toast.makeText(getApplicationContext(), "Invalid fields (Values may be too long)...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Please fill out all fields...", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     Log.e("RESULT: ", "Bad JSON");
@@ -171,28 +153,9 @@ public class AdminEditQuizActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        b = getIntent().getExtras();
 
-        toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
-        toolbar.setTitle("Editing quiz: \"" + b.getString("title") + "\"");
-        getWindow().setStatusBarColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
-        toolbar.setBackgroundColor(b.getInt("color"));
 
-        txtName.setText(b.getString("title"));
-
-        String fullDescription = b.getString("desc");
-        int difficultyIndex = b.getString("desc").lastIndexOf(", DIFFICULTY");
-        String newDescription = fullDescription.substring(0, difficultyIndex);
-        txtDescription.setText(newDescription);
-
-        btnUploadImage.setTextColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
-        btnRemoveImage.setTextColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
-
-        btnRemoveQuiz.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
-        btnSave.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
-        btnNewQuestion.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
-
-        loadQuestions();
+        //loadQuestions();
     }
 
     public void loadQuestions(){

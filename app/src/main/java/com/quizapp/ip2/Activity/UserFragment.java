@@ -342,43 +342,47 @@ public class UserFragment extends Fragment {
 
 
             try{
+                String[] allFriendsResponse = rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends");
+                JSONArray resultset = new JSONArray(allFriendsResponse[1]);
 
-            JSONArray resultset = new JSONArray(rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends"));
+                if(resultset.length()>0) {
+                    for (int i = 0; i < resultset.length(); i++) {
+                        JSONObject jsonObject = resultset.getJSONObject(i);
+                        UserPreviewFragment frag = new UserPreviewFragment();
+                        Bundle bundle = new Bundle();
+                        int place = i + 1;
 
-            if(resultset.length()>0){
-            for(int i=0; i<resultset.length(); i++) {
-                JSONObject jsonObject = resultset.getJSONObject(i);
-                UserPreviewFragment frag = new UserPreviewFragment();
-                Bundle bundle = new Bundle();
-                int place = i + 1;
+                        JSONArray resultUserArray;
 
-                JSONArray resultUserArray;
+                        //If user 1 = user ELSE user 2 = user
+                        if (jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())) {
+                            String[] frientRt = rt.sendGetRequest("user/"+jsonObject.get("User2ID"));
+                            resultUserArray = new JSONArray(frientRt[1]);
+                        } else {
+                            String[] frientRt = rt.sendGetRequest("user/"+jsonObject.get("User1ID"));
+                            resultUserArray = new JSONArray(frientRt[1]);
+                        }
 
-                //If user 1 = user ELSE user 2 = user
-                if(jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())){
-                    resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User2ID"))));
-                }else{
-                    resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User1ID"))));
+
+                        JSONObject jsonFriend = resultUserArray.getJSONObject(0);
+
+                        String username = jsonFriend.getString("Username");
+                        String level = Integer.toString(new LevelParser(jsonFriend.getInt("XP")).getLevel());
+                        bundle.putInt("place", place);
+                        bundle.putString("username", username);
+                        bundle.putString("level", level);
+                        bundle.putInt("color", R.color.colorLightGray);
+                        bundle.putInt("textColor", R.color.colorDarkGray);
+                        bundle.putFloat("alpha", 0.25F);
+
+                        frag.setArguments(bundle);
+                        RelativeLayout rel = new RelativeLayout(getContext());
+                        rel.setId(View.generateViewId());
+                        getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
+                        friendsLayout.addView(rel);
+                    }
                 }
 
-
-                JSONObject jsonFriend = resultUserArray.getJSONObject(0);
-
-                String username =  jsonFriend.getString("Username");
-                String level = Integer.toString(new LevelParser(jsonFriend.getInt("XP")).getLevel());
-                bundle.putInt("place", place);
-                bundle.putString("username", username);
-                bundle.putString("level", level);
-                bundle.putInt("color", R.color.colorLightGray);
-                bundle.putInt("textColor", R.color.colorDarkGray);
-                bundle.putFloat("alpha", 0.25F);
-
-                frag.setArguments(bundle);
-                RelativeLayout rel = new RelativeLayout(getContext());
-                rel.setId(View.generateViewId());
-                getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
-                friendsLayout.addView(rel);
-            }}
 
             }catch(Exception e){
                 Log.e("ERROR","No friends");
@@ -396,8 +400,8 @@ public class UserFragment extends Fragment {
             RequestTask rt = new RequestTask();
 
             try{
-
-                JSONArray resultset = new JSONArray(rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends"));
+                String[] responseFriends = rt.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/friends");
+                JSONArray resultset = new JSONArray(responseFriends[1]);
                 if(resultset.length()>0){
                 for(int i=0; i<resultset.length(); i++) {
                     JSONObject jsonObject = resultset.getJSONObject(i);
@@ -410,9 +414,12 @@ public class UserFragment extends Fragment {
 
                     //If user 1 = user ELSE user 2 = user
                     if(jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())){
-                        resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User2ID"))));
+                        String[] friendResponse = rt.sendGetRequest("user/"+jsonObject.get("User2ID"));
+                        resultUserArray= new JSONArray(friendResponse[1]);
                     }else{
-                        resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User1ID"))));
+                        String[] friendResponse = rt.sendGetRequest("user/ " + jsonObject.get("User1ID"));
+                        resultUserArray= new JSONArray(friendResponse[1]);
+
                     }
 
                     JSONObject jsonFriend = resultUserArray.getJSONObject(0);

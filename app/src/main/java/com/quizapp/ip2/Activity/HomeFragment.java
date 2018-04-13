@@ -87,7 +87,8 @@ public class HomeFragment extends Fragment {
         final RequestTask rt = new RequestTask();
 
         try {
-            JSONArray resultset = new JSONArray(rt.sendGetRequest("quiz"));
+            String[] response = rt.sendGetRequest("quiz");
+            JSONArray resultset = new JSONArray(response[1]);
             for(int i = 0; i < resultset.length(); i++){
                 JSONObject result = resultset.getJSONObject(i);
 

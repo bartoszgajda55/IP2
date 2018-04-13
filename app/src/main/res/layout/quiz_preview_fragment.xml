@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imgQuizImg"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:layout_marginTop="5dp"
         android:text="Title"
         android:textColor="@color/colorLight"
@@ -42,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtTitle"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:layout_marginTop="3dp"
         android:text="Description"
         android:textColor="@color/colorLight" />

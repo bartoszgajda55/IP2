@@ -40,7 +40,7 @@ public class UserHelper {
             jsonUser.put("profileimage", getUser().getProfilePicture());
             jsonUser.put("adminstatus", getUser().getAdminStatus());
             jsonUser.put("xp", getUser().getXp());
-            jsonUser.put("quizzesscompleted", getUser().getQuizzessCompleted());
+            jsonUser.put("quizesscompleted", getUser().getQuizzessCompleted());
             jsonUser.put("correctanswers", getUser().getCorrectAnswers());
 
             PostTask pt = new PostTask();

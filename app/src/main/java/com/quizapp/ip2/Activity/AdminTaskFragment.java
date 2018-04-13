@@ -89,7 +89,8 @@ public class AdminTaskFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject();
 
                             try {
-                                jsonObject.put("email", text.getText().toString());
+                                jsonObject.put("type", "username");
+                                jsonObject.put("term", text.getText().toString());
 
                                 String[] response = pt.sendPostRequest("user/find", jsonObject.toString());
 
@@ -112,11 +113,11 @@ public class AdminTaskFragment extends Fragment {
                                     b.putInt("quizzescomplete", jsonResponse.getInt("QuizzessCompleted"));
                                     b.putInt("correctanswers", jsonResponse.getInt("CorrectAnswers"));
 
-                                    //Put ranking
+                                    //Put ranking //todo fix showing 0
                                     RequestTask requestRanking = new RequestTask();
-                                    String rankingResponse = requestRanking.sendGetRequest("user/" + jsonResponse.getInt("UserID") + "/ranking");
-                                    if(!rankingResponse.equals("[]")){
-                                        JSONObject jsonRanking = new JSONObject(rankingResponse);
+                                    String[] rankingResponse = requestRanking.sendGetRequest("user/" + jsonResponse.getInt("UserID") + "/ranking");
+                                    if(!rankingResponse[0].equals("400")){
+                                        JSONObject jsonRanking = new JSONObject(rankingResponse[1]);
                                         b.putInt("ranking", jsonRanking.getInt("position"));
                                     } else{
                                         b.putInt("ranking", 0);
@@ -124,9 +125,10 @@ public class AdminTaskFragment extends Fragment {
 
                                     //TODO Ban the user from UI
                                     RequestTask requestBanned = new RequestTask();
-                                    String banResponse = requestBanned.sendGetRequest("blacklist/"+jsonResponse.getInt("UserID"));
+                                    String[] banResponse = requestBanned.sendGetRequest("blacklist/"+jsonResponse.getInt("UserID"));
                                     boolean banBool;
-                                    if(!banResponse.equals("[]")){
+
+                                    if(banResponse[0].equals("200")){
                                         banBool = true;
                                     }else{
                                         banBool = false;

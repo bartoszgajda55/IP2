@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            
+
             <RelativeLayout
                 android:id="@+id/layoutQuizDetails"
                 android:layout_width="match_parent"
@@ -98,42 +98,23 @@
 
                 <Button
                     android:id="@+id/btnUploadQuizImage"
-                    android:layout_width="160dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Upload Quiz Image"
                     android:theme="@style/buttonFlat"
+                    android:layout_centerHorizontal="true"
                     android:layout_below="@id/spinnerColor"
                     android:layout_alignParentLeft="true"
                     />
-                <Button
-                    android:id="@+id/btnDeleteQuizImage"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:text="Remove Quiz Image"
-                    android:theme="@style/buttonFlat"
-                    android:layout_below="@id/spinnerColor"
-                    android:layout_alignParentRight="true"
-                    />
 
                 <Button
-                    android:id="@+id/btnSave"
-                    android:layout_width="160dp"
+                    android:id="@+id/btnCreate"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Save Quiz"
+                    android:text="Create Quiz"
                     android:theme="@style/buttonPrimary"
-                    android:layout_below="@id/btnDeleteQuizImage"
+                    android:layout_below="@id/btnUploadQuizImage"
                     />
-
-                <Button
-                    android:id="@+id/btnDeleteQuiz"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:text="Delete Quiz"
-                    android:theme="@style/buttonPrimary"
-                    android:layout_below="@id/btnDeleteQuizImage"
-                    android:layout_alignParentRight="true"
-                    />
-
 
 
             </RelativeLayout>
@@ -161,7 +142,7 @@
                 android:paddingBottom="30dp"
                 >
             </LinearLayout>
-            
+
         </LinearLayout>
     </ScrollView>
 

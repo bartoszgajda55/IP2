@@ -1,5 +1,7 @@
 package com.quizapp.ip2.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -7,14 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Helper.PostTask;
-import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.R;
 
 import org.json.JSONException;
@@ -29,7 +34,7 @@ public class LookupUserActivity extends AppCompatActivity {
 
         Button btnSave = (Button) findViewById(R.id.btnSave);
 
-        Bundle args = getIntent().getExtras();
+        final Bundle args = getIntent().getExtras();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -45,7 +50,7 @@ public class LookupUserActivity extends AppCompatActivity {
         TextView txtCorrectAnswers = (TextView) findViewById(R.id.txtCorrect);
 
         final Switch switchAdmin = (Switch) findViewById(R.id.switchAdmin);
-        Switch switchBanned = (Switch) findViewById(R.id.switchBanned);
+        final Switch switchBanned = (Switch) findViewById(R.id.switchBanned);
 
         ImageView imgProfilePic = (ImageView) findViewById(R.id.imgProfilePic);
         imgProfilePic.setBackground(getResources().getDrawable(R.drawable.rounded));
@@ -84,22 +89,81 @@ public class LookupUserActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { //todo tidy up ban, response 500 when user already banned
-                PostTask pt = new PostTask();
+                final PostTask pt = new PostTask();
 
-                JSONObject jsonUser = new JSONObject();
-                JSONObject jsonBan = new JSONObject();
+                final JSONObject jsonUser = new JSONObject();
+                final JSONObject jsonBan = new JSONObject();
                 try {
                     int boolAdmin = (switchAdmin.isChecked()) ? 1 : 0;
                     jsonUser.put("adminstatus", boolAdmin);
 
-                    jsonBan.put("userid", txtUserId.getText().toString());
+                    String[] adminResponse = pt.sendPostRequest("user/" + txtUserId.getText().toString() + "/edit", jsonUser.toString());
+                    if(!adminResponse[0].equals("200")){
+                        Toast.makeText(getApplicationContext(), "Error finding user...", Toast.LENGTH_SHORT).show();
+                    }
+
+                    int updatedBanned = (switchBanned.isChecked()) ? 1 : 0;
+                    int bundleBanned = (args.getBoolean("banned")) ? 1 : 0;
+
+                    if(bundleBanned == 1 && updatedBanned == 0){
+                        //Unban
+                        //TODO UNBAN USER, MODIFY POSTREQUEST TO ACCEPT METHOD TYPE E.G. POST OR DELETE
 
 
+                    }else if(bundleBanned == 0 && updatedBanned == 1){
+                        //Ban
+                        AlertDialog.Builder builder = new AlertDialog.Builder(LookupUserActivity.this);
+                        builder.setTitle("Specify Ban Reason");
+
+                        final EditText txtBanReason = new EditText(LookupUserActivity.this);
+                        txtBanReason.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+
+                        LinearLayout linearLayout = new LinearLayout(LookupUserActivity.this);
+                        linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                        int paddingDp = 20;
+                        int paddingPx = (int)(paddingDp * getResources().getDisplayMetrics().density);
+                        linearLayout.setPadding(paddingPx, 0, paddingPx, 0);
+
+                        linearLayout.addView(txtBanReason);
+                        builder.setView(linearLayout);
+
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which){
+                                dialog.dismiss();
+                            }
+                        });
+
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                                try {
+                                    jsonBan.put("userid", txtUserId.getText().toString());
+                                    jsonBan.put("reason", txtBanReason.getText().toString());
+                                } catch (JSONException e){
+                                    Log.e("JSON ERROR", "Error parsing json");
+                                }
+
+                                String banResponse[] = pt.sendPostRequest("blacklist", jsonBan.toString());
+                                if(!banResponse[0].equals("201")){
+                                    Toast.makeText(getApplicationContext(), "Error banning user...", Toast.LENGTH_SHORT).show();
+                                }
+
+                                Toast.makeText(getApplicationContext(), "Changes saved...", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
+
+                        AlertDialog ad = builder.create();
+                        ad.show();
+                    }
 
                 } catch (JSONException e){
                     Log.e("JSON ERROR", "Bad JSON");
                 }
-                String[] adminResponse = pt.sendPostRequest("user/" + txtUserId.getText().toString() + "/edit", jsonUser.toString());
 
             }
         });

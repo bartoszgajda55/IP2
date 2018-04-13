@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,7 +66,8 @@ public class RecentQuizPreviewFragment extends Fragment {
 
                 RequestTask rt = new RequestTask();
                 try {
-                    JSONArray jsonQuestions = new JSONArray(rt.sendGetRequest("quiz/" + id + "/questions"));
+                    String[] response = rt.sendGetRequest("quiz/"+ id + "/questions");
+                    JSONArray jsonQuestions = new JSONArray(response[1]);
 
 
                     for(int i=0; i<jsonQuestions.length(); i++){

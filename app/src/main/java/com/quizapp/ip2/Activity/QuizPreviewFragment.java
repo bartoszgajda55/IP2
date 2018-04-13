@@ -74,14 +74,13 @@ public class QuizPreviewFragment extends Fragment {
 
                 RequestTask rt = new RequestTask();
                 try {
-                    JSONArray jsonQuestions = new JSONArray(rt.sendGetRequest("quiz/" + id + "/questions"));
+                    String[] response = rt.sendGetRequest("quiz/" + id + "/questions");
+                    JSONArray jsonQuestions = new JSONArray(response[1]);
 
 
                     for(int i=0; i<jsonQuestions.length(); i++){
 
                         JSONObject jsonObj = jsonQuestions.getJSONObject(i);
-
-                        //TODO get quiz id?
 
                         int questionId = jsonObj.getInt("QuestionID");
 
@@ -111,14 +110,13 @@ public class QuizPreviewFragment extends Fragment {
                     quiz.setQuestions(arrayList);
 
 
+
                 }catch (JSONException e){
                     Log.e("JSON ERROR", "Invalid Json");
                 }
 
-
+                QuizHelper.setQuiz(quiz);
                 if(!getActivity().getClass().equals(AdminShowQuizzesActivity.class)) {
-
-                    QuizHelper.setQuiz(quiz);
 
                     Intent intent = new Intent(getContext(), QuizActivity.class);
                     Bundle bundle = new Bundle();
