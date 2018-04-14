@@ -96,8 +96,9 @@ public class AdminShowQuizzesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AdminCreateQuizActivity.class);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
             }
         });
     }

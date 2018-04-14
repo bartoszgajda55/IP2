@@ -66,10 +66,20 @@ public class AdminTaskFragment extends Fragment {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Lookup User");
+                    builder.setMessage("Enter the user's username...");
                     final EditText text = new EditText(getActivity());
-                    text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    builder.setMessage("Enter the user's email...");
-                    builder.setView(text);
+                    text.setSingleLine();
+                    text.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+
+                    LinearLayout linearLayout = new LinearLayout(getActivity());
+                    linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                    int paddingDp = 20;
+                    int paddingPx = (int)(paddingDp * getResources().getDisplayMetrics().density);
+                    linearLayout.setPadding(paddingPx, 0, paddingPx, 0);
+
+                    linearLayout.addView(text);
+                    builder.setView(linearLayout);
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which){

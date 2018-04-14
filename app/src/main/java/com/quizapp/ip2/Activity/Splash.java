@@ -85,12 +85,12 @@ public class Splash extends AppCompatActivity {
                 if(!success){
                     Intent intent = new Intent(Splash.this, AuthenticationActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
                 } else{
                     //TODO Prevent banned users from logging in, go to authentication activity
                     Intent intent = new Intent(Splash.this, HomepageActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
                 }
 
             }

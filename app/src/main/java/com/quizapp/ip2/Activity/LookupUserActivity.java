@@ -113,7 +113,7 @@ public class LookupUserActivity extends AppCompatActivity {
                     }else if(bundleBanned == 0 && updatedBanned == 1){
                         //Ban
                         AlertDialog.Builder builder = new AlertDialog.Builder(LookupUserActivity.this);
-                        builder.setTitle("Specify Ban Reason");
+                        builder.setTitle("Ban Reason");
 
                         final EditText txtBanReason = new EditText(LookupUserActivity.this);
                         txtBanReason.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);

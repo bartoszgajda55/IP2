@@ -12,6 +12,7 @@ import java.util.Collections;
 public class Quiz {
 
     //todo id and methods
+    private int id;
     private String title, description;
     private int color; //color resource
     private String image;
@@ -21,12 +22,21 @@ public class Quiz {
     public Quiz() {
     }
 
-    public Quiz(String title, String description, Integer color, String image){
+    public Quiz(int id, String title, String description, Integer color, String image){
+        this.id = id;
         this.title = title;
         this.description = description;
         this.color = color;
+        this.image = image;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

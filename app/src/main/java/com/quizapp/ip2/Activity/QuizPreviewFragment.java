@@ -103,6 +103,7 @@ public class QuizPreviewFragment extends Fragment {
                         arrayList.add(question);
                     }
 
+                    quiz.setId(id);
                     quiz.setTitle(title);
                     quiz.setDescription(desc);
                     quiz.setColor(color);
@@ -138,7 +139,7 @@ public class QuizPreviewFragment extends Fragment {
                     bundle.putString("title", title);
                     bundle.putString("desc", desc);
                     bundle.putInt("color", color);
-                    bundle.putParcelableArrayList("questions", arrayList);
+                    //bundle.putParcelableArrayList("questions", arrayList);
                     intent.putExtras(bundle);
 
                     startActivity(intent);

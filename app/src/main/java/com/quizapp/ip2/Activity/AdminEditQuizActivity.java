@@ -84,6 +84,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
                 //todo YES/NO DIALOG, progress lost etc
                 //TODO activity leave animation
                 finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -141,11 +142,13 @@ public class AdminEditQuizActivity extends AppCompatActivity {
                         //move
                         if(!(spinnerColor.getSelectedItem().equals("Quiz Color"))){
                             jsonQuiz.put("quizcolor", QuizColor.valueOf(spinnerColor.getSelectedItem().toString().toUpperCase()));
-                            String[] response = quizPost.sendPostRequest("quiz/" + getIntent().getExtras().getInt("id") + "/edit", jsonQuiz.toString());
+                            String[] response = quizPost.sendPostRequest("quiz/" + QuizHelper.getQuiz().getId() + "/edit", jsonQuiz.toString());
                             if(response[0].equals("200")){
                                 Toast.makeText(getApplicationContext(), "Quiz updated...", Toast.LENGTH_SHORT).show();
                                 finish();
                             } else{
+                                Log.e("SUBMIT JSON: ", jsonQuiz.toString());
+                                Log.e("RESPONSE: ", response[0] + ", " + response[1]);
                                 Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                             }
 
@@ -197,9 +200,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
 
     public void loadQuestions(){
 
-        //ArrayList<Question> questions = b.getParcelableArrayList("questions");
         ArrayList<Question> questions = QuizHelper.getQuiz().getQuestions();
-        System.out.println(questions.get(0).getQuestionString());
 
         //TODO Limit to 6 or 7 questions per page, load more buttons
         for(int i = 0; i < questions.size(); i++){
@@ -209,8 +210,17 @@ public class AdminEditQuizActivity extends AppCompatActivity {
             QuestionPreviewFragment questionPreview = new QuestionPreviewFragment();
 
             Bundle bundle = new Bundle();
+
+            bundle.putInt("id", q.getQuestionId());
             bundle.putString("question", q.getQuestionString());
+            bundle.putString("answer", q.getCorrectAnswer());
+            bundle.putString("wrongAnswer1", q.getWrongAnswers().get(0));
+            bundle.putString("wrongAnswer2", q.getWrongAnswers().get(1));
+            bundle.putString("wrongAnswer3", q.getWrongAnswers().get(2));
             bundle.putString("img", q.getQuestionImage());
+            bundle.putInt("color", b.getInt("color"));
+
+
             questionPreview.setArguments(bundle);
             RelativeLayout rel = new RelativeLayout(this);
             rel.setId(View.generateViewId());

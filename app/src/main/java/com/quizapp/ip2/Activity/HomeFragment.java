@@ -87,18 +87,25 @@ public class HomeFragment extends Fragment {
         final RequestTask rt = new RequestTask();
 
         try {
-            String[] response = rt.sendGetRequest("quiz");
-            JSONArray resultset = new JSONArray(response[1]);
-            for(int i = 0; i < resultset.length(); i++){
-                JSONObject result = resultset.getJSONObject(i);
+            String[] featuredResponse = rt.sendGetRequest("featuredQuiz");
+            JSONArray jsonFeaturedQuizzesArray = new JSONArray(featuredResponse[1]);
+            for(int i = 0; i < jsonFeaturedQuizzesArray.length(); i++){
+
+                JSONArray jsonFeaturedQuizArray = new JSONArray(featuredResponse[1]);
+                JSONObject jsonFeaturedQuiz = jsonFeaturedQuizArray.getJSONObject(i);
+                int quizId = jsonFeaturedQuiz.getInt("QuizID");
+
+                String[] quizResponse = rt.sendGetRequest("quiz/"+quizId);
+                System.out.println("//RESPONSE// "+quizResponse[1]);
+                JSONObject jsonQuiz = new JSONObject(quizResponse[1]);
 
                 QuizPreviewFragment quizPreview = new QuizPreviewFragment();
                 Bundle featuredBundle = new Bundle();
-                String featuredTitle = result.getString("QuizName");
-                String featuredDesc = result.getString("QuizDescription");
-                String featuredImg = result.getString("QuizImage");
-                int featuredId = result.getInt("QuizID");
-                int featuredColor = Color.parseColor("#" + result.getString("QuizColor"));
+                String featuredTitle = jsonQuiz.getString("QuizName");
+                String featuredDesc = jsonQuiz.getString("QuizDescription");
+                String featuredImg = jsonQuiz.getString("QuizImage");
+                int featuredId = jsonQuiz.getInt("QuizID");
+                int featuredColor = Color.parseColor("#" + jsonQuiz.getString("QuizColor"));
 
                 featuredBundle.putString("title", featuredTitle);
                 featuredBundle.putString("desc", featuredDesc);

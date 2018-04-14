@@ -88,6 +88,8 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
                 //todo YES/NO DIALOG, progress lost etc
                 //TODO activity leave animation
                 finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
             }
         });
 
@@ -123,9 +125,9 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
                         //move
                         if(!(spinnerColor.getSelectedItem().equals("Quiz Color"))){
                             jsonQuiz.put("quizcolor", QuizColor.valueOf(spinnerColor.getSelectedItem().toString().toUpperCase()));
-                            String[] response = quizPost.sendPostRequest("quiz/" + getIntent().getExtras().getInt("id") + "/edit", jsonQuiz.toString());
-                            if(response[0].equals("200")){
-                                Toast.makeText(getApplicationContext(), "Quiz updated...", Toast.LENGTH_SHORT).show();
+                            String[] response = quizPost.sendPostRequest("quiz", jsonQuiz.toString());
+                            if(response[0].equals("201")){
+                                Toast.makeText(getApplicationContext(), "Quiz Created...", Toast.LENGTH_SHORT).show();
                                 finish();
                             } else{
                                 Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
