@@ -44,7 +44,7 @@ public class UserHelper {
             jsonUser.put("correctanswers", getUser().getCorrectAnswers());
 
             PostTask pt = new PostTask();
-            String[] response = pt.sendPostRequest("user/"+getUser().getUserID()+"/edit", jsonUser.toString());
+            String[] response = pt.sendPostRequest("user/"+getUser().getUserID()+"/edit", jsonUser.toString(), "POST");
 
             if(!response[0].equals("200")){
                 Log.e("POST ERROR", "Could not post... " + response[0] + " " + response[1]);

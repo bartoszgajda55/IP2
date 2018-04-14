@@ -47,7 +47,7 @@ public class Splash extends AppCompatActivity {
                 jsonObject.put("email", email);
                 jsonObject.put("password", password);
 
-                String[] response = pt.sendPostRequest("user/login", jsonObject.toString());
+                String[] response = pt.sendPostRequest("user/login", jsonObject.toString(), "POST");
                 if(response[0].equals("200")){
                     //Authentication successfull
                     success = true;

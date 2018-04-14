@@ -53,7 +53,7 @@ public class LoginFragment extends Fragment {
                     jsonObject.put("email", email);
                     jsonObject.put("password", new StringHasher().hashString(txtPassword.getText().toString()));
 
-                    String[] response = pt.sendPostRequest("user/login", jsonObject.toString());
+                    String[] response = pt.sendPostRequest("user/login", jsonObject.toString(), "POST");
                     if(response[0].equals("200")){
 
                         //Set UserHelper to user

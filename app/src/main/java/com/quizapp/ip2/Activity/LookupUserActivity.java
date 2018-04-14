@@ -97,7 +97,7 @@ public class LookupUserActivity extends AppCompatActivity {
                     int boolAdmin = (switchAdmin.isChecked()) ? 1 : 0;
                     jsonUser.put("adminstatus", boolAdmin);
 
-                    String[] adminResponse = pt.sendPostRequest("user/" + txtUserId.getText().toString() + "/edit", jsonUser.toString());
+                    String[] adminResponse = pt.sendPostRequest("user/" + txtUserId.getText().toString() + "/edit", jsonUser.toString(), "POST");
                     if(!adminResponse[0].equals("200")){
                         Toast.makeText(getApplicationContext(), "Error finding user...", Toast.LENGTH_SHORT).show();
                     }
@@ -147,7 +147,7 @@ public class LookupUserActivity extends AppCompatActivity {
                                     Log.e("JSON ERROR", "Error parsing json");
                                 }
 
-                                String banResponse[] = pt.sendPostRequest("blacklist", jsonBan.toString());
+                                String banResponse[] = pt.sendPostRequest("blacklist", jsonBan.toString(), "POST");
                                 if(!banResponse[0].equals("201")){
                                     Toast.makeText(getApplicationContext(), "Error banning user...", Toast.LENGTH_SHORT).show();
                                 }

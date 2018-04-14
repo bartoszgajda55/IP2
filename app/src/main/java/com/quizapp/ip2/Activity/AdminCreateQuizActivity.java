@@ -1,11 +1,15 @@
 package com.quizapp.ip2.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -16,10 +20,10 @@ import android.widget.Toast;
 import com.quizapp.ip2.Helper.DarkenColorHelper;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizColor;
-import com.quizapp.ip2.Helper.QuizHelper;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,6 +53,10 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
     Spinner spinnerColor;
     Spinner spinnerDifficulty;
     Toolbar toolbar;
+
+    String quizImage;
+
+    public static ArrayList<Question> questionsList = new ArrayList<>(); //todo remember to clear this when you leave the page
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,18 +104,54 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
         btnUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Open camera roll, select image, upload to server. server needs php script for accepting images
-                //todo consider pasting new image url????
+                AlertDialog.Builder builder = new AlertDialog.Builder(AdminCreateQuizActivity.this);
+                builder.setTitle("Set Quiz Image");
+                builder.setMessage("Enter the image URL of the image you wish to use\n");
+
+                final EditText txtImageUrl = new EditText(AdminCreateQuizActivity.this);
+
+                txtImageUrl.setHint("Image URL...");
+                txtImageUrl.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+
+                LinearLayout linearLayout = new LinearLayout(AdminCreateQuizActivity.this);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                int paddingDp = 20;
+                int paddingPx = (int)(paddingDp * getResources().getDisplayMetrics().density);
+                linearLayout.setPadding(paddingPx, 0, paddingPx, 0);
+
+                linearLayout.addView(txtImageUrl);
+                builder.setView(linearLayout);
+
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setPositiveButton("APPLY", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        quizImage = txtImageUrl.getText().toString();
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Image set...", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                AlertDialog ad = builder.create();
+                ad.show();
             }
         });
 
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PostTask quizPost = new PostTask();
+                //upload quizhelper to database
+                PostTask post = new PostTask();
                 JSONObject jsonQuiz = new JSONObject();
-
                 try {
+                    jsonQuiz.put("quizimage", quizImage);
                     if(!(txtName.getText().toString().equals("") || txtDescription.getText().toString().equals(""))){
                         jsonQuiz.put("quizname", txtName.getText().toString());
                         if(!(spinnerDifficulty.getSelectedItem().equals("Quiz Difficulty"))){
@@ -116,35 +160,72 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
                             description = txtDescription.getText().toString() + ", DIFFICULTY: " + difficulty;
 
                             jsonQuiz.put("quizdescription", description);
-
                         } else {
                             Toast.makeText(getApplicationContext(), "Please select a difficulty...", Toast.LENGTH_SHORT).show();
                             return;
                         }
-
-                        //move
                         if(!(spinnerColor.getSelectedItem().equals("Quiz Color"))){
-                            jsonQuiz.put("quizcolor", QuizColor.valueOf(spinnerColor.getSelectedItem().toString().toUpperCase()));
-                            String[] response = quizPost.sendPostRequest("quiz", jsonQuiz.toString());
-                            if(response[0].equals("201")){
-                                Toast.makeText(getApplicationContext(), "Quiz Created...", Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else{
-                                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                            }
 
+
+                            jsonQuiz.put("quizcolor", QuizColor.valueOf(spinnerColor.getSelectedItem().toString().toUpperCase()));
+                            if(questionsList.size() >= 10){
+                                /**Post quiz to database**/
+                                String[] quizResponse = post.sendPostRequest("quiz", jsonQuiz.toString(), "POST");
+
+                                /**Post questions to database **/
+                                JSONObject jsonObject = new JSONObject(quizResponse[1]);
+                                int newQuizId =jsonObject.getInt("quizid");
+
+                                JSONObject jsonAllQuizQuestions = new JSONObject();
+                                jsonAllQuizQuestions.put("quizid", newQuizId);
+                                JSONArray jsonQuestionArray = new JSONArray();
+                                for(int i = 0; i < questionsList.size(); i++){
+                                    JSONObject jsonQuestion = new JSONObject();
+                                    jsonQuestion.put("questionstring", questionsList.get(i).getQuestionString());
+                                    jsonQuestion.put("questionimage", questionsList.get(i).getQuestionImage());
+                                    jsonQuestion.put("correctanswerstring", questionsList.get(i).getCorrectAnswer());
+                                    jsonQuestion.put("wronganswerstring", questionsList.get(i).getWrongAnswers().get(0));
+                                    jsonQuestion.put("wronganswerstring2", questionsList.get(i).getWrongAnswers().get(1));
+                                    jsonQuestion.put("wronganswerstring3", questionsList.get(i).getWrongAnswers().get(2));
+                                    jsonQuestionArray.put(jsonQuestion);
+                                }
+                                jsonAllQuizQuestions.put("questions", jsonQuestionArray);
+                                String[] allQuestionsResponse = post.sendPostRequest("question/many", jsonAllQuizQuestions.toString(),"POST");
+
+                                if(quizResponse[0].equals("201") && allQuestionsResponse.equals("201")){
+                                    Toast.makeText(getApplicationContext(), "Quiz Created...", Toast.LENGTH_SHORT).show();
+                                    finish();
+
+                                } else{
+                                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "A quiz must have atleast 10 questions", Toast.LENGTH_SHORT).show();
+                            }
                         }else{
                             Toast.makeText(getApplicationContext(), "Please select a Quiz Color...", Toast.LENGTH_SHORT).show();
-                            jsonQuiz.remove("quiztitle");
+                            jsonQuiz.remove("quizname");
                             jsonQuiz.remove("quizdescription");
                         }
-
                     }else{
                         Toast.makeText(getApplicationContext(), "Please fill out all fields...", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     Log.e("RESULT: ", "Bad JSON");
                 }
+            }
+        });
+
+        btnNewQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AdminEditQuestionActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("editingquestion", false);
+                bundle.putBoolean("editingquiz", false);
+                intent.putExtra("bundle", bundle);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -157,22 +238,15 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
         super.onResume();
 
 
-        //loadQuestions();
+        loadQuestions();
     }
 
     public void loadQuestions(){
+        layoutQuestions.removeAllViews();
 
-        //ArrayList<Question> questions = b.getParcelableArrayList("questions");
-        ArrayList<Question> questions = QuizHelper.getQuiz().getQuestions();
-        System.out.println(questions.get(0).getQuestionString());
-
-        //TODO Limit to 6 or 7 questions per page, load more buttons
-        for(int i = 0; i < questions.size(); i++){
-
-            //Load each question individually
-            Question q = questions.get(i);
+        for(int i = 0; i < questionsList.size(); i++){
+            Question q = questionsList.get(i);
             QuestionPreviewFragment questionPreview = new QuestionPreviewFragment();
-
             Bundle bundle = new Bundle();
             bundle.putString("question", q.getQuestionString());
             bundle.putString("img", q.getQuestionImage());
@@ -181,11 +255,7 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
             rel.setId(View.generateViewId());
             getSupportFragmentManager().beginTransaction().add(rel.getId(), questionPreview).commit();
             layoutQuestions.addView(rel);
-
-
-
         }
-
     }
 
 }

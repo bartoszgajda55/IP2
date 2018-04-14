@@ -50,6 +50,7 @@ public class QuestionPreviewFragment extends Fragment {
             public void onClick(View v) {
                 //TODO LOAD AdminEditQuestionActivity for this question
                 Intent intent = new Intent(getContext(), AdminEditQuestionActivity.class);
+                args.putBoolean("editingquestion", true);
                 intent.putExtra("bundle", args);
 
                 startActivity(intent);

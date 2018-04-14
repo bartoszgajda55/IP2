@@ -1,11 +1,15 @@
 package com.quizapp.ip2.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -54,6 +58,8 @@ public class AdminEditQuizActivity extends AppCompatActivity {
     Spinner spinnerDifficulty;
     Toolbar toolbar;
 
+    String quizImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,29 +97,51 @@ public class AdminEditQuizActivity extends AppCompatActivity {
         btnUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Open camera roll, select image, upload to server. server needs php script for accepting images
-                //todo consider pasting new image url????
+                AlertDialog.Builder builder = new AlertDialog.Builder(AdminEditQuizActivity.this);
+                builder.setTitle("Set Quiz Image");
+                builder.setMessage("Enter the image URL of the image you wish to use\n");
+
+                final EditText txtImageUrl = new EditText(AdminEditQuizActivity.this);
+
+                txtImageUrl.setHint("Image URL...");
+                txtImageUrl.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+
+                LinearLayout linearLayout = new LinearLayout(AdminEditQuizActivity.this);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                int paddingDp = 20;
+                int paddingPx = (int)(paddingDp * getResources().getDisplayMetrics().density);
+                linearLayout.setPadding(paddingPx, 0, paddingPx, 0);
+
+                linearLayout.addView(txtImageUrl);
+                builder.setView(linearLayout);
+
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setPositiveButton("APPLY", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        quizImage = txtImageUrl.getText().toString();
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Image set...", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                AlertDialog ad = builder.create();
+                ad.show();
             }
         });
 
         btnRemoveImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PostTask imagePost = new PostTask();
-                JSONObject jsonNoImage = new JSONObject();
-                try {
-                    jsonNoImage.put("quizimage", "");
-                } catch (JSONException e) {
-                    Log.e("RESULT: ", "Bad JSON");
-                }
-                String[] response = imagePost.sendPostRequest("quiz/" + getIntent().getExtras().getInt("id") + "/edit", jsonNoImage.toString());
-
-                if (response[0].equals("200")){
-                    Toast.makeText(getApplicationContext(), "Quiz image removed...", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                }
-
+                quizImage = "";
+                Toast.makeText(getApplicationContext(), "Image removed...", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -122,8 +150,8 @@ public class AdminEditQuizActivity extends AppCompatActivity {
             public void onClick(View view) {
                 PostTask quizPost = new PostTask();
                 JSONObject jsonQuiz = new JSONObject();
-
                 try {
+                    jsonQuiz.put("quizimage", quizImage);
                     if((!(txtName.getText().toString().equals("") || txtDescription.getText().toString().equals(""))) && txtName.length() <= 32 && txtDescription.length() <= 230){
                         jsonQuiz.put("quizname", txtName.getText().toString());
                         if(!(spinnerDifficulty.getSelectedItem().equals("Quiz Difficulty"))){
@@ -142,7 +170,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
                         //move
                         if(!(spinnerColor.getSelectedItem().equals("Quiz Color"))){
                             jsonQuiz.put("quizcolor", QuizColor.valueOf(spinnerColor.getSelectedItem().toString().toUpperCase()));
-                            String[] response = quizPost.sendPostRequest("quiz/" + QuizHelper.getQuiz().getId() + "/edit", jsonQuiz.toString());
+                            String[] response = quizPost.sendPostRequest("quiz/" + QuizHelper.getQuiz().getId() + "/edit", jsonQuiz.toString(), "POST");
                             if(response[0].equals("200")){
                                 Toast.makeText(getApplicationContext(), "Quiz updated...", Toast.LENGTH_SHORT).show();
                                 finish();
@@ -167,6 +195,17 @@ public class AdminEditQuizActivity extends AppCompatActivity {
             }
         });
 
+        btnNewQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b.putBoolean("editingquestion", false);
+                b.putBoolean("editingquiz", true);
+                Intent intent = new Intent(getApplicationContext(), AdminEditQuestionActivity.class);
+                intent.putExtra("bundle", b);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
 
 
     }
@@ -195,6 +234,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
         btnSave.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
         btnNewQuestion.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
 
+        layoutQuestions.removeAllViews();
         loadQuestions();
     }
 
@@ -202,7 +242,6 @@ public class AdminEditQuizActivity extends AppCompatActivity {
 
         ArrayList<Question> questions = QuizHelper.getQuiz().getQuestions();
 
-        //TODO Limit to 6 or 7 questions per page, load more buttons
         for(int i = 0; i < questions.size(); i++){
 
             //Load each question individually

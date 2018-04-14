@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-//import com.quizapp.ip2.Helper.LoadImageHelper;
-
 /**
  * Created by aaron on 19/03/2018.
  */
@@ -33,6 +31,13 @@ public class Question implements Parcelable{
         this.wrongAnswers = wrongAnswers;
         this.questionImage = questionImage;
         this.questionId = questionId;
+        this.questionString = questionString;
+    }
+
+    public Question(String correctAnswer, ArrayList<String> wrongAnswers, String questionImage, String questionString) {
+        this.correctAnswer = correctAnswer;
+        this.wrongAnswers = wrongAnswers;
+        this.questionImage = questionImage;
         this.questionString = questionString;
     }
 

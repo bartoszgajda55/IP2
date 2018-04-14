@@ -116,7 +116,61 @@ public class UserFragment extends Fragment {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO LOAD IMAGE FROM GALLERY, UPLOAD TO SERVER, NAME FILE pic_id.jpg in folder img/usr/
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Set Profile Picture");
+                builder.setMessage("Enter the image URL of the profile picture you wish to use, or leave it blank to reset.\n");
+
+                final EditText txtImageUrl = new EditText(getActivity());
+
+                txtImageUrl.setHint("Image URL...");
+                txtImageUrl.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+
+                LinearLayout linearLayout = new LinearLayout(getActivity());
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                int paddingDp = 20;
+                int paddingPx = (int)(paddingDp * getResources().getDisplayMetrics().density);
+                linearLayout.setPadding(paddingPx, 0, paddingPx, 0);
+
+                linearLayout.addView(txtImageUrl);
+                builder.setView(linearLayout);
+
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setPositiveButton("APPLY", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String imageUrl = txtImageUrl.getText().toString();
+                        JSONObject jsonNewImage = new JSONObject();
+                        try {
+                            jsonNewImage.put("ProfileImage", imageUrl);
+                            if(imageUrl.equals("")){
+                                jsonNewImage.remove("ProfileImage");
+                                jsonNewImage.put("ProfileImage", "http://45.32.238.58/quizzy/img/res/profile_pic.png");
+                            }
+                            PostTask pt = new PostTask();
+                            String[] imgResponse = pt.sendPostRequest("user/" + UserHelper.getUser().getUserID() + "/edit", jsonNewImage.toString(), "POST");
+                            UserHelper.getUser().setProfilePicture(imageUrl);
+                            if(!imgResponse[0].equals("200")){
+                                Toast.makeText(getActivity(), "Error...", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "Profile image updated...", Toast.LENGTH_SHORT).show();
+                            }
+                            dialog.dismiss();
+                            
+                        }catch (JSONException e){
+                            Log.e("JSON ERROR", "Bad json");
+                        }
+                    }
+                });
+
+                AlertDialog ad = builder.create();
+                ad.show();
             }
         });
 
@@ -267,7 +321,7 @@ public class UserFragment extends Fragment {
                         jsonObj.put("type","email");
                         jsonObj.put("term", email);
 
-                        String[] emailResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString());
+                        String[] emailResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString(), "POST");
                         if (emailResponse[0].equals("404")) {
 
                             // Check if email matches pattern
@@ -320,7 +374,7 @@ public class UserFragment extends Fragment {
                 }
 
 
-                String[] response = new PostTask().sendPostRequest("user/" + UserHelper.getUser().getUserID() + "/edit", jsonEdittedDetails.toString());
+                String[] response = new PostTask().sendPostRequest("user/" + UserHelper.getUser().getUserID() + "/edit", jsonEdittedDetails.toString(), "POST");
                 dialog.dismiss();
                 if(jsonEdittedDetails.length() > 0){
                     Toast.makeText(getContext(), "User details updated...", Toast.LENGTH_SHORT).show();

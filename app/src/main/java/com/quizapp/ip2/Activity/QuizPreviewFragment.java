@@ -133,9 +133,9 @@ public class QuizPreviewFragment extends Fragment {
                     QuizActivity.questions = new ArrayList(QuizHelper.getQuiz().getQuizQuestions());
 
                 } else { //only run this code if it is pressed from adminshowquizzes activity
-                    //ADD BUNDLE FOR QUIZZES??? //TODO
                     Intent intent = new Intent(getContext(), AdminEditQuizActivity.class);
                     Bundle bundle = new Bundle();
+                    bundle.putInt("id", id);
                     bundle.putString("title", title);
                     bundle.putString("desc", desc);
                     bundle.putInt("color", color);

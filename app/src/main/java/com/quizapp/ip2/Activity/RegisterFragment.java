@@ -101,7 +101,7 @@ public class RegisterFragment extends Fragment {
                 jsonObj.put("type","email");
                 jsonObj.put("term",email);
 
-                String[] emailResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString());
+                String[] emailResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString(), "POST");
                 if(emailResponse[0].equals("200")){
                     Toast.makeText(getActivity(), "Email is taken...", Toast.LENGTH_SHORT).show();
                     return;
@@ -112,7 +112,7 @@ public class RegisterFragment extends Fragment {
 
                 jsonObj.put("type", "username");
                 jsonObj.put("term",username);
-                String[] usernameResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString());
+                String[] usernameResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString(), "POST");
 
                 if(usernameResponse[0].equals("200")){
                     Toast.makeText(getActivity(), "Username is taken...", Toast.LENGTH_SHORT).show();
@@ -157,7 +157,7 @@ public class RegisterFragment extends Fragment {
             jsonObject.put("firstname",firstName);
             jsonObject.put("surname",surname);
             jsonObject.put("password",new StringHasher().hashString(passwordField.getText().toString()));
-            final String[] response = pt.sendPostRequest("user/register", jsonObject.toString());
+            final String[] response = pt.sendPostRequest("user/register", jsonObject.toString(), "POST");
 
             if(response[0].equals("201")){
 

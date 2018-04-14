@@ -32,7 +32,7 @@ public class QuizHelper {
             jsonQuiz.put("quizcolor", getQuiz().getColor());
 
             PostTask pt = new PostTask();
-            String[] response = pt.sendPostRequest("quiz/"+getQuiz().getId()+"/edit", jsonQuiz.toString());
+            String[] response = pt.sendPostRequest("quiz/"+getQuiz().getId()+"/edit", jsonQuiz.toString(), "POST");
 
             if(!response[0].equals("200")){
                 Log.e("POST ERROR", "Could not post... " + response[0] + " " + response[1]);

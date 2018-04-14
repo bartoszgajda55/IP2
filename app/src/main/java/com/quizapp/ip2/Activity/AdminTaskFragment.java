@@ -102,7 +102,7 @@ public class AdminTaskFragment extends Fragment {
                                 jsonObject.put("type", "username");
                                 jsonObject.put("term", text.getText().toString());
 
-                                String[] response = pt.sendPostRequest("user/find", jsonObject.toString());
+                                String[] response = pt.sendPostRequest("user/find", jsonObject.toString(), "POST");
 
                                 if(response[0].equals("200")){
                                     //user found
