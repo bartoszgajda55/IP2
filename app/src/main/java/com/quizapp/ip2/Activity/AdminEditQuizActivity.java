@@ -245,7 +245,10 @@ public class AdminEditQuizActivity extends AppCompatActivity {
                 }
 
 
-                JsonFileHelper.writeToFile(quizObj.toString(), b.getString("title").replace(" ", "_")+".json", getApplicationContext());
+                String str = quizObj.toString().replace("\\n","");
+                String str2 = str.replace("\\","");
+
+                JsonFileHelper.writeToFile(str2, b.getString("title").replace(" ", "_")+".json", getApplicationContext());
                 Toast.makeText(getApplicationContext(), "Exported...", Toast.LENGTH_SHORT).show();
 
 

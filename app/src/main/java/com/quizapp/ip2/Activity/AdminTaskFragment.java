@@ -201,8 +201,11 @@ public class AdminTaskFragment extends Fragment {
                 Toast.makeText(getContext(), "Error could not parse JSON...", Toast.LENGTH_SHORT).show();
             }else{
                 try {
+
                     JSONObject jsonQuiz = new JSONObject(jsonObj.get("quiz").toString());
+
                     jsonQuiz.remove("QuizID");
+                    Log.e("JSON", ""+jsonQuiz.toString());
                     JSONArray jsonQuestions = jsonObj.getJSONArray("questions");
 
                     PostTask pt = new PostTask();
