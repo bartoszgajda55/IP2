@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
         final RequestTask rt = new RequestTask();
 
         try {
-            String[] featuredResponse = rt.sendGetRequest("featuredQuiz");
+            String[] featuredResponse = rt.sendGetRequest("featuredQuiz", "GET");
             JSONArray jsonFeaturedQuizzesArray = new JSONArray(featuredResponse[1]);
             for(int i = 0; i < jsonFeaturedQuizzesArray.length(); i++){
 
@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment {
                 JSONObject jsonFeaturedQuiz = jsonFeaturedQuizArray.getJSONObject(i);
                 int quizId = jsonFeaturedQuiz.getInt("QuizID");
 
-                String[] quizResponse = rt.sendGetRequest("quiz/"+quizId);
+                String[] quizResponse = rt.sendGetRequest("quiz/"+quizId, "GET");
                 System.out.println("//RESPONSE// "+quizResponse[1]);
                 JSONObject jsonQuiz = new JSONObject(quizResponse[1]);
 

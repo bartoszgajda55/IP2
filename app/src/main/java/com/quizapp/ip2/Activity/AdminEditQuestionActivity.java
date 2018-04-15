@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.quizapp.ip2.Helper.DarkenColorHelper;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizHelper;
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.R;
 
@@ -39,6 +40,7 @@ public class AdminEditQuestionActivity extends AppCompatActivity {
     Button btnUploadImage;
     Button btnDeleteImage;
     Button btnSave;
+    Button btnDelete;
 
     AppCompatRadioButton radioA1;
     AppCompatRadioButton radioA2;
@@ -65,6 +67,7 @@ public class AdminEditQuestionActivity extends AppCompatActivity {
         btnUploadImage = (Button) findViewById(R.id.btnUploadImage);
         btnDeleteImage = (Button) findViewById(R.id.btnDeleteImage);
         btnSave = (Button) findViewById(R.id.btnSave);
+        btnDelete = (Button) findViewById(R.id.btnDelete);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -105,6 +108,10 @@ public class AdminEditQuestionActivity extends AppCompatActivity {
         txtAnswer4 = (EditText) findViewById(R.id.txtAnswer4);
 
         bundle = getIntent().getExtras().getBundle("bundle");
+
+        if(bundle.getBoolean("editingquestion")==false){
+            btnDelete.setVisibility(View.INVISIBLE);
+        }
 
         final JSONObject jsonQuestionBuilder = new JSONObject();
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -187,6 +194,7 @@ public class AdminEditQuestionActivity extends AppCompatActivity {
 
                     if(bundle.getBoolean("editingquiz")==false){
                         Question questionObj = new Question(answer,wrongAnswers,questionImage,questionString);
+
                         AdminCreateQuizActivity.questionsList.add(questionObj);
                         finish();
                         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -281,6 +289,7 @@ public class AdminEditQuestionActivity extends AppCompatActivity {
             btnUploadImage.setTextColor(bundle.getInt("color"));
             btnDeleteImage.setTextColor(bundle.getInt("color"));
             btnSave.setBackgroundColor(bundle.getInt("color"));
+            btnDelete.setBackgroundColor(bundle.getInt("color"));
 
             txtQuestion.setText(bundle.getString("question"));
             txtAnswer1.setText(bundle.getString("answer"));
@@ -309,6 +318,7 @@ public class AdminEditQuestionActivity extends AppCompatActivity {
             btnUploadImage.setTextColor(bundle.getInt("color"));
             btnDeleteImage.setTextColor(bundle.getInt("color"));
             btnSave.setBackgroundColor(bundle.getInt("color"));
+            btnDelete.setBackgroundColor(bundle.getInt("color"));
 
             radioA1.toggle();
 
@@ -325,6 +335,29 @@ public class AdminEditQuestionActivity extends AppCompatActivity {
             radioA4.setButtonTintList(colorStateList);
 
         }
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(bundle.getBoolean("editingquiz")==false){
+                    AdminCreateQuizActivity.questionsList.remove(bundle.getInt("viewId"));
+                    finish();
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                }
+                else{
+                    RequestTask pt = new RequestTask();
+                    String[] response = pt.sendGetRequest("question/"+bundle.getInt("id"), "DELETE");
+                    if(response[0].equals("200")){
+                        Toast.makeText(getApplicationContext(), "Question removed", Toast.LENGTH_SHORT).show();
+                        finish();
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Error...", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
 
 
     }

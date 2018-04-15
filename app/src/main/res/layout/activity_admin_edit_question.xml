@@ -203,6 +203,16 @@
                     android:theme="@style/buttonFlat"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="25dp"/>
+                <Button
+                    android:id="@+id/btnDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delete"
+                    android:theme="@style/buttonPrimary"
+                    android:layout_below="@+id/btnDeleteImage"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"/>
+
 
 
             </RelativeLayout>
@@ -210,18 +220,14 @@
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
-        android:id="@+id/layoutSaveControl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Save"
-            android:theme="@style/buttonPrimary" />
-        </RelativeLayout>
+            android:theme="@style/buttonPrimary"
+            android:layout_alignParentBottom="true"/>
+
 
 
 </RelativeLayout>

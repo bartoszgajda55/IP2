@@ -18,9 +18,9 @@ public class RequestTask {
     public RequestTask() {
     }
 
-    public String[] sendGetRequest(String path) {
+    public String[] sendGetRequest(String path, String method) {
         try {
-            return new JsonTask().execute(BASE_URL + path).get();
+            return new JsonTask().execute(BASE_URL + path, method).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -35,6 +35,7 @@ public class RequestTask {
             try {
                 URL url = new URL(params[0]);
                 connection = (HttpsURLConnection) url.openConnection();
+                connection.setRequestMethod(params[1]);
                 connection.connect();
 
                 InputStream stream = connection.getInputStream();

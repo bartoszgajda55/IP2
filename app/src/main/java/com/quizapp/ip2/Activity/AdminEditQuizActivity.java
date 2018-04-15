@@ -21,6 +21,7 @@ import com.quizapp.ip2.Helper.DarkenColorHelper;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizColor;
 import com.quizapp.ip2.Helper.QuizHelper;
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.R;
 
@@ -207,6 +208,22 @@ public class AdminEditQuizActivity extends AppCompatActivity {
             }
         });
 
+        btnRemoveQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RequestTask rt = new RequestTask();
+                String[] response = rt.sendGetRequest("quiz/"+b.getInt("id"), "DELETE");
+                Log.e("REPONSE", ""+response[1]);
+                if(response[0].equals("200")){
+                    Toast.makeText(getApplicationContext(), "Quiz Removed...", Toast.LENGTH_SHORT).show();
+                    finish();
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                }else {
+                    Toast.makeText(getApplicationContext(), "Error...", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
     }
 
@@ -250,6 +267,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
 
             Bundle bundle = new Bundle();
 
+            bundle.putInt("viewId", i);
             bundle.putInt("id", q.getQuestionId());
             bundle.putString("question", q.getQuestionString());
             bundle.putString("answer", q.getCorrectAnswer());
@@ -258,6 +276,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
             bundle.putString("wrongAnswer3", q.getWrongAnswers().get(2));
             bundle.putString("img", q.getQuestionImage());
             bundle.putInt("color", b.getInt("color"));
+            bundle.putBoolean("editingquiz", true);
 
 
             questionPreview.setArguments(bundle);

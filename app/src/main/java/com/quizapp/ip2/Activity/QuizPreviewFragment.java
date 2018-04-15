@@ -74,7 +74,7 @@ public class QuizPreviewFragment extends Fragment {
 
                 RequestTask rt = new RequestTask();
                 try {
-                    String[] response = rt.sendGetRequest("quiz/" + id + "/questions");
+                    String[] response = rt.sendGetRequest("quiz/" + id + "/questions", "GET");
                     JSONArray jsonQuestions = new JSONArray(response[1]);
 
 

@@ -248,8 +248,13 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
             Question q = questionsList.get(i);
             QuestionPreviewFragment questionPreview = new QuestionPreviewFragment();
             Bundle bundle = new Bundle();
+            bundle.putInt("viewId", i);
             bundle.putString("question", q.getQuestionString());
             bundle.putString("img", q.getQuestionImage());
+            bundle.putString("answer", q.getCorrectAnswer());
+            bundle.putString("wrongAnswer1", q.getWrongAnswers().get(0));
+            bundle.putString("wrongAnswer2", q.getWrongAnswers().get(1));
+            bundle.putString("wrongAnswer3", q.getWrongAnswers().get(2));
             questionPreview.setArguments(bundle);
             RelativeLayout rel = new RelativeLayout(this);
             rel.setId(View.generateViewId());

@@ -396,7 +396,7 @@ public class UserFragment extends Fragment {
 
 
             try{
-                String[] allFriendsResponse = rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends");
+                String[] allFriendsResponse = rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends", "GET");
                 JSONArray resultset = new JSONArray(allFriendsResponse[1]);
 
                 if(resultset.length()>0) {
@@ -410,10 +410,10 @@ public class UserFragment extends Fragment {
 
                         //If user 1 = user ELSE user 2 = user
                         if (jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())) {
-                            String[] frientRt = rt.sendGetRequest("user/"+jsonObject.get("User2ID"));
+                            String[] frientRt = rt.sendGetRequest("user/"+jsonObject.get("User2ID"), "GET");
                             resultUserArray = new JSONArray(frientRt[1]);
                         } else {
-                            String[] frientRt = rt.sendGetRequest("user/"+jsonObject.get("User1ID"));
+                            String[] frientRt = rt.sendGetRequest("user/"+jsonObject.get("User1ID"), "GET");
                             resultUserArray = new JSONArray(frientRt[1]);
                         }
 
@@ -454,7 +454,7 @@ public class UserFragment extends Fragment {
             RequestTask rt = new RequestTask();
 
             try{
-                String[] responseFriends = rt.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/friends");
+                String[] responseFriends = rt.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/friends", "GET");
                 JSONArray resultset = new JSONArray(responseFriends[1]);
                 if(resultset.length()>0){
                 for(int i=0; i<resultset.length(); i++) {
@@ -468,10 +468,10 @@ public class UserFragment extends Fragment {
 
                     //If user 1 = user ELSE user 2 = user
                     if(jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())){
-                        String[] friendResponse = rt.sendGetRequest("user/"+jsonObject.get("User2ID"));
+                        String[] friendResponse = rt.sendGetRequest("user/"+jsonObject.get("User2ID"), "GET");
                         resultUserArray= new JSONArray(friendResponse[1]);
                     }else{
-                        String[] friendResponse = rt.sendGetRequest("user/ " + jsonObject.get("User1ID"));
+                        String[] friendResponse = rt.sendGetRequest("user/ " + jsonObject.get("User1ID"), "GET");
                         resultUserArray= new JSONArray(friendResponse[1]);
 
                     }

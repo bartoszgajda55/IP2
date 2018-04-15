@@ -125,7 +125,7 @@ public class AdminTaskFragment extends Fragment {
 
                                     //Put ranking //todo fix showing 0
                                     RequestTask requestRanking = new RequestTask();
-                                    String[] rankingResponse = requestRanking.sendGetRequest("user/" + jsonResponse.getInt("UserID") + "/ranking");
+                                    String[] rankingResponse = requestRanking.sendGetRequest("user/" + jsonResponse.getInt("UserID") + "/ranking", "GET");
                                     if(!rankingResponse[0].equals("400")){
                                         JSONObject jsonRanking = new JSONObject(rankingResponse[1]);
                                         b.putInt("ranking", jsonRanking.getInt("position"));
@@ -135,7 +135,7 @@ public class AdminTaskFragment extends Fragment {
 
                                     //TODO Ban the user from UI
                                     RequestTask requestBanned = new RequestTask();
-                                    String[] banResponse = requestBanned.sendGetRequest("blacklist/"+jsonResponse.getInt("UserID"));
+                                    String[] banResponse = requestBanned.sendGetRequest("blacklist/"+jsonResponse.getInt("UserID"), "GET");
                                     boolean banBool;
 
                                     if(banResponse[0].equals("200")){

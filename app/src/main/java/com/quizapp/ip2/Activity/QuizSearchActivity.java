@@ -92,7 +92,7 @@ public class QuizSearchActivity extends FragmentedActivity {
         final RequestTask rt = new RequestTask();
 
         try {
-            String[] response = rt.sendGetRequest("quiz");
+            String[] response = rt.sendGetRequest("quiz", "GET");
             JSONArray resultset = new JSONArray(response[1]);
             ArrayList<RelativeLayout> foundQuizzes = new ArrayList<>();
 
