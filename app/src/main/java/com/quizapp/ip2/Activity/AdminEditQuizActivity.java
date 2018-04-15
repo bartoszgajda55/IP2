@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.DarkenColorHelper;
+import com.quizapp.ip2.Helper.JsonFileHelper;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizColor;
 import com.quizapp.ip2.Helper.QuizHelper;
@@ -50,6 +51,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
     Button btnUploadImage;
     Button btnNewQuestion;
     Button btnRemoveImage;
+    Button btnExport;
 
     Button btnRemoveQuiz;
     Button btnSave;
@@ -74,6 +76,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
         btnRemoveQuiz = (Button) findViewById(R.id.btnDeleteQuiz);
         btnRemoveImage = (Button) findViewById(R.id.btnDeleteQuizImage);
         btnSave = (Button) findViewById(R.id.btnSave);
+        btnExport = (Button) findViewById(R.id.btnExport);
 
         spinnerColor = (Spinner) findViewById(R.id.spinnerColor);
         spinnerDifficulty = (Spinner) findViewById(R.id.spinnerDifficulty);
@@ -224,6 +227,33 @@ public class AdminEditQuizActivity extends AppCompatActivity {
             }
         });
 
+        btnExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                RequestTask rt = new RequestTask();
+                String[] quizresponse = rt.sendGetRequest("quiz/"+b.getInt("id"), "GET");
+                String[] questionresponse = rt.sendGetRequest("quiz/"+b.getInt("id")+"/questions", "GET");
+
+                JSONObject quizObj = new JSONObject();
+                try {
+                    quizObj.put("quiz", quizresponse[1]);
+                    quizObj.put("questions", questionresponse[1]);
+
+                }catch (JSONException e){
+                    Log.e("JSON Exception","JSON ERROR");
+                }
+
+
+                JsonFileHelper.writeToFile(quizObj.toString(), b.getString("title").replace(" ", "_")+".json", getApplicationContext());
+                Toast.makeText(getApplicationContext(), "Exported...", Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+
+
 
     }
 
@@ -250,6 +280,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
         btnRemoveQuiz.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
         btnSave.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
         btnNewQuestion.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
+        btnExport.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
 
         layoutQuestions.removeAllViews();
         loadQuestions();

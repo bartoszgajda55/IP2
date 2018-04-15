@@ -3,6 +3,7 @@ package com.quizapp.ip2.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.quizapp.ip2.Helper.JsonFileHelper;
 import com.quizapp.ip2.Helper.LevelParser;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.RequestTask;
@@ -27,11 +29,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Allan on 07/04/2018.
  */
 
 public class AdminTaskFragment extends Fragment {
+
+    static final int PICKFILE_REQUEST_CODE = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -168,10 +175,59 @@ public class AdminTaskFragment extends Fragment {
                     AlertDialog ad = builder.create();
                     ad.show();
 
+                }else{
+                    //TODO IMPORT EXPORT
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("application/octet-stream");
+                    startActivityForResult(intent, PICKFILE_REQUEST_CODE);
+
+
+
                 }
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICKFILE_REQUEST_CODE && resultCode==RESULT_OK){
+            Uri uri = data.getData();
+
+            JSONObject jsonObj = JsonFileHelper.readJson(uri, getContext());
+            if(jsonObj==null){
+                Toast.makeText(getContext(), "Error could not parse JSON...", Toast.LENGTH_SHORT).show();
+            }else{
+                try {
+                    JSONObject jsonQuiz = new JSONObject(jsonObj.get("quiz").toString());
+                    jsonQuiz.remove("QuizID");
+                    JSONArray jsonQuestions = jsonObj.getJSONArray("questions");
+
+                    PostTask pt = new PostTask();
+                    String[] quizresponse = pt.sendPostRequest("quiz", jsonQuiz.toString(), "POST");
+                    if(!quizresponse[0].equals("201")){
+                        Toast.makeText(getContext(), "Error creating quiz...", Toast.LENGTH_SHORT).show();
+                    }else{
+                        JSONObject jsonMultipleQuestion = new JSONObject();
+                        JSONObject jsonID = new JSONObject(quizresponse[1]);
+
+                        jsonMultipleQuestion.put("quizid", jsonID.get("QuizID"));
+                        jsonMultipleQuestion.put("questions", jsonQuestions.toString());
+                        String[] questionsresponse = pt.sendPostRequest("question/many", jsonMultipleQuestion.toString(), "POST");
+                        if(questionsresponse.equals("201")){
+                            Toast.makeText(getContext(), "Quiz Added", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getContext(), "Error adding questions...", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+
+        }
     }
 }

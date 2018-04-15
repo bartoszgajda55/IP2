@@ -39,8 +39,9 @@ public class AdminActivity extends FragmentedActivity {
         //Add admin tasks to arraylist
         arrayList.add(new AdminTask("Quizzes","Add, edit or delete a quiz",R.drawable.icon_plus));
         arrayList.add(new AdminTask("Lookup/Edit User","Ban, promote or view a user's details",R.drawable.icon_user));
+        arrayList.add(new AdminTask("Import Quiz","Import a Quiz from a JSON file",R.drawable.icon_upload));
 
-        for (int x=0; x<2; x++){
+        for (int x=0; x<arrayList.size(); x++){
             AdminTaskFragment frag = new AdminTaskFragment();
             Bundle bundle = new Bundle();
             String title = arrayList.get(x).getTitle();
