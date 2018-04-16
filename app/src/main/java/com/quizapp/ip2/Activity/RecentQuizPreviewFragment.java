@@ -34,6 +34,7 @@ public class RecentQuizPreviewFragment extends Fragment {
     //components
     private TextView txtQuizTitle;
     private ImageView imgQuizImg;
+
     View view;
 
 

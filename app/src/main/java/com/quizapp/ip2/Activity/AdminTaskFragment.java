@@ -230,37 +230,50 @@ public class AdminTaskFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
 
                             try {
-                                JSONObject jsonQuizRecieved = new JSONObject(jsonObj.get("quiz").toString());
-                                JSONObject jsonNewQuiz = new JSONObject();
+                                JSONObject jsonQuizReceived = new JSONObject(jsonObj.get("quiz").toString());
 
-                                jsonNewQuiz.put("quizname", txtQuizImportName.getText().toString());
-                                jsonNewQuiz.put("quizdescription", jsonQuizRecieved.get("QuizDescription"));
-                                jsonNewQuiz.put("quizimage", jsonQuizRecieved.get("QuizImage"));
-                                jsonNewQuiz.put("quizcolor", jsonQuizRecieved.get("QuizColor"));
-
-                                JSONArray jsonQuestions = jsonObj.getJSONArray("questions");
+                                JSONObject jsonNewQuizProperties = new JSONObject();
+                                jsonNewQuizProperties.put("quizname", txtQuizImportName.getText().toString());
+                                jsonNewQuizProperties.put("quizdescription", jsonQuizReceived.get("QuizDescription"));
+                                jsonNewQuizProperties.put("quizimage", jsonQuizReceived.get("QuizImage"));
+                                jsonNewQuizProperties.put("quizcolor", jsonQuizReceived.get("QuizColor"));
 
                                 PostTask pt = new PostTask();
-                                String[] quizresponse = pt.sendPostRequest("quiz", jsonNewQuiz.toString(), "POST");
+                                String[] quizresponse = pt.sendPostRequest("quiz", jsonNewQuizProperties.toString(), "POST");
+
                                 if (!quizresponse[0].equals("201")) {
-                                    Log.e("JSON:", quizresponse[1]);
                                     Toast.makeText(getContext(), "Error creating quiz...", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    JSONObject jsonMultipleQuestion = new JSONObject();
 
-                                    jsonMultipleQuestion.put("quizid", quizresponse[1]);
-                                    jsonMultipleQuestion.put("questions", jsonQuestions);
-
-                                    String[] questionsresponse = pt.sendPostRequest("question/many", jsonMultipleQuestion.toString(), "POST");
+                                    JSONObject jsonBody = new JSONObject();
+                                    jsonBody.put("quizid", quizresponse[1].replace("\n", ""));
 
 
-                                    if (questionsresponse[0].equals("201")) {
+                                    jsonBody.put("questions", jsonObj.get("questions"));
+
+                                    PostTask pt2 = new PostTask();
+                                    Log.e("export/imported", jsonBody.toString());
+                                    String[] questionsResponse= pt2.sendPostRequest("question/many", jsonBody.toString(), "POST");
+                                    /*String jsonCombined = "{\"quizid\":\"" + quizresponse[1]+ "\", \"questions\":" + jsonQuestions + "}";
+
+                                    String str = jsonCombined.toString().replace("\\n","");
+                                    String str2 = str.replace("\\","");
+
+                                    Log.e("combined", str2);
+
+                                    PostTask pt2 = new PostTask();
+                                    String[] questionsresponse = pt2.sendPostRequest("question/many", str2, "POST");*/
+
+                                    if (questionsResponse[0].equals("201")) {
                                         Toast.makeText(getContext(), "Quiz Added", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(getContext(), "Error adding questions...", Toast.LENGTH_SHORT).show();
+                                        Log.e("error:", questionsResponse[0]);
+                                        Log.e("error 1:", questionsResponse[1]);
                                     }
                                 }
                             }catch (JSONException e){
+                                e.printStackTrace();
                                 Log.e("JSON Error", "BAD JSON");
                             }
                         }

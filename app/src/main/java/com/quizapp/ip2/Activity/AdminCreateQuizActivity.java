@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.quizapp.ip2.Helper.DarkenColorHelper;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizColor;
-import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.R;
 
@@ -148,8 +147,9 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //upload quizhelper to database
-                RequestTask post = new RequestTask();
+                //upload quizhelper to database?
+                PostTask pt = new PostTask();
+
                 JSONObject jsonQuiz = new JSONObject();
                 try {
                     jsonQuiz.put("quizimage", quizImage);
@@ -166,22 +166,16 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
                             return;
                         }
                         if(!(spinnerColor.getSelectedItem().equals("Quiz Color"))){
-
-
                             jsonQuiz.put("quizcolor", QuizColor.valueOf(spinnerColor.getSelectedItem().toString().toUpperCase()));
-                            if(questionsList.size() >= 10){
-                                Log.e("VALUES", ": "+questionsList.toString());
 
+                            if(questionsList.size() >= 10){
                                 /**Post quiz to database**/
-                                String[] quizResponse = post.sendGetRequest("quiz/","GET");
+                                String[] quizResponse = pt.sendPostRequest("quiz", jsonQuiz.toString(),"POST");
 
                                 /**Post questions to database **/
-                                Log.e("RESPONSE",": "+quizResponse[1]);
-                                JSONArray jsonArray = new JSONArray(quizResponse[1]);
-                                int newQuizId =jsonArray.getJSONObject(0).getInt("id");
 
                                 JSONObject jsonAllQuizQuestions = new JSONObject();
-                                jsonAllQuizQuestions.put("quizid", newQuizId);
+                                jsonAllQuizQuestions.put("quizid", quizResponse[1]);
                                 JSONArray jsonQuestionArray = new JSONArray();
                                 for(int i = 0; i < questionsList.size(); i++){
                                     JSONObject jsonQuestion = new JSONObject();
@@ -194,12 +188,9 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
                                     jsonQuestionArray.put(jsonQuestion);
                                 }
                                 jsonAllQuizQuestions.put("questions", jsonQuestionArray);
-                                Log.e("JSON ALL QUESTIONS","VALUE: "+jsonAllQuizQuestions.toString());
-                                String[] allQuestionsResponse = post.sendPostRequest("question/many", jsonAllQuizQuestions.toString(),"POST");
+                                String[] allQuestionsResponse = pt.sendPostRequest("question/many", jsonAllQuizQuestions.toString(),"POST");
 
-                                Log.e("POST","POSTING: "+allQuestionsResponse[0]+" VALUES: "+allQuestionsResponse[1]);
-
-                                if(quizResponse[0].equals("201") && allQuestionsResponse.equals("201")){
+                                if(quizResponse[0].equals("201") && allQuestionsResponse[0].equals("201")){
                                     Toast.makeText(getApplicationContext(), "Quiz Created...", Toast.LENGTH_SHORT).show();
                                     finish();
 

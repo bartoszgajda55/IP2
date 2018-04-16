@@ -45,9 +45,7 @@ public class QuizPreviewFragment extends Fragment {
         final String txt = this.getArguments().getString("img");
 
         new DownloadImageTask(imgQuizImg).execute(txt);
-
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
-
         DrawableCompat.setTint(backgroundShape.getDrawable(), this.getArguments().getInt("color"));
 
 

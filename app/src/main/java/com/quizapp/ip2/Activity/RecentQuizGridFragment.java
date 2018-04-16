@@ -52,10 +52,12 @@ public class RecentQuizGridFragment extends Fragment {
                 Bundle recentBundle = new Bundle();
                 int recentId = jsonQuiz.getInt("QuizID");
                 String recentTitle = jsonQuiz.getString("QuizName");
+                String recentDescription = jsonQuiz.getString("QuizDescription");
                 String recentImg = jsonQuiz.getString("QuizImage");
                 int recentColor = Color.parseColor("#" + jsonQuiz.getString("QuizColor"));
                 recentBundle.putInt("id", recentId);
                 recentBundle.putString("title", recentTitle);
+                recentBundle.putString("desc", recentDescription);
                 recentBundle.putString("img", recentImg);
                 recentBundle.putInt("color", recentColor);
 

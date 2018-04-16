@@ -236,12 +236,27 @@ public class AdminEditQuizActivity extends AppCompatActivity {
 
                 try {
 
-                    JSONArray jArray = new JSONArray(questionresponse[1].toString());
+                    JSONArray jArray = new JSONArray(questionresponse[1]);
                     for (int i=0; i < jArray.length(); i++) {
                         JSONObject jObj = jArray.getJSONObject(i);
                         jObj.remove("QuestionID");
                         jObj.remove("QuizID");
+
+                        jObj.put("questionstring", jObj.get("QuestionString"));
+                        jObj.put("questionimage", jObj.get("QuestionImage"));
+                        jObj.put("correctanswerstring", jObj.get("CorrectAnswerString"));
+                        jObj.put("wronganswerstring", jObj.get("WrongAnswerString"));
+                        jObj.put("wronganswerstring2", jObj.get("WrongAnswerString2"));
+                        jObj.put("wronganswerstring3", jObj.get("WrongAnswerString3"));
+
+                        jObj.remove("QuestionString");
+                        jObj.remove("QuestionImage");
+                        jObj.remove("CorrectAnswerString");
+                        jObj.remove("WrongAnswerString");
+                        jObj.remove("WrongAnswerString2");
+                        jObj.remove("WrongAnswerString3");
                     }
+
 
 
                     String jsonCombined = "{\"quiz\":" + quizresponse[1] + ", \"questions\":" + jArray.toString() + "}";
