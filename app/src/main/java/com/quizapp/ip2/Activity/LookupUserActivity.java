@@ -67,7 +67,7 @@ public class LookupUserActivity extends AppCompatActivity {
 
         txtTotalXP.setText(String.valueOf(args.getInt("xp")));
         txtLevel.setText(String.valueOf(args.getInt("level")));
-        txtRanking.setText(String.valueOf(args.getInt("ranking")));
+        txtRanking.setText(String.valueOf(args.getInt("ranking") + 1));
         txtQuizzesComplete.setText(String.valueOf(args.getInt("quizzesscomplete")));
         txtCorrectAnswers.setText(String.valueOf(args.getInt("correctanswers")));
 

@@ -73,7 +73,7 @@ public class Splash extends AppCompatActivity {
                 }else{
                     Intent intent = new Intent(Splash.this, AuthenticationActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                    overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
                     Toast.makeText(getApplicationContext(), "Error signing in...", Toast.LENGTH_SHORT);
                 }
             }catch (JSONException e){
@@ -89,18 +89,18 @@ public class Splash extends AppCompatActivity {
                 if(!success){
                     Intent intent = new Intent(Splash.this, AuthenticationActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                    overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
                 } else{
                     String[] banRequest = new RequestTask().sendGetRequest("blacklist/" + UserHelper.getUser().getUserID(), "GET");
                     if(banRequest[0].equals("404")){
                         Intent intent = new Intent(Splash.this, HomepageActivity.class);
                         startActivity(intent);
-                        overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                        overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
                     } else {
                         Toast.makeText(getApplicationContext(), "You are banned...", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Splash.this, AuthenticationActivity.class);
                         startActivity(intent);
-                        overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                        overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
                     }
 
                 }

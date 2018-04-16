@@ -32,7 +32,7 @@ public class AdminActivity extends FragmentedActivity {
             public void onClick(View v){
                 Intent intent = new Intent(getApplicationContext(), HomepageActivity.class); //todo animation?
                 startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
             }
         });
 

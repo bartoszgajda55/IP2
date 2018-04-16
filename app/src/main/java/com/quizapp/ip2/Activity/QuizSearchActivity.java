@@ -102,6 +102,7 @@ public class QuizSearchActivity extends FragmentedActivity {
 
                 QuizPreviewFragment quizPreview = new QuizPreviewFragment();
                 Bundle searchBundle = new Bundle();
+                int searchId = result.getInt("QuizID");
                 String searchTitle = result.getString("QuizName"); //Load name to search by name
                 String searchDesc = result.getString("QuizDescription"); //Load description to search by description
 
@@ -110,6 +111,7 @@ public class QuizSearchActivity extends FragmentedActivity {
                     String searcImg = result.getString("QuizImage");
                     int searchColor = Color.parseColor("#" + result.getString("QuizColor"));
 
+                    searchBundle.putInt("id", searchId);
                     searchBundle.putString("title", searchTitle);
                     searchBundle.putString("desc", searchDesc);
                     searchBundle.putString("img", searcImg);

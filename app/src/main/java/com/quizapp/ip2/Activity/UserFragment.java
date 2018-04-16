@@ -181,7 +181,7 @@ public class UserFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), SettingsActivity.class);
                 startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
             }
         });
 
@@ -252,7 +252,7 @@ public class UserFragment extends Fragment {
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), AdminActivity.class);
                     startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                    getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
                 }
             });
 

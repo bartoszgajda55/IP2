@@ -211,7 +211,7 @@ public class RegisterFragment extends Fragment {
     private void logIn(String[] response){
         Intent intent = new Intent(getContext(), TutorialActivity.class);
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+        getActivity().overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
 
 
         try {

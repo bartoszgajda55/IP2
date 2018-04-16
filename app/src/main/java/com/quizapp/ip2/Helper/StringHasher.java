@@ -1,5 +1,7 @@
 package com.quizapp.ip2.Helper;
 
+import android.util.Log;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -16,7 +18,7 @@ public class StringHasher {
             messageDigest.update(s.getBytes());
             hashed = bytesToHex(messageDigest.digest());
         }catch (NoSuchAlgorithmException e){
-            System.out.println("No algorithm found");
+            Log.e("HASHING ERROR:", "No algorithm found");
             hashed = null;
         }
 

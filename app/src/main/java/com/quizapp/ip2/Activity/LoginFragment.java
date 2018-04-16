@@ -182,7 +182,7 @@ public class LoginFragment extends Fragment {
 
         Intent intent = new Intent(getContext(), HomepageActivity.class);
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+        getActivity().overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
 
 
     }

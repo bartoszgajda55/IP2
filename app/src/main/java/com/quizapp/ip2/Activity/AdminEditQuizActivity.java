@@ -91,10 +91,8 @@ public class AdminEditQuizActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //todo YES/NO DIALOG, progress lost etc
-                //TODO activity leave animation
                 finish();
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right); //todo fade
             }
         });
 

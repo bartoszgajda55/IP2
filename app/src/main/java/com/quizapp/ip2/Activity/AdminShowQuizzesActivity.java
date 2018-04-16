@@ -86,9 +86,8 @@ public class AdminShowQuizzesActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //todo YES/NO DIALOG, progress lost etc
-                //TODO activity leave animation
                 finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
 
@@ -97,7 +96,7 @@ public class AdminShowQuizzesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AdminCreateQuizActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
             }
         });
