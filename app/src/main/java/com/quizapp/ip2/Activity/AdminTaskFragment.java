@@ -176,11 +176,10 @@ public class AdminTaskFragment extends Fragment {
                     ad.show();
 
                 }else{
-                    //TODO IMPORT EXPORT
+
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("application/octet-stream");
                     startActivityForResult(intent, PICKFILE_REQUEST_CODE);
-
 
 
                 }
@@ -196,39 +195,79 @@ public class AdminTaskFragment extends Fragment {
         if(requestCode == PICKFILE_REQUEST_CODE && resultCode==RESULT_OK){
             Uri uri = data.getData();
 
-            JSONObject jsonObj = JsonFileHelper.readJson(uri, getContext());
+            final JSONObject jsonObj = JsonFileHelper.readJson(uri, getContext());
             if(jsonObj==null){
                 Toast.makeText(getContext(), "Error could not parse JSON...", Toast.LENGTH_SHORT).show();
             }else{
-                try {
 
-                    JSONObject jsonQuiz = new JSONObject(jsonObj.get("quiz").toString());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Enter a Quiz Name");
+                    builder.setMessage("What do you want your Quiz to be named?");
 
-                    jsonQuiz.remove("QuizID");
-                    Log.e("JSON", ""+jsonQuiz.toString());
-                    JSONArray jsonQuestions = jsonObj.getJSONArray("questions");
+                    final EditText txtQuizImportName = new EditText(getActivity());
+                    txtQuizImportName.setSingleLine();
+                    txtQuizImportName.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
 
-                    PostTask pt = new PostTask();
-                    String[] quizresponse = pt.sendPostRequest("quiz", jsonQuiz.toString(), "POST");
-                    if(!quizresponse[0].equals("201")){
-                        Toast.makeText(getContext(), "Error creating quiz...", Toast.LENGTH_SHORT).show();
-                    }else{
-                        JSONObject jsonMultipleQuestion = new JSONObject();
-                        JSONObject jsonID = new JSONObject(quizresponse[1]);
+                    LinearLayout linearLayout = new LinearLayout(getActivity());
+                    linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-                        jsonMultipleQuestion.put("quizid", jsonID.get("QuizID"));
-                        jsonMultipleQuestion.put("questions", jsonQuestions.toString());
-                        String[] questionsresponse = pt.sendPostRequest("question/many", jsonMultipleQuestion.toString(), "POST");
-                        if(questionsresponse.equals("201")){
-                            Toast.makeText(getContext(), "Quiz Added", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getContext(), "Error adding questions...", Toast.LENGTH_SHORT).show();
+                    int paddingDp = 20;
+                    int paddingPx = (int)(paddingDp * getResources().getDisplayMetrics().density);
+                    linearLayout.setPadding(paddingPx, 0, paddingPx, 0);
+
+                    linearLayout.addView(txtQuizImportName);
+
+                    builder.setView(linearLayout);
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
                         }
-                    }
+                    });
 
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
+                    builder.setPositiveButton("IMPORT", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            try {
+                                JSONObject jsonQuizRecieved = new JSONObject(jsonObj.get("quiz").toString());
+                                JSONObject jsonNewQuiz = new JSONObject();
+
+                                jsonNewQuiz.put("quizname", txtQuizImportName.getText().toString());
+                                jsonNewQuiz.put("quizdescription", jsonQuizRecieved.get("QuizDescription"));
+                                jsonNewQuiz.put("quizimage", jsonQuizRecieved.get("QuizImage"));
+                                jsonNewQuiz.put("quizcolor", jsonQuizRecieved.get("QuizColor"));
+
+                                Log.e("JSON", "" + jsonNewQuiz.toString());
+                                JSONArray jsonQuestions = jsonObj.getJSONArray("questions");
+
+                                PostTask pt = new PostTask();
+                                String[] quizresponse = pt.sendPostRequest("quiz", jsonNewQuiz.toString(), "POST");
+                                if (!quizresponse[0].equals("201")) {
+                                    Log.e("JSON:", quizresponse[1]);
+                                    Toast.makeText(getContext(), "Error creating quiz...", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    JSONObject jsonMultipleQuestion = new JSONObject();
+                                    JSONObject jsonID = new JSONObject(quizresponse[1]);
+
+                                    jsonMultipleQuestion.put("quizid", jsonID.get("QuizID"));
+                                    jsonMultipleQuestion.put("questions", jsonQuestions.toString());
+                                    String[] questionsresponse = pt.sendPostRequest("question/many", jsonMultipleQuestion.toString(), "POST");
+                                    if (questionsresponse.equals("201")) {
+                                        Toast.makeText(getContext(), "Quiz Added", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getContext(), "Error adding questions...", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }catch (JSONException e){
+                                Log.e("JSON Error", "BAD JSON");
+                            }
+                        }
+                    });
+
+                    AlertDialog ad = builder.create();
+                    ad.show();
+
             }
 
         }

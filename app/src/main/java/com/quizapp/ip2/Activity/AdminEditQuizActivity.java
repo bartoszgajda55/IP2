@@ -233,25 +233,29 @@ public class AdminEditQuizActivity extends AppCompatActivity {
 
                 RequestTask rt = new RequestTask();
                 String[] quizresponse = rt.sendGetRequest("quiz/"+b.getInt("id"), "GET");
+                Log.e("QUIZ RESPONSE", quizresponse[1].replace("\\", ""));
                 String[] questionresponse = rt.sendGetRequest("quiz/"+b.getInt("id")+"/questions", "GET");
+                Log.e("QUESTION RESPONSE", questionresponse[1].replace("\\", ""));
 
-                JSONObject quizObj = new JSONObject();
+
+
                 try {
-                    quizObj.put("quiz", quizresponse[1]);
-                    quizObj.put("questions", questionresponse[1]);
+
+                    String jsonCombined = "{\"quiz\":" + quizresponse[1] + ", \"questions\":" + questionresponse[1] + "}";
+                    JSONObject quizObj = new JSONObject(jsonCombined);
+
+                    String str = quizObj.toString().replace("\\n","");
+                    String str2 = str.replace("\\","");
+
+                    Log.e("NO SLASHES: ", str2);
+
+                    JsonFileHelper.writeToFile(str2, b.getString("title").replace(" ", "_")+".json", getApplicationContext());
+                    Toast.makeText(getApplicationContext(), "Exported...", Toast.LENGTH_SHORT).show();
+
 
                 }catch (JSONException e){
                     Log.e("JSON Exception","JSON ERROR");
                 }
-
-
-                String str = quizObj.toString().replace("\\n","");
-                String str2 = str.replace("\\","");
-
-                JsonFileHelper.writeToFile(str2, b.getString("title").replace(" ", "_")+".json", getApplicationContext());
-                Toast.makeText(getApplicationContext(), "Exported...", Toast.LENGTH_SHORT).show();
-
-
             }
         });
 

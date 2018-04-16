@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.PostTask;
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.Model.User;
 import com.quizapp.ip2.R;
@@ -70,6 +71,9 @@ public class Splash extends AppCompatActivity {
                     UserHelper.setUser(user);
 
                 }else{
+                    Intent intent = new Intent(Splash.this, AuthenticationActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
                     Toast.makeText(getApplicationContext(), "Error signing in...", Toast.LENGTH_SHORT);
                 }
             }catch (JSONException e){
@@ -87,10 +91,18 @@ public class Splash extends AppCompatActivity {
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
                 } else{
-                    //TODO Prevent banned users from logging in, go to authentication activity
-                    Intent intent = new Intent(Splash.this, HomepageActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                    String[] banRequest = new RequestTask().sendGetRequest("blacklist/" + UserHelper.getUser().getUserID(), "GET");
+                    if(banRequest[0].equals("404")){
+                        Intent intent = new Intent(Splash.this, HomepageActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You are banned...", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Splash.this, AuthenticationActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                    }
+
                 }
 
             }

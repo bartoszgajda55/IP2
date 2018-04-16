@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,9 +47,8 @@ public class UserFragment extends Fragment {
 
     ProgressBar progressBar;
     LinearLayout friendsLayout;
+    LinearLayout layoutControls;
     boolean friendsLoaded = false;
-
-    Button btnAdmin;
 
     ImageView profileImage;
 
@@ -67,8 +67,9 @@ public class UserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.user_fragment, container, false);
         friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
+        layoutControls = (LinearLayout) view.findViewById(R.id.layoutControls);
         final Button btnSettings = (Button) view.findViewById(R.id.btnSettings);
-        btnAdmin = (Button) view.findViewById(R.id.btnAdmin);
+        //btnAdmin = (Button) view.findViewById(R.id.btnAdmin);
         Button btnEditDetails = (Button) view.findViewById(R.id.btnEditDetails);
 
         profileImage = (ImageView) view.findViewById(R.id.imgProfilePicture);
@@ -156,6 +157,7 @@ public class UserFragment extends Fragment {
                             PostTask pt = new PostTask();
                             String[] imgResponse = pt.sendPostRequest("user/" + UserHelper.getUser().getUserID() + "/edit", jsonNewImage.toString(), "POST");
                             UserHelper.getUser().setProfilePicture(imageUrl);
+                            UserHelper.uploadUser();
                             if(!imgResponse[0].equals("200")){
                                 Toast.makeText(getActivity(), "Error...", Toast.LENGTH_SHORT).show();
                             } else {
@@ -183,14 +185,6 @@ public class UserFragment extends Fragment {
             }
         });
 
-        btnAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), AdminActivity.class);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
-            }
-        });
 
         btnEditDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,8 +242,21 @@ public class UserFragment extends Fragment {
         progressLevel.setProgress(lvl.nextLevel());
 
         //IF USER IS NOT ADMIN MAKE btnAdmin invisible
-        if (UserHelper.getUser().getAdminStatus()==0){
-            btnAdmin.setVisibility(View.INVISIBLE);
+        if (UserHelper.getUser().getAdminStatus()==1 && layoutControls.getChildCount() < 2){
+            Button btnAdmin= new Button(new ContextThemeWrapper(getActivity(), R.style.buttonFlat));
+            btnAdmin.setText("ADMIN");
+            //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)btnAdmin.getLayoutParams();
+
+            btnAdmin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), AdminActivity.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                }
+            });
+
+            layoutControls.addView(btnAdmin);
         }
     }
 
