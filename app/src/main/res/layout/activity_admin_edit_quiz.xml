@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.quizapp.ip2.Activity.AdminEditQuizActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.5"
+
+        android:src="@drawable/background_cubes_light"/>
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:elevation="4dp"
+
+        app:theme="@style/toolbarStyle">
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            
+            <RelativeLayout
+                android:id="@+id/layoutQuizDetails"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+                <TextView
+                    android:id="@+id/txtPropertiesTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    android:text="Quiz Properties"
+                    android:theme="@style/textTitle"
+                    android:layout_marginTop="10dp"/>
+                <EditText
+                    android:id="@+id/txtQuizName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Quiz Name"
+                    android:singleLine="true"
+                    android:maxLength="32"
+                    android:layout_below="@id/txtPropertiesTitle"
+                    />
+
+                <EditText
+                    android:id="@+id/txtQuizDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Quiz Description"
+                    android:maxLength="255"
+                    android:layout_below="@id/txtQuizName"
+                    />
+
+                <Spinner
+                    android:id="@+id/spinnerDifficulty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtQuizDescription"
+                    android:entries="@array/difficulty"
+                    android:layout_marginBottom="10dp">
+                </Spinner>
+
+                <Spinner
+                    android:id="@+id/spinnerColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/spinnerDifficulty"
+                    android:entries="@array/quiz_colors"
+                    android:layout_marginBottom="10dp">
+                </Spinner>
+
+                <Button
+                    android:id="@+id/btnUploadQuizImage"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Upload Quiz Image"
+                    android:theme="@style/buttonFlat"
+                    android:layout_below="@id/spinnerColor"
+                    android:layout_alignParentLeft="true"
+                    />
+                <Button
+                    android:id="@+id/btnDeleteQuizImage"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Remove Quiz Image"
+                    android:theme="@style/buttonFlat"
+                    android:layout_below="@id/spinnerColor"
+                    android:layout_alignParentRight="true"
+                    />
+                <RelativeLayout
+                    android:layout_below="@id/btnDeleteQuizImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true">
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/btnDeleteQuiz"
+                    android:layout_alignBottom="@+id/btnDeleteQuiz"
+                    android:layout_alignParentStart="true"
+                    android:text="Save Quiz"
+                    android:theme="@style/buttonPrimary"
+                    />
+
+                <Button
+                    android:id="@+id/btnDeleteQuiz"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Delete Quiz"
+                    android:theme="@style/buttonPrimary"
+                    android:layout_toRightOf="@+id/btnSave"
+                    android:layout_marginLeft="10dp"
+                    />
+
+                <Button
+                    android:id="@+id/btnExport"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Export"
+                    android:theme="@style/buttonPrimary"
+                    android:layout_toRightOf="@+id/btnDeleteQuiz"
+                    android:layout_marginLeft="10dp"
+                    />
+
+                </RelativeLayout>
+
+
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@android:color/darker_gray"
+                android:layout_below="@id/layoutQuizDetails"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/txtQuestionsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"
+                android:text="Questions"
+                android:theme="@style/textTitle"/>
+
+            <LinearLayout
+                android:id="@+id/layoutQuestions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                >
+            </LinearLayout>
+            
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnNewQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Question"
+        android:theme="@style/buttonPrimary"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

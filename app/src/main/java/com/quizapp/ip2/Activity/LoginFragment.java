@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.PostTask;
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Helper.StringHasher;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.Model.User;
@@ -43,16 +44,18 @@ public class LoginFragment extends Fragment {
         final PostTask pt = new PostTask();
 
         //Button pressed
+        //TODO Prevent banned users from logging in
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 JSONObject jsonObject = new JSONObject();
                 try {
                     final String email = txtEmail.getText().toString().toLowerCase();
+
                     jsonObject.put("email", email);
                     jsonObject.put("password", new StringHasher().hashString(txtPassword.getText().toString()));
 
-                    String[] response = pt.sendPostRequest("user/login", jsonObject.toString());
+                    String[] response = pt.sendPostRequest("user/login", jsonObject.toString(), "POST");
                     if(response[0].equals("200")){
 
                         //Set UserHelper to user
@@ -73,41 +76,47 @@ public class LoginFragment extends Fragment {
 
                         UserHelper.setUser(user);
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle("Remember me");
-                        builder.setMessage("Do you want Quizzy to remember your password?");
+                        String[] banRequest = new RequestTask().sendGetRequest("blacklist/" + user.getUserID(), "GET");
+                        if(banRequest[0].equals("404")){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("Remember me");
+                            builder.setMessage("Do you want Quizzy to remember your password?");
 
-                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences loginPreferences = getActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
+                            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SharedPreferences loginPreferences = getActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
 
-                                loginPrefsEditor.clear();
-                                loginPrefsEditor.apply();
+                                    loginPrefsEditor.clear();
+                                    loginPrefsEditor.apply();
 
-                                dialog.dismiss();
-                                logIn();
-                            }
-                        });
+                                    dialog.dismiss();
+                                    logIn();
+                                }
+                            });
 
-                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialog, int which){
+                            builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which){
 
-                                //TODO Store user login on local system file.
-                                SharedPreferences loginPreferences = getActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
+                                    //TODO Store user login on local system file.
+                                    SharedPreferences loginPreferences = getActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
 
-                                loginPrefsEditor.putString("email", email.toLowerCase());
-                                loginPrefsEditor.putString("password", new StringHasher().hashString(txtPassword.getText().toString()));
-                                loginPrefsEditor.apply();
+                                    loginPrefsEditor.putString("email", email.toLowerCase());
+                                    loginPrefsEditor.putString("password", new StringHasher().hashString(txtPassword.getText().toString()));
+                                    loginPrefsEditor.apply();
 
-                                logIn();
-                            }
-                        });
-                        AlertDialog ad = builder.create();
-                        ad.show();
+                                    logIn();
+                                }
+                            });
+                            AlertDialog ad = builder.create();
+                            ad.show();
+                        } else{
+                            Toast.makeText(getActivity(), "You are banned...", Toast.LENGTH_SHORT).show();
+                        }
+                        
                     }else{
                         Toast.makeText(getActivity(), "Unknown email or password...", Toast.LENGTH_SHORT).show();
                     }
@@ -126,10 +135,22 @@ public class LoginFragment extends Fragment {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Reset Password");
-                final EditText text = new EditText(getActivity());
-                text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 builder.setMessage("Forgotten your password? Enter your email below to receive an email containing your password");
-                builder.setView(text);
+
+                final EditText txtEmail = new EditText(getActivity());
+                txtEmail.setSingleLine();
+                txtEmail.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+
+                LinearLayout linearLayout = new LinearLayout(getActivity());
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                int paddingDp = 20;
+                int paddingPx = (int)(paddingDp * getResources().getDisplayMetrics().density);
+                linearLayout.setPadding(paddingPx, 0, paddingPx, 0);
+
+                linearLayout.addView(txtEmail);
+
+                builder.setView(linearLayout);
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which){

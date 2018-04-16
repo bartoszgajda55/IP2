@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.quizapp.ip2.Helper.DownloadImageTask;
-import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizHelper;
 import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Model.Question;
@@ -32,10 +31,11 @@ import java.util.ArrayList;
 
 public class QuizPreviewFragment extends Fragment {
 
+    View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.quiz_preview_fragment, container, false);
+        view = inflater.inflate(R.layout.quiz_preview_fragment, container, false);
         TextView txtQuizTitle = (TextView) view.findViewById(R.id.txtTitle);
         TextView txtQuizDesc = (TextView) view.findViewById(R.id.txtDesc);
         ImageView imgQuizImg = (ImageView) view.findViewById(R.id.imgQuizImg);
@@ -49,6 +49,14 @@ public class QuizPreviewFragment extends Fragment {
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
 
         DrawableCompat.setTint(backgroundShape.getDrawable(), this.getArguments().getInt("color"));
+
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,14 +74,13 @@ public class QuizPreviewFragment extends Fragment {
 
                 RequestTask rt = new RequestTask();
                 try {
-                    JSONArray jsonQuestions = new JSONArray(rt.sendGetRequest("quiz/" + id + "/questions"));
+                    String[] response = rt.sendGetRequest("quiz/" + id + "/questions", "GET");
+                    JSONArray jsonQuestions = new JSONArray(response[1]);
 
 
                     for(int i=0; i<jsonQuestions.length(); i++){
 
                         JSONObject jsonObj = jsonQuestions.getJSONObject(i);
-
-                        //TODO get quiz id?
 
                         int questionId = jsonObj.getInt("QuestionID");
 
@@ -96,6 +103,7 @@ public class QuizPreviewFragment extends Fragment {
                         arrayList.add(question);
                     }
 
+                    quiz.setId(id);
                     quiz.setTitle(title);
                     quiz.setDescription(desc);
                     quiz.setColor(color);
@@ -103,29 +111,43 @@ public class QuizPreviewFragment extends Fragment {
                     quiz.setQuestions(arrayList);
 
 
+
                 }catch (JSONException e){
                     Log.e("JSON ERROR", "Invalid Json");
                 }
 
                 QuizHelper.setQuiz(quiz);
+                if(!getActivity().getClass().equals(AdminShowQuizzesActivity.class)) {
 
-                Intent intent = new Intent(getContext(), QuizActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("title", title);
-                bundle.putInt("color", color);
-                bundle.putString("img", img);
-                bundle.putInt("question", 0);
-                bundle.putInt("correct", 0);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    Intent intent = new Intent(getContext(), QuizActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", title);
+                    bundle.putInt("color", color);
+                    bundle.putString("img", img);
+                    bundle.putInt("question", 0);
+                    bundle.putInt("correct", 0);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
-                QuizActivity.questions = new ArrayList(QuizHelper.getQuiz().getQuizQuestions());
+                    QuizActivity.questions = new ArrayList(QuizHelper.getQuiz().getQuizQuestions());
+
+                } else { //only run this code if it is pressed from adminshowquizzes activity
+                    Intent intent = new Intent(getContext(), AdminEditQuizActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", id);
+                    bundle.putString("title", title);
+                    bundle.putString("desc", desc);
+                    bundle.putInt("color", color);
+                    //bundle.putParcelableArrayList("questions", arrayList);
+                    intent.putExtras(bundle);
+
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                }
+
 
             }
         });
-
-        return view;
     }
-
 }

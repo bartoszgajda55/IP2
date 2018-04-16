@@ -193,7 +193,7 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_toRightOf="@id/txtFriendsTitle"
-                                android:hint="Search for Users"
+                                android:hint="Search friends list"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:theme="@style/textNormal" />
@@ -203,8 +203,8 @@
                                 android:layout_height="30dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_marginTop="10dp"
-                                android:src="@drawable/icon_friends"
-                                android:tint="@color/colorDarkGray"
+                                android:src="@drawable/icon_add_friend"
+                                android:tint="@color/colorIntroGreen"
                                 android:focusable="true"
                                 android:focusableInTouchMode="true"/>
 
@@ -256,26 +256,24 @@
                     android:layout_marginTop="10dp"/>
 
 
-                <Button
-                    android:id="@+id/btnSettings"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/layoutControls"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
-                    android:text="SETTINGS"
-                    android:theme="@style/buttonFlat"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="100dp"
-                    android:layout_marginRight="20dp"/>
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-                <Button
-                    android:id="@+id/btnAdmin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:text="ADMIN"
-                    android:theme="@style/buttonFlat"
-                    android:layout_toRightOf="@+id/btnSettings"/>
+                    <Button
+                        android:id="@+id/btnSettings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:text="SETTINGS"
+                        android:theme="@style/buttonFlat" />
 
+                </LinearLayout>
 
             </RelativeLayout>
 

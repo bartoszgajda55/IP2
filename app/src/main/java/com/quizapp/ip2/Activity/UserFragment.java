@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,9 +47,8 @@ public class UserFragment extends Fragment {
 
     ProgressBar progressBar;
     LinearLayout friendsLayout;
+    LinearLayout layoutControls;
     boolean friendsLoaded = false;
-
-    Button btnAdmin;
 
     ImageView profileImage;
 
@@ -67,8 +67,9 @@ public class UserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.user_fragment, container, false);
         friendsLayout = (LinearLayout) view.findViewById(R.id.friendLinearLayout);
+        layoutControls = (LinearLayout) view.findViewById(R.id.layoutControls);
         final Button btnSettings = (Button) view.findViewById(R.id.btnSettings);
-        btnAdmin = (Button) view.findViewById(R.id.btnAdmin);
+        //btnAdmin = (Button) view.findViewById(R.id.btnAdmin);
         Button btnEditDetails = (Button) view.findViewById(R.id.btnEditDetails);
 
         profileImage = (ImageView) view.findViewById(R.id.imgProfilePicture);
@@ -116,7 +117,62 @@ public class UserFragment extends Fragment {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO LOAD IMAGE FROM GALLERY, UPLOAD TO SERVER, NAME FILE pic_id.jpg in folder img/usr/
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Set Profile Picture");
+                builder.setMessage("Enter the image URL of the profile picture you wish to use, or leave it blank to reset.\n");
+
+                final EditText txtImageUrl = new EditText(getActivity());
+
+                txtImageUrl.setHint("Image URL...");
+                txtImageUrl.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+
+                LinearLayout linearLayout = new LinearLayout(getActivity());
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                int paddingDp = 20;
+                int paddingPx = (int)(paddingDp * getResources().getDisplayMetrics().density);
+                linearLayout.setPadding(paddingPx, 0, paddingPx, 0);
+
+                linearLayout.addView(txtImageUrl);
+                builder.setView(linearLayout);
+
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setPositiveButton("APPLY", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String imageUrl = txtImageUrl.getText().toString();
+                        JSONObject jsonNewImage = new JSONObject();
+                        try {
+                            jsonNewImage.put("ProfileImage", imageUrl);
+                            if(imageUrl.equals("")){
+                                jsonNewImage.remove("ProfileImage");
+                                jsonNewImage.put("ProfileImage", "http://45.32.238.58/quizzy/img/res/profile_pic.png");
+                            }
+                            PostTask pt = new PostTask();
+                            String[] imgResponse = pt.sendPostRequest("user/" + UserHelper.getUser().getUserID() + "/edit", jsonNewImage.toString(), "POST");
+                            UserHelper.getUser().setProfilePicture(imageUrl);
+                            UserHelper.uploadUser();
+                            if(!imgResponse[0].equals("200")){
+                                Toast.makeText(getActivity(), "Error...", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "Profile image updated...", Toast.LENGTH_SHORT).show();
+                            }
+                            dialog.dismiss();
+                            
+                        }catch (JSONException e){
+                            Log.e("JSON ERROR", "Bad json");
+                        }
+                    }
+                });
+
+                AlertDialog ad = builder.create();
+                ad.show();
             }
         });
 
@@ -129,14 +185,6 @@ public class UserFragment extends Fragment {
             }
         });
 
-        btnAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), AdminActivity.class);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
-            }
-        });
 
         btnEditDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,8 +242,21 @@ public class UserFragment extends Fragment {
         progressLevel.setProgress(lvl.nextLevel());
 
         //IF USER IS NOT ADMIN MAKE btnAdmin invisible
-        if (UserHelper.getUser().getAdminStatus()==0){
-            btnAdmin.setVisibility(View.INVISIBLE);
+        if (UserHelper.getUser().getAdminStatus()==1 && layoutControls.getChildCount() < 2){
+            Button btnAdmin= new Button(new ContextThemeWrapper(getActivity(), R.style.buttonFlat));
+            btnAdmin.setText("ADMIN");
+            //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)btnAdmin.getLayoutParams();
+
+            btnAdmin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), AdminActivity.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+                }
+            });
+
+            layoutControls.addView(btnAdmin);
         }
     }
 
@@ -262,16 +323,18 @@ public class UserFragment extends Fragment {
                     if (email.length() > 0) {
 
                         JSONObject jsonObj = new JSONObject();
-                        PostTask ptUsername = new PostTask();
+                        PostTask ptAvailable = new PostTask();
 
-                        jsonObj.put("email", email);
-                        String[] response = ptUsername.sendPostRequest("user/find", jsonObj.toString());
-                        if (response[0].equals("200")) {
+                        jsonObj.put("type","email");
+                        jsonObj.put("term", email);
+
+                        String[] emailResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString(), "POST");
+                        if (emailResponse[0].equals("404")) {
 
                             // Check if email matches pattern
                             Matcher matcher = RegisterFragment.VALID_EMAIL_ADDRESS_REGEX.matcher(email);
                             if(matcher.find()){
-                                jsonEdittedDetails.put("email", email);
+                                jsonEdittedDetails.put("email",email);
                             }else{
                                 Toast.makeText(getActivity(), "Email is invalid..", Toast.LENGTH_SHORT).show();
                             }
@@ -318,7 +381,7 @@ public class UserFragment extends Fragment {
                 }
 
 
-                String[] response = new PostTask().sendPostRequest("user/" + UserHelper.getUser().getUserID() + "/edit", jsonEdittedDetails.toString());
+                String[] response = new PostTask().sendPostRequest("user/" + UserHelper.getUser().getUserID() + "/edit", jsonEdittedDetails.toString(), "POST");
                 dialog.dismiss();
                 if(jsonEdittedDetails.length() > 0){
                     Toast.makeText(getContext(), "User details updated...", Toast.LENGTH_SHORT).show();
@@ -340,43 +403,47 @@ public class UserFragment extends Fragment {
 
 
             try{
+                String[] allFriendsResponse = rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends", "GET");
+                JSONArray resultset = new JSONArray(allFriendsResponse[1]);
 
-            JSONArray resultset = new JSONArray(rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends"));
+                if(resultset.length()>0) {
+                    for (int i = 0; i < resultset.length(); i++) {
+                        JSONObject jsonObject = resultset.getJSONObject(i);
+                        UserPreviewFragment frag = new UserPreviewFragment();
+                        Bundle bundle = new Bundle();
+                        int place = i + 1;
 
-            if(resultset.length()>0){
-            for(int i=0; i<resultset.length(); i++) {
-                JSONObject jsonObject = resultset.getJSONObject(i);
-                UserPreviewFragment frag = new UserPreviewFragment();
-                Bundle bundle = new Bundle();
-                int place = i + 1;
+                        JSONArray resultUserArray;
 
-                JSONArray resultUserArray;
+                        //If user 1 = user ELSE user 2 = user
+                        if (jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())) {
+                            String[] frientRt = rt.sendGetRequest("user/"+jsonObject.get("User2ID"), "GET");
+                            resultUserArray = new JSONArray(frientRt[1]);
+                        } else {
+                            String[] frientRt = rt.sendGetRequest("user/"+jsonObject.get("User1ID"), "GET");
+                            resultUserArray = new JSONArray(frientRt[1]);
+                        }
 
-                //If user 1 = user ELSE user 2 = user
-                if(jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())){
-                    resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User2ID"))));
-                }else{
-                    resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User1ID"))));
+
+                        JSONObject jsonFriend = resultUserArray.getJSONObject(0);
+
+                        String username = jsonFriend.getString("Username");
+                        String level = Integer.toString(new LevelParser(jsonFriend.getInt("XP")).getLevel());
+                        bundle.putInt("place", place);
+                        bundle.putString("username", username);
+                        bundle.putString("level", level);
+                        bundle.putInt("color", R.color.colorLightGray);
+                        bundle.putInt("textColor", R.color.colorDarkGray);
+                        bundle.putFloat("alpha", 0.25F);
+
+                        frag.setArguments(bundle);
+                        RelativeLayout rel = new RelativeLayout(getContext());
+                        rel.setId(View.generateViewId());
+                        getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
+                        friendsLayout.addView(rel);
+                    }
                 }
 
-
-                JSONObject jsonFriend = resultUserArray.getJSONObject(0);
-
-                String username =  jsonFriend.getString("Username");
-                String level = Integer.toString(new LevelParser(jsonFriend.getInt("XP")).getLevel());
-                bundle.putInt("place", place);
-                bundle.putString("username", username);
-                bundle.putString("level", level);
-                bundle.putInt("color", R.color.colorLightGray);
-                bundle.putInt("textColor", R.color.colorDarkGray);
-                bundle.putFloat("alpha", 0.25F);
-
-                frag.setArguments(bundle);
-                RelativeLayout rel = new RelativeLayout(getContext());
-                rel.setId(View.generateViewId());
-                getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
-                friendsLayout.addView(rel);
-            }}
 
             }catch(Exception e){
                 Log.e("ERROR","No friends");
@@ -394,8 +461,8 @@ public class UserFragment extends Fragment {
             RequestTask rt = new RequestTask();
 
             try{
-
-                JSONArray resultset = new JSONArray(rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends"));
+                String[] responseFriends = rt.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/friends", "GET");
+                JSONArray resultset = new JSONArray(responseFriends[1]);
                 if(resultset.length()>0){
                 for(int i=0; i<resultset.length(); i++) {
                     JSONObject jsonObject = resultset.getJSONObject(i);
@@ -408,9 +475,12 @@ public class UserFragment extends Fragment {
 
                     //If user 1 = user ELSE user 2 = user
                     if(jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())){
-                        resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User2ID"))));
+                        String[] friendResponse = rt.sendGetRequest("user/"+jsonObject.get("User2ID"), "GET");
+                        resultUserArray= new JSONArray(friendResponse[1]);
                     }else{
-                        resultUserArray= new JSONArray((rt.sendGetRequest("user/"+jsonObject.get("User1ID"))));
+                        String[] friendResponse = rt.sendGetRequest("user/ " + jsonObject.get("User1ID"), "GET");
+                        resultUserArray= new JSONArray(friendResponse[1]);
+
                     }
 
                     JSONObject jsonFriend = resultUserArray.getJSONObject(0);

@@ -1,10 +1,8 @@
 package com.quizapp.ip2.Activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.quizapp.ip2.Helper.DarkenColorHelper;
 import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.R;
@@ -33,14 +32,6 @@ public class QuizActivity extends AppCompatActivity {
     private ArrayList answers;
     private String correctAnswer;
     ImageView image;
-
-    @ColorInt
-    int darkenColor(@ColorInt int color){
-        float[] hsv = new float[3];
-        Color.colorToHSV(color, hsv);
-        hsv[2] *= 0.75f;
-        return Color.HSVToColor(hsv);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +64,17 @@ public class QuizActivity extends AppCompatActivity {
             bundle.putInt("correct", progressBarCorrect.getProgress());
             bundle.putInt("color", b.getInt("color"));
             bundle.putString("img", b.getString("img"));
+            bundle.putString("desc", b.getString("desc"));
             intent.putExtras(bundle);
             startActivity(intent);
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
 
         //Set button background color to neutral color
-        button1.setBackgroundColor(darkenColor(b.getInt("color")));
-        button2.setBackgroundColor(darkenColor(b.getInt("color")));
-        button3.setBackgroundColor(darkenColor(b.getInt("color")));
-        button4.setBackgroundColor(darkenColor(b.getInt("color")));
+        button1.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
+        button2.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
+        button3.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
+        button4.setBackgroundColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
 
         txtQuestion.setText("" + questions.get(progressBar.getProgress()).getQuestionString());
 
@@ -110,7 +102,7 @@ public class QuizActivity extends AppCompatActivity {
 
         //Set status bar to darker color variant
         Window window = getWindow();
-        window.setStatusBarColor(darkenColor(b.getInt("color")));
+        window.setStatusBarColor(new DarkenColorHelper().darkenColor(b.getInt("color")));
 
         //Set toolbar back arrow and it's listener
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));

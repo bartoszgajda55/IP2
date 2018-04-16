@@ -1,6 +1,5 @@
 package com.quizapp.ip2.Activity;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,15 +8,14 @@ import android.view.View;
 
 import com.quizapp.ip2.R;
 
-public class DeleteQuizActivity extends AppCompatActivity {
+public class AdminImportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delete_quiz);
+        setContentView(R.layout.activity_admin_import);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
 
         Drawable whiteArrow = getDrawable(R.drawable.arrow_back);
         whiteArrow.setTint(getResources().getColor(R.color.colorLight));
@@ -25,10 +23,11 @@ public class DeleteQuizActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getBaseContext(), AdminActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_left);
+                finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
+        toolbar.setTitle("Import Quiz");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
     }
 }

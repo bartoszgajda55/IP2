@@ -3,9 +3,10 @@ package com.quizapp.ip2.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
@@ -18,21 +19,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.quizapp.ip2.Helper.JsonFileHelper;
 import com.quizapp.ip2.Helper.LevelParser;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.RequestTask;
-import com.quizapp.ip2.Model.User;
 import com.quizapp.ip2.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Allan on 07/04/2018.
  */
 
 public class AdminTaskFragment extends Fragment {
+
+    static final int PICKFILE_REQUEST_CODE = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -56,60 +62,31 @@ public class AdminTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(title.equals("Add Quiz")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("Quiz Name");
-                    final EditText text = new EditText(getActivity());
-                    text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    builder.setMessage("Enter the quiz title...");
-                    builder.setView(text);
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-                        @Override
-                        public void onClick(DialogInterface dialog, int which){
-                            dialog.dismiss();
-                        }
-                    });
+                if(title.equals("Quizzes")){
 
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                    Intent intent = new Intent(getContext(), AdminShowQuizzesActivity.class);
 
-
-                            Bundle b = new Bundle();
-                            b.putString("title", text.getText().toString());
-
-                            Intent intent = new Intent(getContext(), AddQuizActivity.class);
-                            intent.putExtras(b);
-
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        }
-                    });
-
-                    Intent intent = new Intent(getContext(), AddQuizActivity.class);
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
-                }else if(title.equals("Delete Quiz")){
-                    Intent intent = new Intent(getContext(), DeleteQuizActivity.class);
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
-                }else if(title.equals("Edit Quiz")){
-                    Intent intent = new Intent(getContext(), EditQuizActivity.class);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }else if(title.equals("Lookup/Edit User")){
-                    //todo alert dialog, ask for username, use find api to get user id and all details, pass in as bundle.
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Lookup User");
+                    builder.setMessage("Enter the user's username...");
                     final EditText text = new EditText(getActivity());
-                    text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    builder.setMessage("Enter the user's email...");
-                    builder.setView(text);
+                    text.setSingleLine();
+                    text.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+
+                    LinearLayout linearLayout = new LinearLayout(getActivity());
+                    linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                    int paddingDp = 20;
+                    int paddingPx = (int)(paddingDp * getResources().getDisplayMetrics().density);
+                    linearLayout.setPadding(paddingPx, 0, paddingPx, 0);
+
+                    linearLayout.addView(text);
+                    builder.setView(linearLayout);
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which){
@@ -129,9 +106,10 @@ public class AdminTaskFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject();
 
                             try {
-                                jsonObject.put("email", text.getText().toString());
+                                jsonObject.put("type", "username");
+                                jsonObject.put("term", text.getText().toString());
 
-                                String[] response = pt.sendPostRequest("user/find", jsonObject.toString());
+                                String[] response = pt.sendPostRequest("user/find", jsonObject.toString(), "POST");
 
                                 if(response[0].equals("200")){
                                     //user found
@@ -152,20 +130,22 @@ public class AdminTaskFragment extends Fragment {
                                     b.putInt("quizzescomplete", jsonResponse.getInt("QuizzessCompleted"));
                                     b.putInt("correctanswers", jsonResponse.getInt("CorrectAnswers"));
 
-                                    //Put ranking
+                                    //Put ranking //todo fix showing 0
                                     RequestTask requestRanking = new RequestTask();
-                                    String rankingResponse = requestRanking.sendGetRequest("user/" + jsonResponse.getInt("UserID") + "/ranking");
-                                    if(!rankingResponse.equals("[]")){
-                                        JSONObject jsonRanking = new JSONObject(rankingResponse);
+                                    String[] rankingResponse = requestRanking.sendGetRequest("user/" + jsonResponse.getInt("UserID") + "/ranking", "GET");
+                                    if(!rankingResponse[0].equals("400")){
+                                        JSONObject jsonRanking = new JSONObject(rankingResponse[1]);
                                         b.putInt("ranking", jsonRanking.getInt("position"));
                                     } else{
                                         b.putInt("ranking", 0);
                                     }
 
+                                    //TODO Ban the user from UI
                                     RequestTask requestBanned = new RequestTask();
-                                    String banResponse = requestBanned.sendGetRequest("blacklist/"+jsonResponse.getInt("UserID"));
+                                    String[] banResponse = requestBanned.sendGetRequest("blacklist/"+jsonResponse.getInt("UserID"), "GET");
                                     boolean banBool;
-                                    if(!banResponse.equals("[]")){
+
+                                    if(banResponse[0].equals("200")){
                                         banBool = true;
                                     }else{
                                         banBool = false;
@@ -195,11 +175,101 @@ public class AdminTaskFragment extends Fragment {
                     AlertDialog ad = builder.create();
                     ad.show();
 
-                }
+                }else{
 
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("application/octet-stream");
+                    startActivityForResult(intent, PICKFILE_REQUEST_CODE);
+
+
+                }
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICKFILE_REQUEST_CODE && resultCode==RESULT_OK){
+            Uri uri = data.getData();
+
+            final JSONObject jsonObj = JsonFileHelper.readJson(uri, getContext());
+            if(jsonObj==null){
+                Toast.makeText(getContext(), "Error could not parse JSON...", Toast.LENGTH_SHORT).show();
+            }else{
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Enter a Quiz Name");
+                    builder.setMessage("What do you want your Quiz to be named?");
+
+                    final EditText txtQuizImportName = new EditText(getActivity());
+                    txtQuizImportName.setSingleLine();
+                    txtQuizImportName.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+
+                    LinearLayout linearLayout = new LinearLayout(getActivity());
+                    linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                    int paddingDp = 20;
+                    int paddingPx = (int)(paddingDp * getResources().getDisplayMetrics().density);
+                    linearLayout.setPadding(paddingPx, 0, paddingPx, 0);
+
+                    linearLayout.addView(txtQuizImportName);
+
+                    builder.setView(linearLayout);
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.setPositiveButton("IMPORT", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            try {
+                                JSONObject jsonQuizRecieved = new JSONObject(jsonObj.get("quiz").toString());
+                                JSONObject jsonNewQuiz = new JSONObject();
+
+                                jsonNewQuiz.put("quizname", txtQuizImportName.getText().toString());
+                                jsonNewQuiz.put("quizdescription", jsonQuizRecieved.get("QuizDescription"));
+                                jsonNewQuiz.put("quizimage", jsonQuizRecieved.get("QuizImage"));
+                                jsonNewQuiz.put("quizcolor", jsonQuizRecieved.get("QuizColor"));
+
+                                Log.e("JSON", "" + jsonNewQuiz.toString());
+                                JSONArray jsonQuestions = jsonObj.getJSONArray("questions");
+
+                                PostTask pt = new PostTask();
+                                String[] quizresponse = pt.sendPostRequest("quiz", jsonNewQuiz.toString(), "POST");
+                                if (!quizresponse[0].equals("201")) {
+                                    Log.e("JSON:", quizresponse[1]);
+                                    Toast.makeText(getContext(), "Error creating quiz...", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    JSONObject jsonMultipleQuestion = new JSONObject();
+                                    JSONObject jsonID = new JSONObject(quizresponse[1]);
+
+                                    jsonMultipleQuestion.put("quizid", jsonID.get("QuizID"));
+                                    jsonMultipleQuestion.put("questions", jsonQuestions.toString());
+                                    String[] questionsresponse = pt.sendPostRequest("question/many", jsonMultipleQuestion.toString(), "POST");
+                                    if (questionsresponse.equals("201")) {
+                                        Toast.makeText(getContext(), "Quiz Added", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getContext(), "Error adding questions...", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }catch (JSONException e){
+                                Log.e("JSON Error", "BAD JSON");
+                            }
+                        }
+                    });
+
+                    AlertDialog ad = builder.create();
+                    ad.show();
+
+            }
+
+        }
     }
 }

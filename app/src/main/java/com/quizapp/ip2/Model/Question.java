@@ -1,9 +1,7 @@
 package com.quizapp.ip2.Model;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-
-//import com.quizapp.ip2.Helper.LoadImageHelper;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 
@@ -11,7 +9,7 @@ import java.util.ArrayList;
  * Created by aaron on 19/03/2018.
  */
 
-public class Question {
+public class Question implements Parcelable{
 
     private String correctAnswer;
     private ArrayList<String> wrongAnswers = new ArrayList<>();
@@ -33,6 +31,13 @@ public class Question {
         this.wrongAnswers = wrongAnswers;
         this.questionImage = questionImage;
         this.questionId = questionId;
+        this.questionString = questionString;
+    }
+
+    public Question(String correctAnswer, ArrayList<String> wrongAnswers, String questionImage, String questionString) {
+        this.correctAnswer = correctAnswer;
+        this.wrongAnswers = wrongAnswers;
+        this.questionImage = questionImage;
         this.questionString = questionString;
     }
 
@@ -79,4 +84,42 @@ public class Question {
     public void setQuestionImage(String questionImage) {
         this.questionImage = questionImage;
     }
+
+
+
+    /*** Parcelable methods - do not include in class diagram
+     * These methods allow the Question class to implement Parcelable, to allow an arraylist of questions to be passed into a bundle for use in other activities***/
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.correctAnswer);
+        dest.writeStringList(this.wrongAnswers);
+        dest.writeString(this.questionImage);
+        dest.writeInt(this.questionId);
+        dest.writeString(this.questionString);
+    }
+
+    protected Question(Parcel in) {
+        this.correctAnswer = in.readString();
+        this.wrongAnswers = in.createStringArrayList();
+        this.questionImage = in.readString();
+        this.questionId = in.readInt();
+        this.questionString = in.readString();
+    }
+
+    public static final Creator<Question> CREATOR = new Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel source) {
+            return new Question(source);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
 }

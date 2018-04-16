@@ -40,11 +40,11 @@ public class UserHelper {
             jsonUser.put("profileimage", getUser().getProfilePicture());
             jsonUser.put("adminstatus", getUser().getAdminStatus());
             jsonUser.put("xp", getUser().getXp());
-            jsonUser.put("quizzesscompleted", getUser().getQuizzessCompleted());
+            jsonUser.put("quizesscompleted", getUser().getQuizzessCompleted());
             jsonUser.put("correctanswers", getUser().getCorrectAnswers());
 
             PostTask pt = new PostTask();
-            String[] response = pt.sendPostRequest("user/"+getUser().getUserID()+"/edit", jsonUser.toString());
+            String[] response = pt.sendPostRequest("user/"+getUser().getUserID()+"/edit", jsonUser.toString(), "POST");
 
             if(!response[0].equals("200")){
                 Log.e("POST ERROR", "Could not post... " + response[0] + " " + response[1]);

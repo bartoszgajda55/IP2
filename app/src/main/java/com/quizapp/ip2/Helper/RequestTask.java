@@ -1,9 +1,9 @@
 package com.quizapp.ip2.Helper;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -18,52 +18,46 @@ public class RequestTask {
     public RequestTask() {
     }
 
-    public String sendGetRequest(String path) {
+    public String[] sendGetRequest(String path, String method) {
         try {
-            return new JsonTask().execute(BASE_URL + path).get();
+            return new JsonTask().execute(BASE_URL + path, method).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    private class JsonTask extends AsyncTask<String, String, String> {
+    private class JsonTask extends AsyncTask<String, String, String[]> {
 
-        protected String doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
             HttpsURLConnection connection = null;
-            BufferedReader reader = null;
+            String response[] = {"404","Error"};
             try {
                 URL url = new URL(params[0]);
                 connection = (HttpsURLConnection) url.openConnection();
+                connection.setRequestMethod(params[1]);
                 connection.connect();
 
                 InputStream stream = connection.getInputStream();
 
-                reader = new BufferedReader(new InputStreamReader(stream));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 
-                StringBuffer buffer = new StringBuffer();
-                String line = "";
-
+                StringBuilder sb = new StringBuilder();
+                String line = null;
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line + "\n");
+                    sb.append(line + "\n");
                 }
-                return buffer.toString();
+                stream.close();
+                response[0] = String.valueOf(connection.getResponseCode());
+                response[1] = sb.toString();
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-                try {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            }catch (Exception e) {
+                Log.e("BUFFER ERROR", "Error converting result " + e.toString());
+
             }
-            return null;
+
+            connection.disconnect();
+            return response;
         }
     }
 }

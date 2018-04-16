@@ -25,9 +25,9 @@ public class PostTask {
     public PostTask(){
     }
 
-    public String[] sendPostRequest(String path, String json){
+    public String[] sendPostRequest(String path, String json, String method){
         try {
-            return new JsonTask().execute(BASE_URL + path, json).get();
+            return new JsonTask().execute(BASE_URL + path, json, method).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -43,7 +43,7 @@ public class PostTask {
             try {
                 URL url = new URL(params[0]);
                 connection = (HttpsURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
+                connection.setRequestMethod(params[2]);
                 connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                 connection.setRequestProperty("Accept","application/json");
                 connection.setDoOutput(true);

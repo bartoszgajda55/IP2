@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -16,8 +15,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.quizapp.ip2.Helper.DarkenColorHelper;
 import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Helper.LevelParser;
+import com.quizapp.ip2.Helper.QuizHelper;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
 import com.quizapp.ip2.Views.GifImageView;
@@ -46,9 +47,18 @@ public class QuizEndActivity extends AppCompatActivity {
 
         //Set status bar to darker color variant
         Window window = getWindow();
-        window.setStatusBarColor(darkenColor(getIntent().getExtras().getInt("color")));
+        window.setStatusBarColor(new DarkenColorHelper().darkenColor(getIntent().getExtras().getInt("color")));
 
-        int xp=(correct*10);
+        int xpMultiplier;
+        if(QuizHelper.getQuiz().getDescription().endsWith("Easy")){
+          xpMultiplier = 4;
+        } else if (QuizHelper.getQuiz().getDescription().endsWith("Medium")) {
+            xpMultiplier = 8;
+        } else { //hard
+            xpMultiplier = 12;
+        }
+
+        int xp=(correct*xpMultiplier);
 
         int prevLevel = new LevelParser(UserHelper.getUser().getXp()).getLevel();
         UserHelper.getUser().addXp(xp);
@@ -102,7 +112,7 @@ public class QuizEndActivity extends AppCompatActivity {
         }
 
 
-        endButton.setBackgroundColor(darkenColor(getIntent().getExtras().getInt("color")));
+        endButton.setBackgroundColor(new DarkenColorHelper().darkenColor(getIntent().getExtras().getInt("color")));
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,11 +124,4 @@ public class QuizEndActivity extends AppCompatActivity {
         });
     }
 
-    @ColorInt
-    int darkenColor(@ColorInt int color){
-        float[] hsv = new float[3];
-        Color.colorToHSV(color, hsv);
-        hsv[2] *= 0.75f;
-        return Color.HSVToColor(hsv);
-    }
 }

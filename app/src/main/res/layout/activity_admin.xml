@@ -6,6 +6,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.quizapp.ip2.Activity.AdminActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.5"
+
+        android:src="@drawable/background_cubes_light"/>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -15,6 +24,7 @@
         android:theme="?attr/actionBarTheme"
         app:title="Admin"
         app:titleTextColor="@color/colorLight">
+
 
     </android.support.v7.widget.Toolbar >
 
