@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.quizapp.ip2.Helper.DarkenColorHelper;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizColor;
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.R;
 
@@ -148,7 +149,7 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //upload quizhelper to database
-                PostTask post = new PostTask();
+                RequestTask post = new RequestTask();
                 JSONObject jsonQuiz = new JSONObject();
                 try {
                     jsonQuiz.put("quizimage", quizImage);
@@ -169,12 +170,15 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
 
                             jsonQuiz.put("quizcolor", QuizColor.valueOf(spinnerColor.getSelectedItem().toString().toUpperCase()));
                             if(questionsList.size() >= 10){
+                                Log.e("VALUES", ": "+questionsList.toString());
+
                                 /**Post quiz to database**/
-                                String[] quizResponse = post.sendPostRequest("quiz", jsonQuiz.toString(), "POST");
+                                String[] quizResponse = post.sendGetRequest("quiz/","GET");
 
                                 /**Post questions to database **/
-                                JSONObject jsonObject = new JSONObject(quizResponse[1]);
-                                int newQuizId =jsonObject.getInt("quizid");
+                                Log.e("RESPONSE",": "+quizResponse[1]);
+                                JSONArray jsonArray = new JSONArray(quizResponse[1]);
+                                int newQuizId =jsonArray.getJSONObject(0).getInt("id");
 
                                 JSONObject jsonAllQuizQuestions = new JSONObject();
                                 jsonAllQuizQuestions.put("quizid", newQuizId);
@@ -190,7 +194,10 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
                                     jsonQuestionArray.put(jsonQuestion);
                                 }
                                 jsonAllQuizQuestions.put("questions", jsonQuestionArray);
+                                Log.e("JSON ALL QUESTIONS","VALUE: "+jsonAllQuizQuestions.toString());
                                 String[] allQuestionsResponse = post.sendPostRequest("question/many", jsonAllQuizQuestions.toString(),"POST");
+
+                                Log.e("POST","POSTING: "+allQuestionsResponse[0]+" VALUES: "+allQuestionsResponse[1]);
 
                                 if(quizResponse[0].equals("201") && allQuestionsResponse.equals("201")){
                                     Toast.makeText(getApplicationContext(), "Quiz Created...", Toast.LENGTH_SHORT).show();
@@ -200,7 +207,7 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Toast.makeText(getApplicationContext(), "A quiz must have atleast 10 questions", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "A quiz must have at least 10 questions", Toast.LENGTH_SHORT).show();
                             }
                         }else{
                             Toast.makeText(getApplicationContext(), "Please select a Quiz Color...", Toast.LENGTH_SHORT).show();
@@ -212,6 +219,8 @@ public class AdminCreateQuizActivity extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     Log.e("RESULT: ", "Bad JSON");
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error...", Toast.LENGTH_SHORT).show();
                 }
             }
         });

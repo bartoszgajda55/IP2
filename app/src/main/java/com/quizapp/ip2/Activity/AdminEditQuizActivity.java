@@ -26,6 +26,7 @@ import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -231,21 +232,23 @@ public class AdminEditQuizActivity extends AppCompatActivity {
 
                 RequestTask rt = new RequestTask();
                 String[] quizresponse = rt.sendGetRequest("quiz/"+b.getInt("id"), "GET");
-                Log.e("QUIZ RESPONSE", quizresponse[1].replace("\\", ""));
                 String[] questionresponse = rt.sendGetRequest("quiz/"+b.getInt("id")+"/questions", "GET");
-                Log.e("QUESTION RESPONSE", questionresponse[1].replace("\\", ""));
-
-
 
                 try {
 
-                    String jsonCombined = "{\"quiz\":" + quizresponse[1] + ", \"questions\":" + questionresponse[1] + "}";
+                    JSONArray jArray = new JSONArray(questionresponse[1].toString());
+                    for (int i=0; i < jArray.length(); i++) {
+                        JSONObject jObj = jArray.getJSONObject(i);
+                        jObj.remove("QuestionID");
+                        jObj.remove("QuizID");
+                    }
+
+
+                    String jsonCombined = "{\"quiz\":" + quizresponse[1] + ", \"questions\":" + jArray.toString() + "}";
                     JSONObject quizObj = new JSONObject(jsonCombined);
 
                     String str = quizObj.toString().replace("\\n","");
                     String str2 = str.replace("\\","");
-
-                    Log.e("NO SLASHES: ", str2);
 
                     JsonFileHelper.writeToFile(str2, b.getString("title").replace(" ", "_")+".json", getApplicationContext());
                     Toast.makeText(getApplicationContext(), "Exported...", Toast.LENGTH_SHORT).show();

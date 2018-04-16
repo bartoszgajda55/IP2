@@ -1,5 +1,6 @@
 package com.quizapp.ip2.Activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,8 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -36,6 +42,34 @@ public class RecentQuizGridFragment extends Fragment {
         super.onResume();
 
 
+        for(int i=0; i<getArguments().getIntegerArrayList("list").size(); i++) {
+
+            try {
+                String[] quizResponse = new RequestTask().sendGetRequest("quiz/" + getArguments().getIntegerArrayList("list").get(i), "GET");
+                JSONObject jsonQuiz = new JSONObject(quizResponse[1]);
+
+                RecentQuizPreviewFragment quizRecent = new RecentQuizPreviewFragment();
+                Bundle recentBundle = new Bundle();
+                int recentId = jsonQuiz.getInt("QuizID");
+                String recentTitle = jsonQuiz.getString("QuizName");
+                String recentImg = jsonQuiz.getString("QuizImage");
+                int recentColor = Color.parseColor("#" + jsonQuiz.getString("QuizColor"));
+                recentBundle.putInt("id", recentId);
+                recentBundle.putString("title", recentTitle);
+                recentBundle.putString("img", recentImg);
+                recentBundle.putInt("color", recentColor);
+
+                quizRecent.setArguments(recentBundle);
+
+                RelativeLayout rel = new RelativeLayout(getContext());
+                rel.setId(View.generateViewId());
+                getFragmentManager().beginTransaction().add(rel.getId(), quizRecent).commit();
+                gridLayout.addView(rel, i);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 }

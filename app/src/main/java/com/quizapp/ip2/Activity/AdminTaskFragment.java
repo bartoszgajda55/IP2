@@ -238,7 +238,6 @@ public class AdminTaskFragment extends Fragment {
                                 jsonNewQuiz.put("quizimage", jsonQuizRecieved.get("QuizImage"));
                                 jsonNewQuiz.put("quizcolor", jsonQuizRecieved.get("QuizColor"));
 
-                                Log.e("JSON", "" + jsonNewQuiz.toString());
                                 JSONArray jsonQuestions = jsonObj.getJSONArray("questions");
 
                                 PostTask pt = new PostTask();
@@ -248,12 +247,14 @@ public class AdminTaskFragment extends Fragment {
                                     Toast.makeText(getContext(), "Error creating quiz...", Toast.LENGTH_SHORT).show();
                                 } else {
                                     JSONObject jsonMultipleQuestion = new JSONObject();
-                                    JSONObject jsonID = new JSONObject(quizresponse[1]);
 
-                                    jsonMultipleQuestion.put("quizid", jsonID.get("QuizID"));
-                                    jsonMultipleQuestion.put("questions", jsonQuestions.toString());
+                                    jsonMultipleQuestion.put("quizid", quizresponse[1]);
+                                    jsonMultipleQuestion.put("questions", jsonQuestions);
+
                                     String[] questionsresponse = pt.sendPostRequest("question/many", jsonMultipleQuestion.toString(), "POST");
-                                    if (questionsresponse.equals("201")) {
+
+
+                                    if (questionsresponse[0].equals("201")) {
                                         Toast.makeText(getContext(), "Quiz Added", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(getContext(), "Error adding questions...", Toast.LENGTH_SHORT).show();
