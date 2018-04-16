@@ -130,7 +130,7 @@ public class AdminTaskFragment extends Fragment {
                                     b.putInt("quizzescomplete", jsonResponse.getInt("QuizzessCompleted"));
                                     b.putInt("correctanswers", jsonResponse.getInt("CorrectAnswers"));
 
-                                    //Put ranking //todo fix showing 0
+                                    //Put ranking
                                     RequestTask requestRanking = new RequestTask();
                                     String[] rankingResponse = requestRanking.sendGetRequest("user/" + jsonResponse.getInt("UserID") + "/ranking", "GET");
                                     if(!rankingResponse[0].equals("400")){
@@ -140,7 +140,6 @@ public class AdminTaskFragment extends Fragment {
                                         b.putInt("ranking", 0);
                                     }
 
-                                    //TODO Ban the user from UI
                                     RequestTask requestBanned = new RequestTask();
                                     String[] banResponse = requestBanned.sendGetRequest("blacklist/"+jsonResponse.getInt("UserID"), "GET");
                                     boolean banBool;
@@ -254,15 +253,6 @@ public class AdminTaskFragment extends Fragment {
                                     PostTask pt2 = new PostTask();
                                     Log.e("export/imported", jsonBody.toString());
                                     String[] questionsResponse= pt2.sendPostRequest("question/many", jsonBody.toString(), "POST");
-                                    /*String jsonCombined = "{\"quizid\":\"" + quizresponse[1]+ "\", \"questions\":" + jsonQuestions + "}";
-
-                                    String str = jsonCombined.toString().replace("\\n","");
-                                    String str2 = str.replace("\\","");
-
-                                    Log.e("combined", str2);
-
-                                    PostTask pt2 = new PostTask();
-                                    String[] questionsresponse = pt2.sendPostRequest("question/many", str2, "POST");*/
 
                                     if (questionsResponse[0].equals("201")) {
                                         Toast.makeText(getContext(), "Quiz Added", Toast.LENGTH_SHORT).show();

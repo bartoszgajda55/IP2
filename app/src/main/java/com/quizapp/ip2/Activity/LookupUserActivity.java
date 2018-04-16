@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Helper.PostTask;
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.R;
 
 import org.json.JSONException;
@@ -88,7 +89,7 @@ public class LookupUserActivity extends AppCompatActivity {
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { //todo tidy up ban, response 500 when user already banned
+            public void onClick(View view) {
                 final PostTask pt = new PostTask();
 
                 final JSONObject jsonUser = new JSONObject();
@@ -107,7 +108,10 @@ public class LookupUserActivity extends AppCompatActivity {
 
                     if(bundleBanned == 1 && updatedBanned == 0){
                         //Unban
-                        //TODO UNBAN USER, MODIFY POSTREQUEST TO ACCEPT METHOD TYPE E.G. POST OR DELETE
+                        String[] unbanResponse = new RequestTask().sendGetRequest("blacklist/" + txtUserId.getText().toString(),"DELETE");
+                        if(unbanResponse[0].equals("500")){
+                            Toast.makeText(getApplicationContext(), "Error unbanning user...", Toast.LENGTH_SHORT).show();
+                        }
 
 
                     }else if(bundleBanned == 0 && updatedBanned == 1){
@@ -152,8 +156,6 @@ public class LookupUserActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Error banning user...", Toast.LENGTH_SHORT).show();
                                 }
 
-                                Toast.makeText(getApplicationContext(), "Changes saved...", Toast.LENGTH_SHORT).show();
-                                finish();
                             }
                         });
 
@@ -161,6 +163,9 @@ public class LookupUserActivity extends AppCompatActivity {
                         ad.show();
                     }
 
+                    Toast.makeText(getApplicationContext(), "Changes saved...", Toast.LENGTH_SHORT).show();
+                    finish();
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 } catch (JSONException e){
                     Log.e("JSON ERROR", "Bad JSON");
                 }

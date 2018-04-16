@@ -28,7 +28,6 @@ public class UserHelper {
     }
 
     //Upload this user object to the database
-    //todo different thread?
     public static void uploadUser(){
         JSONObject jsonUser = new JSONObject();
 

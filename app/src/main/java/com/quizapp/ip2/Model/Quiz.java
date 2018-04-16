@@ -11,13 +11,12 @@ import java.util.Collections;
 
 public class Quiz {
 
-    //todo id and methods
     private int id;
     private String title, description;
     private int color; //color resource
     private String image;
 
-    private ArrayList<Question> questions = new ArrayList<>(); //TODO Add question and set question method
+    private ArrayList<Question> questions = new ArrayList<>();
 
     public Quiz() {
     }

@@ -48,7 +48,6 @@ public class QuestionPreviewFragment extends Fragment {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO LOAD AdminEditQuestionActivity for this question
                 Intent intent = new Intent(getContext(), AdminEditQuestionActivity.class);
                 args.putBoolean("editingquestion", true);
                 intent.putExtra("bundle", args);
