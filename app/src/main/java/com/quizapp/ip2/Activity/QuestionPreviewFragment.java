@@ -54,7 +54,7 @@ public class QuestionPreviewFragment extends Fragment {
                 intent.putExtra("bundle", args);
 
                 startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 

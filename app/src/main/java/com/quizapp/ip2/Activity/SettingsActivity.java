@@ -52,7 +52,7 @@ public class SettingsActivity extends Activity {
             public void onClick(View v){
                 Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
 
             }
         });
@@ -142,7 +142,7 @@ public class SettingsActivity extends Activity {
 
                         Intent intent = new Intent(SettingsActivity.this, AuthenticationActivity.class);
                         startActivity(intent);
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
                     }
                 });
                 AlertDialog ad = builder.create();

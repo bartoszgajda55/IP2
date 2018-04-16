@@ -1,15 +1,12 @@
 package com.quizapp.ip2.Activity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.quizapp.ip2.Helper.AnimatedColor;
 import com.quizapp.ip2.Model.Tutorial;
@@ -110,7 +107,8 @@ public class TutorialActivity extends FragmentedActivity {
     public void onSkipClick(View v){
         Intent intent = new Intent(this, HomepageActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_ver_in, R.anim.slide_ver_out);
+        overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+
 
     }
 

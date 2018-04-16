@@ -139,11 +139,10 @@ public class QuizPreviewFragment extends Fragment {
                     bundle.putString("title", title);
                     bundle.putString("desc", desc);
                     bundle.putInt("color", color);
-                    //bundle.putParcelableArrayList("questions", arrayList);
                     intent.putExtras(bundle);
 
                     startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
 
 

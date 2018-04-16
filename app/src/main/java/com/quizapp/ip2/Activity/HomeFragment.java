@@ -96,7 +96,6 @@ public class HomeFragment extends Fragment {
                 int quizId = jsonFeaturedQuiz.getInt("QuizID");
 
                 String[] quizResponse = rt.sendGetRequest("quiz/"+quizId, "GET");
-                System.out.println("//RESPONSE// "+quizResponse[1]);
                 JSONObject jsonQuiz = new JSONObject(quizResponse[1]);
 
                 QuizPreviewFragment quizPreview = new QuizPreviewFragment();
