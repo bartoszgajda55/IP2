@@ -34,13 +34,13 @@ public class RecentQuizPreviewFragment extends Fragment {
     //components
     private TextView txtQuizTitle;
     private ImageView imgQuizImg;
-
+    View view;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recent_quiz_preview_fragment, container, false);
+        view = inflater.inflate(R.layout.recent_quiz_preview_fragment, container, false);
         txtQuizTitle = (TextView) view.findViewById(R.id.txtTitle);
         imgQuizImg = (ImageView) view.findViewById(R.id.imgQuizImg);
 
@@ -49,11 +49,19 @@ public class RecentQuizPreviewFragment extends Fragment {
 
         new DownloadImageTask(imgQuizImg).execute(txt);
         ImageView backgroundShape = (ImageView) view.findViewById(R.id.imgBackground);
-        DrawableCompat.setTint(backgroundShape.getDrawable(), this.getArguments().getInt("color")); //TODO set color to database color //this.getArguments().getInt("color"))
+        DrawableCompat.setTint(backgroundShape.getDrawable(), this.getArguments().getInt("color"));
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Quiz quiz = new Quiz();
 
                 ArrayList<Question> arrayList = new ArrayList<>();
@@ -66,24 +74,22 @@ public class RecentQuizPreviewFragment extends Fragment {
 
                 RequestTask rt = new RequestTask();
                 try {
-                    String[] response = rt.sendGetRequest("quiz/"+ id + "/questions", "GET");
+                    String[] response = rt.sendGetRequest("quiz/" + id + "/questions", "GET");
                     JSONArray jsonQuestions = new JSONArray(response[1]);
 
 
-                    for(int i=0; i<jsonQuestions.length(); i++){
+                    for (int i = 0; i < jsonQuestions.length(); i++) {
 
                         JSONObject jsonObj = jsonQuestions.getJSONObject(i);
-
-                        //TODO get quiz id?
 
                         int questionId = jsonObj.getInt("QuestionID");
 
                         String questionString = jsonObj.getString("QuestionString");
 
-                        String rightAnswer = jsonObj.getString("CorrectAnswer");
-                        String wrongAnswer1 = jsonObj.getString("WrongAnswer");
-                        String wrongAnswer2 = jsonObj.getString("WrongAnswer2");
-                        String wrongAnswer3 = jsonObj.getString("WrongAnswer3");
+                        String rightAnswer = jsonObj.getString("CorrectAnswerString");
+                        String wrongAnswer1 = jsonObj.getString("WrongAnswerString");
+                        String wrongAnswer2 = jsonObj.getString("WrongAnswerString2");
+                        String wrongAnswer3 = jsonObj.getString("WrongAnswerString3");
 
                         ArrayList<String> arrayWrong = new ArrayList<>();
                         arrayWrong.add(wrongAnswer1);
@@ -97,6 +103,7 @@ public class RecentQuizPreviewFragment extends Fragment {
                         arrayList.add(question);
                     }
 
+                    quiz.setId(id);
                     quiz.setTitle(title);
                     quiz.setDescription(desc);
                     quiz.setColor(color);
@@ -104,7 +111,7 @@ public class RecentQuizPreviewFragment extends Fragment {
                     quiz.setQuestions(arrayList);
 
 
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     Log.e("JSON ERROR", "Invalid Json");
                 }
 
@@ -112,6 +119,7 @@ public class RecentQuizPreviewFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(), QuizActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putInt("id", id);
                 bundle.putString("title", title);
                 bundle.putInt("color", color);
                 bundle.putString("img", img);
@@ -122,12 +130,8 @@ public class RecentQuizPreviewFragment extends Fragment {
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
                 QuizActivity.questions = new ArrayList(QuizHelper.getQuiz().getQuizQuestions());
+
             }
         });
-
-        return view;
     }
-
-
-
 }

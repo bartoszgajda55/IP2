@@ -15,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
 
 import org.json.JSONArray;
@@ -129,21 +131,6 @@ public class HomeFragment extends Fragment {
             featuredNavigationDots.setVisibility(View.INVISIBLE);
         }
 
-
-        //Display recent quizzes in a slider
-        ArrayList<Fragment> fragmentsRecentGrid = new ArrayList<>();
-        for(int x=0; x<2; x++){
-            RecentQuizGridFragment recentGrid = new RecentQuizGridFragment();
-            fragmentsRecentGrid.add(recentGrid);
-
-        }
-        recentAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragmentsRecentGrid.size(), fragmentsRecentGrid);
-        recentPager.setAdapter(recentAdapter);
-        recentNavigationDots.setupWithViewPager(recentPager, true);
-        if(recentNavigationDots.getTabCount() < 2){
-            recentNavigationDots.setVisibility(View.INVISIBLE);
-        }
-
         //Listen for button click to show all quizzes
         btnBrowseAll.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -162,4 +149,76 @@ public class HomeFragment extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ArrayList<Fragment> fragmentsRecentGrid = new ArrayList<>();
+        RecentQuizGridFragment recentGrid = new RecentQuizGridFragment();
+        fragmentsRecentGrid.add(recentGrid);
+
+        JSONObject jsonUser = new JSONObject();
+        try {
+            jsonUser.put("UserID", UserHelper.getUser().getUserID());
+
+            RequestTask rt = new RequestTask();
+            String[] response = rt.sendGetRequest("recentQuiz/"+UserHelper.getUser().getUserID(), "GET");
+            if(response[0].equals("200")){
+
+                JSONArray recentQuizArray = new JSONArray(response[1]);
+                Bundle page1bundle = new Bundle();
+                page1bundle.putInt("Quiz1ID", );
+                page1bundle.putInt("Quiz2ID", );
+                page1bundle.putInt("Quiz3ID", );
+                page1bundle.putInt("Quiz4ID", );
+
+                if(recentQuizArray.length() > 4 ){
+                    RecentQuizGridFragment recentGrid2 = new RecentQuizGridFragment();
+                    fragmentsRecentGrid.add(recentGrid2);
+                }
+
+                Log.e("array", recentQuizArray.toString());
+                for(int i=0; i<recentQuizArray.length(); i++) {
+                    JSONObject jsonRecentQuiz = recentQuizArray.getJSONObject(i);
+
+
+                    String[] quizResponse = new RequestTask().sendGetRequest("quiz/" + jsonRecentQuiz.getInt("QuizID"), "GET");
+                    JSONObject jsonQuiz = new JSONObject(quizResponse[1]);
+
+                    RecentQuizPreviewFragment quizRecent = new RecentQuizPreviewFragment();
+                    Bundle recentBundle = new Bundle();
+                    int recentId = jsonQuiz.getInt("QuizID");
+                    String recentTitle = jsonQuiz.getString("QuizName");
+                    String recentImg = jsonQuiz.getString("QuizImage");
+                    int recentColor = Color.parseColor("#" + jsonQuiz.getString("QuizColor"));
+                    recentBundle.putInt("id", recentId);
+                    recentBundle.putString("title", recentTitle);
+                    recentBundle.putString("img", recentImg);
+                    recentBundle.putInt("color", recentColor);
+
+                    quizRecent.setArguments(recentBundle);
+
+                    RelativeLayout rel = new RelativeLayout(getContext());
+                    rel.setId(View.generateViewId());
+                    getFragmentManager().beginTransaction().add(rel.getId(), quizRecent).commit();
+                    gridLayout.addView(rel, i);
+                }
+
+            }else{
+                Log.e("ERROR", "No user");
+            }
+        }catch (JSONException e){
+            Log.e("JSON ERROR", "Bad JSON");
+        }
+
+        //Display recent quizzes in a scrolling grid pane
+        /*********************************************************************/
+
+        recentAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragmentsRecentGrid.size(), fragmentsRecentGrid);
+        recentPager.setAdapter(recentAdapter);
+        recentNavigationDots.setupWithViewPager(recentPager, true);
+        if(recentNavigationDots.getTabCount() < 2){
+            recentNavigationDots.setVisibility(View.INVISIBLE);
+        }
+    }
 }
