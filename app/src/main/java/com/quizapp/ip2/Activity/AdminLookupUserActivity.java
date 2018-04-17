@@ -26,7 +26,7 @@ import com.quizapp.ip2.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LookupUserActivity extends AppCompatActivity {
+public class AdminLookupUserActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,13 +116,13 @@ public class LookupUserActivity extends AppCompatActivity {
 
                     }else if(bundleBanned == 0 && updatedBanned == 1){
                         //Ban
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LookupUserActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AdminLookupUserActivity.this);
                         builder.setTitle("Ban Reason");
 
-                        final EditText txtBanReason = new EditText(LookupUserActivity.this);
+                        final EditText txtBanReason = new EditText(AdminLookupUserActivity.this);
                         txtBanReason.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
 
-                        LinearLayout linearLayout = new LinearLayout(LookupUserActivity.this);
+                        LinearLayout linearLayout = new LinearLayout(AdminLookupUserActivity.this);
                         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
                         int paddingDp = 20;
@@ -156,16 +156,20 @@ public class LookupUserActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Error banning user...", Toast.LENGTH_SHORT).show();
                                 }
 
+                                Toast.makeText(getApplicationContext(), "Changes saved...", Toast.LENGTH_SHORT).show();
+                                finish();
+                                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
                             }
                         });
 
                         AlertDialog ad = builder.create();
                         ad.show();
-                    }
+                    }else{
 
                     Toast.makeText(getApplicationContext(), "Changes saved...", Toast.LENGTH_SHORT).show();
                     finish();
-                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);}
                 } catch (JSONException e){
                     Log.e("JSON ERROR", "Bad JSON");
                 }

@@ -88,6 +88,9 @@ public class UserFragment extends Fragment {
         txtQuizzesComplete =(TextView) view.findViewById(R.id.txtQuizzesComplete);
         txtCorrectAnswers=(TextView) view.findViewById(R.id.txtCorrectAnswers);
 
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
         loadDetails();
 
         //Listen for search submit (click ENTER/RETURN)
@@ -196,12 +199,6 @@ public class UserFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadDetails();
-    }
-
     public void loadDetails(){
         //SET VALUES
         txtUsername.setText(UserHelper.getUser().getUsername());
@@ -233,9 +230,6 @@ public class UserFragment extends Fragment {
 
         txtCorrectAnswers.setText("Correct Answers: "+Integer.toString(UserHelper.getUser().getCorrectAnswers()));
         txtQuizzesComplete.setText("Quizzes Completed: "+Integer.toString(UserHelper.getUser().getQuizzessCompleted()));
-
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
 
         ProgressBar progressLevel = (ProgressBar) view.findViewById(R.id.progressLevel);
         progressLevel.setMax(100);
@@ -335,6 +329,7 @@ public class UserFragment extends Fragment {
                             Matcher matcher = RegisterFragment.VALID_EMAIL_ADDRESS_REGEX.matcher(email);
                             if(matcher.find()){
                                 jsonEdittedDetails.put("email",email);
+                                UserHelper.getUser().setEmail(email);
                             }else{
                                 Toast.makeText(getActivity(), "Email is invalid..", Toast.LENGTH_SHORT).show();
                             }
@@ -385,6 +380,7 @@ public class UserFragment extends Fragment {
                 dialog.dismiss();
                 if(jsonEdittedDetails.length() > 0){
                     Toast.makeText(getContext(), "User details updated...", Toast.LENGTH_SHORT).show();
+                    loadDetails();
                 }
 
             }
@@ -392,6 +388,7 @@ public class UserFragment extends Fragment {
 
         AlertDialog ad = builder.create();
         ad.show();
+
 
 
     }

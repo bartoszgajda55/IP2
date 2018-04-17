@@ -99,7 +99,7 @@ public class AdminTaskFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
 
-                            Intent intent = new Intent(getContext(), LookupUserActivity.class);
+                            Intent intent = new Intent(getContext(), AdminLookupUserActivity.class);
                             Bundle b = new Bundle();
 
                             PostTask pt = new PostTask();

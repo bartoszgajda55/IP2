@@ -58,7 +58,7 @@
             android:name=".Activity.AdminActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.LookupUserActivity"
+            android:name=".Activity.AdminLookupUserActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".Activity.AdminShowQuizzesActivity" />
         <activity android:name=".Activity.AdminEditQuizActivity" />

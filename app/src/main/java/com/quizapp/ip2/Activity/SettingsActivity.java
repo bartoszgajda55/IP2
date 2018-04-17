@@ -50,7 +50,7 @@ public class SettingsActivity extends Activity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HomepageActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
 

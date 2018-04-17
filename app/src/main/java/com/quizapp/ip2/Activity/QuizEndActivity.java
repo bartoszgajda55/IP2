@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -14,14 +15,19 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.DarkenColorHelper;
 import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Helper.LevelParser;
+import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizHelper;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
 import com.quizapp.ip2.Views.GifImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class QuizEndActivity extends AppCompatActivity {
 
@@ -64,6 +70,24 @@ public class QuizEndActivity extends AppCompatActivity {
         UserHelper.getUser().addXp(xp);
         UserHelper.getUser().addCorrectAnswers(correct);
         UserHelper.getUser().addQuizzessCompleted(1);
+
+        //ADD TO USERS RECENT QUIZZES
+        PostTask pt = new PostTask();
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("quizid", QuizHelper.getQuiz().getId());
+            json.put("userid", UserHelper.getUser().getUserID());
+            json.put("score", correct);
+            String[] response = pt.sendPostRequest("recentQuiz", json.toString(), "POST");
+            if(response[0].equals("500")){
+                Toast.makeText(getApplicationContext(), "Error updating recent quiz...", Toast.LENGTH_SHORT).show();
+            }
+        }catch(JSONException e){
+            Log.e("JSON ERROR", "BAD JSON");
+            e.printStackTrace();
+        }
+
         int newLevel = new LevelParser(UserHelper.getUser().getXp()).getLevel();
         if(newLevel > prevLevel) {
             //User has levelled up...

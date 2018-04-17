@@ -5,7 +5,11 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -21,6 +25,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected Bitmap doInBackground(String... urls){
+        /*
         String urlDisplay = urls[0];
         Bitmap image = null;
         try {
@@ -38,7 +43,11 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return image;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 50, output);
+        Bitmap smaller = BitmapFactory.decodeStream(new ByteArrayInputStream(output.toByteArray()));
+        return smaller;*/
+        return null;
     }
 
     protected void onPostExecute(Bitmap result){
