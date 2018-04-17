@@ -7,16 +7,19 @@
     tools:context="com.quizapp.ip2.Activity.HomepageActivity"
     android:focusableInTouchMode="true"
     android:focusable="true"
-    android:id="@+id/parentLayout">
+    android:id="@+id/parentLayout"
+    >
 
-   <!--- <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        />-->
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.5"
+
+        android:src="@drawable/background_cubes_light"/>
+
+
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"

@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.quizapp.ip2.Activity.AdminLookupUserActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:title="User Lookup"
+        app:titleTextColor="@color/colorLight">
+
+    </android.support.v7.widget.Toolbar >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/txtUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="{username}"
+                    android:theme="@style/textTitle"
+                    android:layout_marginBottom="8dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/layoutProfilePic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                <ImageView
+                    android:id="@+id/imgProfilePic"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/icon_user"
+                    />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layoutID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgIdIcon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_id"
+                        android:tint="@color/colorDarkGray"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtUserIdLabel"
+                        android:paddingTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgIdIcon"
+                        android:text="User ID: "
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/txtUserId"
+                        android:paddingTop="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="{user id}"
+                        android:layout_toRightOf="@id/txtUserIdLabel"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/layoutEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgEmailIcon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_email"
+                        android:tint="@color/colorDarkGray"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtEmailLabel"
+                        android:paddingTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgEmailIcon"
+                        android:text="Email: "
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/txtEmail"
+                        android:paddingTop="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="{username}"
+                        android:layout_toRightOf="@id/txtEmailLabel"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layoutName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgNameIcon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_user"
+                        android:tint="@color/colorDarkGray"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtNameLabel"
+                        android:paddingTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgNameIcon"
+                        android:text="Name: "
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:paddingTop="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="{whole name}"
+                        android:layout_toRightOf="@id/txtNameLabel"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="25dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/layoutXP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgXPIcon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_xp"
+                        android:tint="@color/colorDarkGray"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtXPLabel"
+                        android:paddingTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgXPIcon"
+                        android:text="Total XP: "
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/txtXP"
+                        android:paddingTop="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="{XP}"
+                        android:layout_toRightOf="@id/txtXPLabel"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layoutLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgLevelIcon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_level"
+                        android:tint="@color/colorDarkGray"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtLevelLabel"
+                        android:paddingTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgLevelIcon"
+                        android:text="Level: "
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/txtLevel"
+                        android:paddingTop="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="{level}"
+                        android:layout_toRightOf="@id/txtLevelLabel"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layoutRank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgRankIcon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_top100"
+                        android:tint="@color/colorDarkGray"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtRankLabel"
+                        android:paddingTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgRankIcon"
+                        android:text="Ranking: "
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/txtRank"
+                        android:paddingTop="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="{ranking}"
+                        android:layout_toRightOf="@id/txtRankLabel"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layoutComplete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgCompleteIcon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_quiz"
+                        android:tint="@color/colorDarkGray"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtCompleteLabel"
+                        android:paddingTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgCompleteIcon"
+                        android:text="Quizzes Complete: "
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/txtComplete"
+                        android:paddingTop="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="{complete}"
+                        android:layout_toRightOf="@id/txtCompleteLabel"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layoutCorrect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgCorrectIcon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_correct"
+                        android:tint="@color/colorDarkGray"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtCorrectLabel"
+                        android:paddingTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgCorrectIcon"
+                        android:text="Correct Answers: "
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/txtCorrect"
+                        android:paddingTop="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="{correct}"
+                        android:layout_toRightOf="@id/txtCorrectLabel"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="25dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/layoutAdminStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgAdminStatus"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_admin"
+                        android:tint="@color/colorDarkGray"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtAdminLabel"
+                        android:paddingTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgAdminStatus"
+                        android:text="Admin: "
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <Switch
+                        android:id="@+id/switchAdmin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/txtAdminLabel"
+                        android:paddingTop="2dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layoutBanStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgBanStatus"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_x"
+                        android:tint="@color/colorDarkGray"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtBanLabel"
+                        android:paddingTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgBanStatus"
+                        android:text="Banned: "
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <Switch
+                        android:id="@+id/switchBanned"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/txtBanLabel"
+                        android:paddingTop="2dp" />
+                </RelativeLayout>
+
+
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Save USER"
+        android:textColor="@color/colorLight" />
+
+
+
+
+</RelativeLayout>

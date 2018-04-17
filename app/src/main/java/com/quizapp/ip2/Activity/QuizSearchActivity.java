@@ -1,16 +1,25 @@
 package com.quizapp.ip2.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by Allan on 15/03/2018.
@@ -24,6 +33,8 @@ public class QuizSearchActivity extends FragmentedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_search);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
         Bundle b = getIntent().getExtras();
         search = b.getString("search");
 
@@ -35,6 +46,7 @@ public class QuizSearchActivity extends FragmentedActivity {
             toolbar.setTitle("Showing results for: " + "\"" + search + "\"");
         } else {
             toolbar.setTitle("Showing all quizzes");
+            search ="";
         }
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
 
@@ -76,25 +88,48 @@ public class QuizSearchActivity extends FragmentedActivity {
                 return false;
             }
         });
-        
-        //TODO rewrite this method to work with database, and work with all quizzes search ("all" true)
-         for (int x=0; x<3; x++){
-            QuizPreviewFragment frag = new QuizPreviewFragment();
-            Bundle bundle = new Bundle();
-            String title = search; //TODO get from database
-            String desc = "Description"; //TODO get from database
-            String img = "https://d30y9cdsu7xlg0.cloudfront.net/png/36442-200.png"; //TODO get from database
-            int color = R.color.colorIntroGreen; //TODO get from database
-            bundle.putString("title", title);
-            bundle.putString("desc", desc);
-            bundle.putString("img", img);
-            bundle.putInt("color", color);
-            frag.setArguments(bundle);
-            RelativeLayout rel = new RelativeLayout(this);
-            rel.setId(View.generateViewId());
-            getSupportFragmentManager().beginTransaction().add(rel.getId(),frag).commit();
-            linearLayout.addView(rel);
-         }
+
+        final RequestTask rt = new RequestTask();
+
+        try {
+            String[] response = rt.sendGetRequest("quiz", "GET");
+            JSONArray resultset = new JSONArray(response[1]);
+            ArrayList<RelativeLayout> foundQuizzes = new ArrayList<>();
+
+            for (int i = 0; i < resultset.length(); i++) {
+
+                JSONObject result = resultset.getJSONObject(i);
+
+                QuizPreviewFragment quizPreview = new QuizPreviewFragment();
+                Bundle searchBundle = new Bundle();
+                int searchId = result.getInt("QuizID");
+                String searchTitle = result.getString("QuizName"); //Load name to search by name
+                String searchDesc = result.getString("QuizDescription"); //Load description to search by description
+
+                if(searchTitle.toLowerCase().contains(search.toLowerCase()) || searchDesc.toLowerCase().contains(search.toLowerCase())){
+
+                    String searcImg = result.getString("QuizImage");
+                    int searchColor = Color.parseColor("#" + result.getString("QuizColor"));
+
+                    searchBundle.putInt("id", searchId);
+                    searchBundle.putString("title", searchTitle);
+                    searchBundle.putString("desc", searchDesc);
+                    searchBundle.putString("img", searcImg);
+                    searchBundle.putInt("color", searchColor);
+
+                    quizPreview.setArguments(searchBundle);
+                    RelativeLayout rel = new RelativeLayout(this);
+                    rel.setId(View.generateViewId());
+                    getSupportFragmentManager().beginTransaction().add(rel.getId(),quizPreview).commit();
+                    linearLayout.addView(rel);
+
+                }
+
+            }
+        } catch (JSONException e){
+            Log.e("ERROR", "Invalid JSON");
+        }
+
     }
 
 }

@@ -3,6 +3,7 @@ package com.quizapp.ip2.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.quizapp.ip2.Helper.LevelParser;
+import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Aaron on 10/03/2018.
@@ -32,44 +40,62 @@ public class LeaderboardFragment extends Fragment {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
-
-        //Load top 100 users from the database
-        //TODO Query database for users, ranked by descending order for XP
-
-
         return view;
     }
 
     public void populatePage(){
         if(!pageLoaded) {
             //TODO Add an async task for loading leaderboards
-            for (int x = 0; x < 101; x++) {
-                UserPreviewFragment frag = new UserPreviewFragment();
-                Bundle bundle = new Bundle();
-                int place = x + 1;
-                String username = "User " + 1; //TODO get username from user query result
-                String level = "10"; //TODO calculate level from user query result (XP)
-                bundle.putInt("place", place);
-                bundle.putString("username", username);
-                bundle.putString("level", level);
+            final RequestTask rt = new RequestTask();
 
-                bundle.putInt("color", R.color.colorLightGray);
-                bundle.putInt("textColor", R.color.colorDarkGray);
-                bundle.putFloat("alpha", 0.25F);
+            try {
+                String[] response = rt.sendGetRequest("user?term=XP&order=desc&limit=101", "GET");
+                JSONArray resultset = new JSONArray(response[1]);
 
-                frag.setArguments(bundle);
-                RelativeLayout rel = new RelativeLayout(getContext());
-                rel.setId(View.generateViewId());
-                getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
-                linearLayout.addView(rel);
+                for(int i = 0; i < resultset.length(); i++){
+                    if(i < 101){
+                        JSONObject result = resultset.getJSONObject(i);
+                        UserPreviewFragment frag = new UserPreviewFragment();
+                        Bundle bundle = new Bundle();
+                        int place = i + 1;
+                        String username = result.getString("Username");
+                        //String level = String.valueOf(result.getInt("XP"));
+                        String level = String.valueOf(new LevelParser(result.getInt("XP")).getLevel());
+
+                        bundle.putInt("place", place);
+                        bundle.putString("username", username);
+                        bundle.putString("level", level);
+
+                        bundle.putInt("color", R.color.colorLightGray);
+                        bundle.putInt("textColor", R.color.colorDarkGray);
+                        bundle.putFloat("alpha", 0.25F);
+
+                        frag.setArguments(bundle);
+                        RelativeLayout rel = new RelativeLayout(getContext());
+                        rel.setId(View.generateViewId());
+                        getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
+                        linearLayout.addView(rel);
+                    }
+                }
+
+            } catch (JSONException e){
+                Log.e("ERROR", "Invalid JSON");
             }
 
-                //Add current user's ranking/score to bottom of page
+            //Add current user's ranking/score to bottom of page
                 UserPreviewFragment frag = new UserPreviewFragment();
                 Bundle bundle = new Bundle();
-                int place = 201; //TODO Calculate user's place in the world
+                RequestTask rankingRequest = new RequestTask();
+                int place = 0;
+                try {
+                    String[] rankResponse = rt.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/ranking", "GET");
+                    JSONObject jsonRanking = new JSONObject(rankResponse[1]);
+                    place = jsonRanking.getInt("position")+1;
+                } catch (JSONException e){
+                    Log.e("JSON ERROR", "Error parsing json");
+                }
                 String username = "You";  //Username is hardcoded "You"
-                String level = "1"; //TODO Calculate user's level from XP
+                String level = String.valueOf(new LevelParser(UserHelper.getUser().getXp()).getLevel());
                 bundle.putInt("place", place);
                 bundle.putString("username", username);
                 bundle.putString("level", level);
@@ -83,9 +109,6 @@ public class LeaderboardFragment extends Fragment {
 
                 progressBar.setVisibility(View.INVISIBLE);
                 pageLoaded = true;
-
-
-
         }
     }
 

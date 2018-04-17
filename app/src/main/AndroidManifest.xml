@@ -4,10 +4,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <application
         android:allowBackup="true"
@@ -18,7 +22,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.Splash"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,19 +32,39 @@
         </activity>
         <activity
             android:name=".Activity.AuthenticationActivity"
-            android:noHistory="true" />
-        <activity android:name=".Activity.HomepageActivity" />
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HomepageActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.TutorialActivity"
             android:hardwareAccelerated="false"
-            android:noHistory="true" />
-        <activity android:name=".Activity.QuizSearchActivity" />
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.QuizSearchActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.SettingsActivity"
             android:noHistory="true" />
-        <activity android:name=".Activity.QuizActivity" />
-        <activity android:name=".Activity.QuizEndActivity" />
-        <activity android:name=".Activity.AdminActivity"></activity>
+        <activity
+            android:name=".Activity.QuizActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.QuizEndActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.AdminActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.AdminLookupUserActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.AdminShowQuizzesActivity" />
+        <activity android:name=".Activity.AdminEditQuizActivity" />
+        <activity android:name=".Activity.AdminEditQuestionActivity" />
+        <activity android:name=".Activity.AdminCreateQuizActivity" />
+        <activity android:name=".Activity.AdminImportActivity"></activity>
     </application>
 
 </manifest>

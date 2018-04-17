@@ -1,16 +1,13 @@
 package com.quizapp.ip2.Activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.R;
 
 import java.util.ArrayList;
@@ -33,19 +30,18 @@ public class AdminActivity extends FragmentedActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HomepageActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
             }
         });
 
         //Add admin tasks to arraylist
-        arrayList.add(new AdminTask("Add Quiz","Add a new quiz to the database",R.drawable.icon_plus));
-        arrayList.add(new AdminTask("Delete Quiz","Remove a quiz from the database",R.drawable.icon_x));
-        arrayList.add(new AdminTask("Edit Quiz","Edit an already existing quiz",R.drawable.icon_pen));
-        arrayList.add(new AdminTask("Ban User","Ban a user by entering their email and a ban reason",R.drawable.icon_user));
-        arrayList.add(new AdminTask("Add Admin","Add a new admin by entering their email",R.drawable.icon_add));
+        arrayList.add(new AdminTask("Quizzes","Add, edit or delete a quiz",R.drawable.icon_plus));
+        arrayList.add(new AdminTask("Lookup/Edit User","Ban, promote or view a user's details",R.drawable.icon_user));
+        arrayList.add(new AdminTask("Import Quiz","Import a Quiz from a JSON file",R.drawable.icon_upload));
 
-        for (int x=0; x<5; x++){
+        for (int x=0; x<arrayList.size(); x++){
             AdminTaskFragment frag = new AdminTaskFragment();
             Bundle bundle = new Bundle();
             String title = arrayList.get(x).getTitle();
@@ -94,5 +90,6 @@ public class AdminActivity extends FragmentedActivity {
         }
 
     }
+
 
 }

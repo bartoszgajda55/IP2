@@ -1,8 +1,5 @@
 package com.quizapp.ip2.Model;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-
 //import com.quizapp.ip2.Helper.LoadImageHelper;
 
 /**
@@ -11,12 +8,20 @@ import android.graphics.drawable.Drawable;
 
 public class User {
 
+    private int userID;
     private String username;
     private String email;
     private String firstName;
     private String surname;
     private String password;
-    private Drawable userImage;
+    private int adminStatus;
+    private String profileImage;
+    private int xp;
+    private int quizzessCompleted;
+    private int correctAnswers;
+
+    public User() {
+    }
 
     public User(String username, String email, String firstName, String surname, String password) {
         this.username = username;
@@ -26,21 +31,26 @@ public class User {
         this.password = password;
     }
 
-    public User(String username, String email, String firstName, String surname, String password, String userImage, Context context) {
+    public User(int userID, String username, String email, String firstName, String surname, String password, int adminStatus, String profileImage, int xp, int quizzessCompleted, int correctAnswers) {
+        this.userID = userID;
         this.username = username;
         this.email = email;
         this.firstName = firstName;
         this.surname = surname;
         this.password = password;
-       // this.userImage = new LoadImageHelper(context).load(userImage);
+        this.adminStatus = adminStatus;
+        this.profileImage = profileImage;
+        this.xp = xp;
+        this.quizzessCompleted = quizzessCompleted;
+        this.correctAnswers = correctAnswers;
     }
 
-    public Drawable getUserImage() {
-        return userImage;
+    public String getProfilePicture() {
+        return profileImage;
     }
 
-    public void setUserImage(Drawable userImage) {
-        this.userImage = userImage;
+    public void setProfilePicture(String userImage) {
+        this.profileImage = userImage;
     }
 
     public String getUsername() {
@@ -81,5 +91,57 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public int getAdminStatus() {
+        return adminStatus;
+    }
+
+    public void setAdminStatus(int adminStatus) {
+        this.adminStatus = adminStatus;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public int getQuizzessCompleted() {
+        return quizzessCompleted;
+    }
+
+    public void setQuizzessCompleted(int quizzessCompleted) {
+        this.quizzessCompleted = quizzessCompleted;
+    }
+
+    public int getCorrectAnswers() {
+        return correctAnswers;
+    }
+
+    public void setCorrectAnswers(int correctAnswers) {
+        this.correctAnswers = correctAnswers;
+    }
+
+    public void addXp(int i){
+        this.xp += i;
+    }
+
+    public void addQuizzessCompleted(int i){
+        this.quizzessCompleted += i;
+    }
+
+    public void addCorrectAnswers(int i){
+        this.correctAnswers += i;
     }
 }

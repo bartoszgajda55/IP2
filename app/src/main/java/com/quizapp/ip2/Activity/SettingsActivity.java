@@ -2,8 +2,10 @@ package com.quizapp.ip2.Activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -48,8 +50,10 @@ public class SettingsActivity extends Activity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HomepageActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+
             }
         });
 
@@ -130,8 +134,15 @@ public class SettingsActivity extends Activity {
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which){
+                        SharedPreferences loginPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
+
+                        loginPrefsEditor.clear();
+                        loginPrefsEditor.apply();
+
                         Intent intent = new Intent(SettingsActivity.this, AuthenticationActivity.class);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
                     }
                 });
                 AlertDialog ad = builder.create();

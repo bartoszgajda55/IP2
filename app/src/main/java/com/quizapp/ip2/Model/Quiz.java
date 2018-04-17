@@ -1,14 +1,9 @@
 package com.quizapp.ip2.Model;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-
-//import com.quizapp.ip2.Helper.LoadImageHelper;
-
-import com.quizapp.ip2.Helper.DownloadImageTask;
-
 import java.util.ArrayList;
 import java.util.Collections;
+
+//import com.quizapp.ip2.Helper.LoadImageHelper;
 
 /**
  * Created by aaron on 19/03/2018.
@@ -16,20 +11,31 @@ import java.util.Collections;
 
 public class Quiz {
 
+    private int id;
     private String title, description;
     private int color; //color resource
-    private Drawable image;
+    private String image;
 
-    private ArrayList<Question> questions = new ArrayList<>(); //TODO Add question and set question method
+    private ArrayList<Question> questions = new ArrayList<>();
 
+    public Quiz() {
+    }
 
-    public Quiz(String title, String description, Integer color, String image, Context context){
+    public Quiz(int id, String title, String description, Integer color, String image){
+        this.id = id;
         this.title = title;
         this.description = description;
         this.color = color;
-        //this.image = new DownloadImageTask().load(image);
+        this.image = image;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -55,11 +61,11 @@ public class Quiz {
         this.color = color;
     }
 
-    public Drawable getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Drawable image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

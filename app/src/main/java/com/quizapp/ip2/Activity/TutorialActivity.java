@@ -1,14 +1,12 @@
 package com.quizapp.ip2.Activity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.Window;
 
 import com.quizapp.ip2.Helper.AnimatedColor;
 import com.quizapp.ip2.Model.Tutorial;
@@ -41,7 +39,7 @@ public class TutorialActivity extends FragmentedActivity {
         Tutorial tut3 = new Tutorial("User Page",
                 getResources().getString(R.string.tutorial_3),R.drawable.tabicon_user);
         Tutorial tut4 = new Tutorial("Quizzes",
-                getResources().getString(R.string.tutorial_4),R.drawable.icon_star);
+                getResources().getString(R.string.tutorial_4),R.drawable.icon_level);
         Tutorial tut5 = new Tutorial("Leaderboard",
                 getResources().getString(R.string.tutorial_5),R.drawable.tabicon_leaderboard);
         tutorials.add(tut1);
@@ -70,6 +68,10 @@ public class TutorialActivity extends FragmentedActivity {
         final AnimatedColor twoToThree = new AnimatedColor(ContextCompat.getColor(this, R.color.colorIntroDarkBlue), ContextCompat.getColor(this, R.color.colorIntroBlue));
         final AnimatedColor threeToFour = new AnimatedColor(ContextCompat.getColor(this, R.color.colorIntroBlue), ContextCompat.getColor(this, R.color.colorIntroGreen));
         final AnimatedColor fourToFive = new AnimatedColor(ContextCompat.getColor(this, R.color.colorIntroGreen), ContextCompat.getColor(this, R.color.colorIntroDarkGreen));
+
+        //Set status bar to darker color variant
+        Window window = getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.colorDarkGray));
 
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -105,6 +107,9 @@ public class TutorialActivity extends FragmentedActivity {
     public void onSkipClick(View v){
         Intent intent = new Intent(this, HomepageActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+
+
     }
 
 }

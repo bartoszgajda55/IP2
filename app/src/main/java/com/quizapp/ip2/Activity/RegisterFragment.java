@@ -1,9 +1,14 @@
 package com.quizapp.ip2.Activity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +16,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.StringHasher;
+import com.quizapp.ip2.Helper.UserHelper;
+import com.quizapp.ip2.Model.User;
 import com.quizapp.ip2.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by aaron on 08/03/2018.
@@ -33,8 +48,9 @@ public class RegisterFragment extends Fragment {
     String surname;
     String email;
 
-    //String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-    String emailPattern = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
+    final static Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    PostTask pt;
 
     @Nullable
     @Override
@@ -57,6 +73,7 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+        pt = new PostTask();
         return view;
     }
 
@@ -65,44 +82,158 @@ public class RegisterFragment extends Fragment {
         username = usernameField.getText().toString();
         firstName = firstNameField.getText().toString();
         surname = surnameField.getText().toString();
-        email = emailField.getText().toString();
+        email = emailField.getText().toString().toLowerCase();
 
-
-        //TODO CHECK IF EMAIL ALREADY EXISTS
-        /*if (!email.matches(emailPattern)) {
-            Toast.makeText(getContext(), "Invalid email address...", Toast.LENGTH_SHORT).show();
+        // Check if email matches pattern
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        if(!matcher.find()){
+            Toast.makeText(getActivity(), "Email is invalid..", Toast.LENGTH_SHORT).show();
             return;
-        }*/
+        }
 
-        if (username.length() > 32 || username.length() < 3) { //TODO CHECK IF USERNAME ALREADY EXISTS
+
+        JSONObject jsonObj = new JSONObject();
+        PostTask ptAvailable = new PostTask();
+
+
+        //Check to see if username of email is taken
+        try {
+                jsonObj.put("type","email");
+                jsonObj.put("term",email);
+
+                String[] emailResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString(), "POST");
+                if(emailResponse[0].equals("200")){
+                    Toast.makeText(getActivity(), "Email is taken...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                jsonObj.remove("type");
+                jsonObj.remove("term");
+
+                jsonObj.put("type", "username");
+                jsonObj.put("term",username);
+                String[] usernameResponse = ptAvailable.sendPostRequest("user/find", jsonObj.toString(), "POST");
+
+                if(usernameResponse[0].equals("200")){
+                    Toast.makeText(getActivity(), "Username is taken...", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+                Log.i("RESPONSES: ", emailResponse[0] + " " + usernameResponse[0]);
+
+        }catch(JSONException e){
+            Log.e("JSON Error", "Invalid Json");
+            return;
+        }
+
+        if (username.length() > 32 || username.length() < 3 || username.contains(" ")) {
             Toast.makeText(getActivity(), "Username is invalid...", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (firstName.length() > 255 || firstName.length() < 3) {
+        if (firstName.length() > 255 || firstName.length() < 3 || firstName.matches(".*\\d+.*")) {
             Toast.makeText(getActivity(), "First name is invalid...", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (surname.length() > 255 || surname.length() < 3) {
+        if (surname.length() > 255 || surname.length() < 3 || surname.matches(".*\\d+.*")) {
             Toast.makeText(getActivity(), "Surname is invalid...", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        //TODO ENSURE PASSWORD HAS ATLEAST 1 NUMBER
-        if(passwordField.getText().length() < 3){
-            Toast.makeText(getActivity(), "Password is invalid (reqs)...", Toast.LENGTH_SHORT).show();
+        if(passwordField.getText().length() > 255 || passwordField.getText().length() < 3 || (!passwordField.getText().toString().matches(".*\\d+.*"))){
+            Toast.makeText(getActivity(), "Passwords must have more than 3 characters and at least 1 number...", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (passwordField.getText().toString() == passwordConfirmField.getText().toString()) {
+        if (!passwordField.getText().toString().equals(passwordConfirmField.getText().toString())) {
             Toast.makeText(getActivity(), "Passwords do not match...", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String hashedPassword = new StringHasher().hashString(passwordField.getText().toString());
-        System.out.println(hashedPassword);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("username",username);
+            jsonObject.put("email",email);
+            jsonObject.put("firstname",firstName);
+            jsonObject.put("surname",surname);
+            jsonObject.put("password",new StringHasher().hashString(passwordField.getText().toString()));
+            final String[] response = pt.sendPostRequest("user/register", jsonObject.toString(), "POST");
 
+            if(response[0].equals("201")){
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Remember me");
+                builder.setMessage("Do you want Quizzy to remember your password?");
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences loginPreferences = getActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
+
+                        loginPrefsEditor.clear();
+                        loginPrefsEditor.apply();
+
+                        dialog.dismiss();
+                        logIn(response);
+                    }
+                });
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+
+                        SharedPreferences loginPreferences = getActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
+
+                        loginPrefsEditor.putString("email", email.toLowerCase());
+                        loginPrefsEditor.putString("password", new StringHasher().hashString(passwordField.getText().toString()));
+                        loginPrefsEditor.apply();
+
+                        logIn(response);
+                    }
+                });
+                AlertDialog ad = builder.create();
+                ad.show();
+
+                /////////
+
+
+            }else{
+                Toast.makeText(getActivity(), "Registration error...", Toast.LENGTH_SHORT).show();
+            }
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void logIn(String[] response){
         Intent intent = new Intent(getContext(), TutorialActivity.class);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+
+
+        try {
+            JSONArray jsonResponseArray = new JSONArray(response[1]);
+            JSONObject jsonResponse = jsonResponseArray.getJSONObject(0);
+
+            User user = new User();
+            user.setUserID(jsonResponse.getInt("UserID"));
+            user.setUsername(jsonResponse.getString("Username"));
+            user.setEmail(jsonResponse.getString("Email"));
+            user.setFirstName(jsonResponse.getString("Firstname"));
+            user.setSurname(jsonResponse.getString("Surname"));
+            user.setProfilePicture(jsonResponse.getString("ProfileImage"));
+            user.setAdminStatus(jsonResponse.getInt("AdminStatus"));
+            user.setXp(jsonResponse.getInt("XP"));
+            user.setQuizzessCompleted(jsonResponse.getInt("QuizzessCompleted"));
+            user.setCorrectAnswers(jsonResponse.getInt("CorrectAnswers"));
+
+            UserHelper.setUser(user);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 }
 

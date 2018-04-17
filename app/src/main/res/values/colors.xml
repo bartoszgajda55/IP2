@@ -19,4 +19,7 @@
     <color name="colorIntroBlue">#00cec9</color>
     <color name="colorIntroGreen">#2ecc71</color>
     <color name="colorIntroDarkGreen">#16a085</color>
+
+    <color name ="colorGold">#f5c053</color>
+
 </resources>

@@ -9,4 +9,24 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="quiz_colors">
+        <item>Quiz Color</item>
+        <item>Red</item><!--f44336-->
+        <item>Orange</item> <!--ff9f43-->
+        <item>Green</item><!--2ecc71-->
+        <item>Turquoise</item><!--079992-->
+        <item>Blue</item><!--2e86de-->
+        <item>Purple</item><!--#6c5ce7-->
+        <item>Pink</item><!--#fd79a8-->
+        <item>Gray</item><!--535c68-->
+
+    </string-array>
+
+    <string-array name="difficulty">
+        <item>Quiz Difficulty</item>
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
 </resources>

@@ -5,19 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.quizapp.ip2.Activity.QuizEndActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:id="@+id/layoutRelative">
 
 
     <ImageView
         android:id="@+id/imgQuiz"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/icon_star"
-        android:tintMode="src_in"
-        android:tint="@color/colorLight"/>
+        android:padding="0dp"
+        android:scaleType="centerCrop" />
 
 
     <ProgressBar

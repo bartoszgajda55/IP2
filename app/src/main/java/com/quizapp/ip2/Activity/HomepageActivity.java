@@ -53,6 +53,7 @@ public class HomepageActivity extends FragmentedActivity {
                 switch (position) {
                     case 0: //User
                         userFragment.populateFriends();
+                        userFragment.loadDetails();
                         break;
                     case 2: //Leaderboard
                         leaderboardFragment.populatePage();
@@ -64,7 +65,6 @@ public class HomepageActivity extends FragmentedActivity {
             public void onPageSelected(int position) {
 
             }
-
 
             //Prevent virtual keyboard persisting when page using keyboard is swiped away from
             @Override
@@ -81,6 +81,12 @@ public class HomepageActivity extends FragmentedActivity {
 
         //Add tab icons to the navigation bar
         addTabIcons();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewPager.setCurrentItem(1);
     }
 
     //Adds the white navigation icons to the tab bar
