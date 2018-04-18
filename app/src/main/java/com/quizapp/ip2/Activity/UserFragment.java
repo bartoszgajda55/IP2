@@ -436,7 +436,7 @@ public class UserFragment extends Fragment {
                                         }
                                     }
                                 });
-                                rt2.sendGetRequest("user/"+jsonObject.get("UserID"), "GET");
+                                rt2.sendGetRequest("user/"+jsonObject.get("User2ID"), "GET");
 
                             }
                         }

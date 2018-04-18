@@ -37,44 +37,61 @@
         android:textAlignment="center"
         android:textSize="18dp"/>
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_below="@+id/txtQuestion"
-        android:layout_marginTop="40dp"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="40dp"
-        android:textColor="@color/colorLight"/>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="175dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_above="@+id/progressBar"
+        android:layout_marginBottom="50dp">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_toRightOf="@+id/button1"
-        android:layout_marginLeft="40dp"
-        android:textColor="@color/colorLight"/>
+        <Button
+            android:id="@+id/button1"
+            android:padding="5dp"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorLight"/>
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/button1"
-        android:layout_marginLeft="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/colorLight"/>
+        <Button
+            android:id="@+id/button2"
+            android:padding="5dp"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorLight"/>
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_alignBottom="@+id/button3"
-        android:layout_toRightOf="@+id/button3"
-        android:layout_marginLeft="40dp"
-        android:textColor="@color/colorLight"/>
+        <Button
+            android:id="@+id/button3"
+            android:padding="5dp"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/colorLight"/>
+
+        <Button
+            android:id="@+id/button4"
+            android:padding="5dp"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/colorLight"/>
+
+    </android.support.constraint.ConstraintLayout>
+
 
     <ProgressBar
         android:id="@+id/progressBar"
