@@ -402,6 +402,7 @@ public class UserFragment extends Fragment {
                 public void processFinish(String[] output) {
                     try{
                         final JSONArray resultset = new JSONArray(output[1]);
+                        Log.e("RESULTSET","VALUE: "+resultset.length());
 
                         if(resultset.length()>0) {
                             for (int i = 0; i < resultset.length(); i++) {
@@ -410,10 +411,10 @@ public class UserFragment extends Fragment {
 
                                 RequestTask rt2 = new RequestTask(new RequestTask.AsyncResponse() {
                                     @Override
-                                    public void processFinish(String[] output) {
+                                    public void processFinish(String[] output2) {
                                         try {
                                             UserPreviewFragment frag = new UserPreviewFragment();
-                                            JSONArray resultset2 = new JSONArray(output[1]);
+                                            JSONArray resultset2 = new JSONArray(output2[1]);
                                             JSONObject jsonFriend = resultset2.getJSONObject(0);
                                             Bundle bundle = new Bundle();
                                             String username = jsonFriend.getString("Username");
@@ -447,13 +448,13 @@ public class UserFragment extends Fragment {
                     }
 
                     progressBar.setVisibility(View.INVISIBLE);
-                    friendsLoaded = true;
                 }
             });
             rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends", "GET");
 
 
         }
+        friendsLoaded = true;
     }
 
     public void populateFriendsSearch(String search){
