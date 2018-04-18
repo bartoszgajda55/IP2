@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.quizapp.ip2.Helper.LevelParser;
+import com.quizapp.ip2.Helper.RequestTask;
 import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
@@ -45,42 +46,45 @@ public class LeaderboardFragment extends Fragment {
 
     public void populatePage(){
         if(!pageLoaded) {
-            //TODO Add an async task for loading leaderboards
-            final RequestTask2 rt = new RequestTask2();
+            final RequestTask rt = new RequestTask(new RequestTask.AsyncResponse() {
+                @Override
+                public void processFinish(String[] output) {
+                    try {
+                        JSONArray resultset = new JSONArray(output[1]);
 
-            try {
-                String[] response = rt.sendGetRequest("user?term=XP&order=desc&limit=101", "GET");
-                JSONArray resultset = new JSONArray(response[1]);
+                        for(int i = 0; i < resultset.length(); i++){
+                            if(i < 101){
+                                JSONObject result = resultset.getJSONObject(i);
+                                UserPreviewFragment frag = new UserPreviewFragment();
+                                Bundle bundle = new Bundle();
+                                int place = i + 1;
+                                String username = result.getString("Username");
+                                String level = String.valueOf(new LevelParser(result.getInt("XP")).getLevel());
 
-                for(int i = 0; i < resultset.length(); i++){
-                    if(i < 101){
-                        JSONObject result = resultset.getJSONObject(i);
-                        UserPreviewFragment frag = new UserPreviewFragment();
-                        Bundle bundle = new Bundle();
-                        int place = i + 1;
-                        String username = result.getString("Username");
-                        //String level = String.valueOf(result.getInt("XP"));
-                        String level = String.valueOf(new LevelParser(result.getInt("XP")).getLevel());
+                                bundle.putInt("place", place);
+                                bundle.putString("username", username);
+                                bundle.putString("level", level);
 
-                        bundle.putInt("place", place);
-                        bundle.putString("username", username);
-                        bundle.putString("level", level);
+                                bundle.putInt("color", R.color.colorLightGray);
+                                bundle.putInt("textColor", R.color.colorDarkGray);
+                                bundle.putFloat("alpha", 0.25F);
 
-                        bundle.putInt("color", R.color.colorLightGray);
-                        bundle.putInt("textColor", R.color.colorDarkGray);
-                        bundle.putFloat("alpha", 0.25F);
+                                frag.setArguments(bundle);
+                                RelativeLayout rel = new RelativeLayout(getContext());
+                                rel.setId(View.generateViewId());
+                                getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
+                                linearLayout.addView(rel);
+                            }
+                        }
 
-                        frag.setArguments(bundle);
-                        RelativeLayout rel = new RelativeLayout(getContext());
-                        rel.setId(View.generateViewId());
-                        getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
-                        linearLayout.addView(rel);
+                    } catch (JSONException e){
+                        Log.e("ERROR", "Invalid JSON");
                     }
-                }
 
-            } catch (JSONException e){
-                Log.e("ERROR", "Invalid JSON");
-            }
+                }
+            });
+
+            rt.sendGetRequest("user?term=XP&order=desc&limit=101", "GET");
 
             //Add current user's ranking/score to bottom of page
                 UserPreviewFragment frag = new UserPreviewFragment();
@@ -88,7 +92,7 @@ public class LeaderboardFragment extends Fragment {
                 RequestTask2 rankingRequest = new RequestTask2();
                 int place = 0;
                 try {
-                    String[] rankResponse = rt.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/ranking", "GET");
+                    String[] rankResponse = rankingRequest.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/ranking", "GET");
                     JSONObject jsonRanking = new JSONObject(rankResponse[1]);
                     place = jsonRanking.getInt("position")+1;
                 } catch (JSONException e){
