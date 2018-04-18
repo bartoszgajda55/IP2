@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Helper.PostTask;
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.R;
 
 import org.json.JSONException;
@@ -108,7 +108,7 @@ public class AdminLookupUserActivity extends AppCompatActivity {
 
                     if(bundleBanned == 1 && updatedBanned == 0){
                         //Unban
-                        String[] unbanResponse = new RequestTask().sendGetRequest("blacklist/" + txtUserId.getText().toString(),"DELETE");
+                        String[] unbanResponse = new RequestTask2().sendGetRequest("blacklist/" + txtUserId.getText().toString(),"DELETE");
                         if(unbanResponse[0].equals("500")){
                             Toast.makeText(getApplicationContext(), "Error unbanning user...", Toast.LENGTH_SHORT).show();
                         }

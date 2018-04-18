@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.R;
 
 import org.json.JSONArray;
@@ -29,19 +29,54 @@ public class AdminShowQuizzesActivity extends AppCompatActivity {
      * Perhaps add the search function to this activity in the future?
      ***/
 
+    LinearLayout linearLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_show_quizzes);
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layoutLinear);
+        linearLayout = (LinearLayout) findViewById(R.id.layoutLinear);
 
         Button btnCreateQuiz = (Button) findViewById(R.id.btnCreateQuiz);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
-        //Load the quizzes
-        final RequestTask rt = new RequestTask();
+        //Handle the toolbar
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
+        toolbar.setTitle("Showing all quizzes...");
+        Drawable whiteArrow = getDrawable(R.drawable.arrow_back);
+        whiteArrow.setTint(getResources().getColor(R.color.colorLight));
+        toolbar.setNavigationIcon(whiteArrow);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
+
+        btnCreateQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AdminCreateQuizActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadQuizzes();
+    }
+
+
+    private void loadQuizzes(){
+        linearLayout.removeAllViews();
+        final RequestTask2 rt = new RequestTask2();
         try {
             String[] response = rt.sendGetRequest("quiz", "GET");
             JSONArray resultset = new JSONArray(response[1]);
@@ -68,37 +103,15 @@ public class AdminShowQuizzesActivity extends AppCompatActivity {
                 quizPreview.setArguments(quizBundle);
                 RelativeLayout rel = new RelativeLayout(this);
                 rel.setId(View.generateViewId());
-                getSupportFragmentManager().beginTransaction().add(rel.getId(),quizPreview).commit();
+                getSupportFragmentManager().beginTransaction().add(rel.getId(), quizPreview).commit();
                 linearLayout.addView(rel);
 
             }
-        } catch (JSONException e){
-            Log.e("ERROR", "Invalid JSON");
+        }catch (JSONException e){
+            Log.e("JSON ERROR", "Bad JSON");
+            e.printStackTrace();
         }
 
 
-        //Handle the toolbar
-        toolbar.setTitleTextColor(getResources().getColor(R.color.colorLight));
-        toolbar.setTitle("Showing all quizzes...");
-        Drawable whiteArrow = getDrawable(R.drawable.arrow_back);
-        whiteArrow.setTint(getResources().getColor(R.color.colorLight));
-        toolbar.setNavigationIcon(whiteArrow);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                finish();
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            }
-        });
-
-        btnCreateQuiz.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AdminCreateQuizActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-
-            }
-        });
     }
 }

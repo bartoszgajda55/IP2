@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.quizapp.ip2.Helper.JsonFileHelper;
 import com.quizapp.ip2.Helper.LevelParser;
 import com.quizapp.ip2.Helper.PostTask;
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.R;
 
 import org.json.JSONArray;
@@ -131,7 +131,7 @@ public class AdminTaskFragment extends Fragment {
                                     b.putInt("correctanswers", jsonResponse.getInt("CorrectAnswers"));
 
                                     //Put ranking
-                                    RequestTask requestRanking = new RequestTask();
+                                    RequestTask2 requestRanking = new RequestTask2();
                                     String[] rankingResponse = requestRanking.sendGetRequest("user/" + jsonResponse.getInt("UserID") + "/ranking", "GET");
                                     if(!rankingResponse[0].equals("400")){
                                         JSONObject jsonRanking = new JSONObject(rankingResponse[1]);
@@ -140,7 +140,7 @@ public class AdminTaskFragment extends Fragment {
                                         b.putInt("ranking", 0);
                                     }
 
-                                    RequestTask requestBanned = new RequestTask();
+                                    RequestTask2 requestBanned = new RequestTask2();
                                     String[] banResponse = requestBanned.sendGetRequest("blacklist/"+jsonResponse.getInt("UserID"), "GET");
                                     boolean banBool;
 

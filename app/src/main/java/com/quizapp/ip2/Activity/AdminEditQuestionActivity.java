@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.quizapp.ip2.Helper.DarkenColorHelper;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizHelper;
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.R;
 
@@ -344,7 +344,7 @@ public class AdminEditQuestionActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
                 else{
-                    RequestTask pt = new RequestTask();
+                    RequestTask2 pt = new RequestTask2();
                     String[] response = pt.sendGetRequest("question/"+bundle.getInt("id"), "DELETE");
                     if(response[0].equals("200")){
                         Toast.makeText(getApplicationContext(), "Question removed", Toast.LENGTH_SHORT).show();

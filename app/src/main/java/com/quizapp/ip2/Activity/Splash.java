@@ -1,20 +1,16 @@
 package com.quizapp.ip2.Activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.PostTask;
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.Model.User;
 import com.quizapp.ip2.R;
@@ -95,7 +91,7 @@ public class Splash extends AppCompatActivity {
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
                 } else{
-                    String[] banRequest = new RequestTask().sendGetRequest("blacklist/" + UserHelper.getUser().getUserID(), "GET");
+                    String[] banRequest = new RequestTask2().sendGetRequest("blacklist/" + UserHelper.getUser().getUserID(), "GET");
                     if(banRequest[0].equals("404")){
                         Intent intent = new Intent(Splash.this, HomepageActivity.class);
                         startActivity(intent);

@@ -22,7 +22,7 @@ import com.quizapp.ip2.Helper.JsonFileHelper;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.QuizColor;
 import com.quizapp.ip2.Helper.QuizHelper;
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.R;
 
@@ -213,7 +213,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
         btnRemoveQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestTask rt = new RequestTask();
+                RequestTask2 rt = new RequestTask2();
                 String[] response = rt.sendGetRequest("quiz/"+b.getInt("id"), "DELETE");
                 Log.e("REPONSE", ""+response[1]);
                 if(response[0].equals("200")){
@@ -230,7 +230,7 @@ public class AdminEditQuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                RequestTask rt = new RequestTask();
+                RequestTask2 rt = new RequestTask2();
                 String[] quizresponse = rt.sendGetRequest("quiz/"+b.getInt("id"), "GET");
                 String[] questionresponse = rt.sendGetRequest("quiz/"+b.getInt("id")+"/questions", "GET");
 

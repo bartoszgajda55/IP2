@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.R;
 
 import org.json.JSONArray;
@@ -89,7 +89,7 @@ public class QuizSearchActivity extends FragmentedActivity {
             }
         });
 
-        final RequestTask rt = new RequestTask();
+        final RequestTask2 rt = new RequestTask2();
 
         try {
             String[] response = rt.sendGetRequest("quiz", "GET");

@@ -26,6 +26,7 @@ import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Helper.LevelParser;
 import com.quizapp.ip2.Helper.PostTask;
 import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.Helper.StringHasher;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
@@ -396,66 +397,70 @@ public class UserFragment extends Fragment {
     public void populateFriends(){
         if(!friendsLoaded) {
 
-            RequestTask rt = new RequestTask();
+            RequestTask rt = new RequestTask(new RequestTask.AsyncResponse() {
+                @Override
+                public void processFinish(String[] output) {
+                    try{
+                        final JSONArray resultset = new JSONArray(output[1]);
+                        Log.e("RESULTSET","VALUE: "+resultset.length());
 
+                        if(resultset.length()>0) {
+                            for (int i = 0; i < resultset.length(); i++) {
+                                JSONObject jsonObject = resultset.getJSONObject(i);
+                                final int place = i + 1;
 
-            try{
-                String[] allFriendsResponse = rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends", "GET");
-                JSONArray resultset = new JSONArray(allFriendsResponse[1]);
+                                RequestTask rt2 = new RequestTask(new RequestTask.AsyncResponse() {
+                                    @Override
+                                    public void processFinish(String[] output2) {
+                                        try {
+                                            UserPreviewFragment frag = new UserPreviewFragment();
+                                            JSONArray resultset2 = new JSONArray(output2[1]);
+                                            JSONObject jsonFriend = resultset2.getJSONObject(0);
+                                            Bundle bundle = new Bundle();
+                                            String username = jsonFriend.getString("Username");
+                                            String level = Integer.toString(new LevelParser(jsonFriend.getInt("XP")).getLevel());
+                                            bundle.putInt("place", place);
+                                            bundle.putString("username", username);
+                                            bundle.putString("level", level);
+                                            bundle.putInt("color", R.color.colorLightGray);
+                                            bundle.putInt("textColor", R.color.colorDarkGray);
+                                            bundle.putFloat("alpha", 0.25F);
 
-                if(resultset.length()>0) {
-                    for (int i = 0; i < resultset.length(); i++) {
-                        JSONObject jsonObject = resultset.getJSONObject(i);
-                        UserPreviewFragment frag = new UserPreviewFragment();
-                        Bundle bundle = new Bundle();
-                        int place = i + 1;
+                                            frag.setArguments(bundle);
+                                            RelativeLayout rel = new RelativeLayout(getContext());
+                                            rel.setId(View.generateViewId());
+                                            getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
+                                            friendsLayout.addView(rel);
+                                        } catch (JSONException e){
+                                            Log.e("JSON ERROR", "Bad Json");
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                rt2.sendGetRequest("user/"+jsonObject.get("User2ID"), "GET");
 
-                        JSONArray resultUserArray;
-
-                        //If user 1 = user ELSE user 2 = user
-                        if (jsonObject.get("User1ID").equals(UserHelper.getUser().getUserID())) {
-                            String[] frientRt = rt.sendGetRequest("user/"+jsonObject.get("User2ID"), "GET");
-                            resultUserArray = new JSONArray(frientRt[1]);
-                        } else {
-                            String[] frientRt = rt.sendGetRequest("user/"+jsonObject.get("User1ID"), "GET");
-                            resultUserArray = new JSONArray(frientRt[1]);
+                            }
                         }
 
 
-                        JSONObject jsonFriend = resultUserArray.getJSONObject(0);
-
-                        String username = jsonFriend.getString("Username");
-                        String level = Integer.toString(new LevelParser(jsonFriend.getInt("XP")).getLevel());
-                        bundle.putInt("place", place);
-                        bundle.putString("username", username);
-                        bundle.putString("level", level);
-                        bundle.putInt("color", R.color.colorLightGray);
-                        bundle.putInt("textColor", R.color.colorDarkGray);
-                        bundle.putFloat("alpha", 0.25F);
-
-                        frag.setArguments(bundle);
-                        RelativeLayout rel = new RelativeLayout(getContext());
-                        rel.setId(View.generateViewId());
-                        getFragmentManager().beginTransaction().add(rel.getId(), frag).commit();
-                        friendsLayout.addView(rel);
+                    }catch(Exception e){
+                        Log.e("ERROR","No friends");
                     }
+
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
+            });
+            rt.sendGetRequest("user/"+UserHelper.getUser().getUserID()+"/friends", "GET");
 
-
-            }catch(Exception e){
-                Log.e("ERROR","No friends");
-            }
-
-            progressBar.setVisibility(View.INVISIBLE);
-            friendsLoaded = true;
 
         }
+        friendsLoaded = true;
     }
 
     public void populateFriendsSearch(String search){
             friendsLayout.removeViews(1, friendsLayout.getChildCount()-1);
 
-            RequestTask rt = new RequestTask();
+            RequestTask2 rt = new RequestTask2();
 
             try{
                 String[] responseFriends = rt.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/friends", "GET");

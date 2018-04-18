@@ -11,7 +11,7 @@ import android.widget.GridLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.R;
 
 import org.json.JSONException;
@@ -45,7 +45,7 @@ public class RecentQuizGridFragment extends Fragment {
         for(int i=0; i<getArguments().getIntegerArrayList("list").size(); i++) {
 
             try {
-                String[] quizResponse = new RequestTask().sendGetRequest("quiz/" + getArguments().getIntegerArrayList("list").get(i), "GET");
+                String[] quizResponse = new RequestTask2().sendGetRequest("quiz/" + getArguments().getIntegerArrayList("list").get(i), "GET");
                 JSONObject jsonQuiz = new JSONObject(quizResponse[1]);
 
                 RecentQuizPreviewFragment quizRecent = new RecentQuizPreviewFragment();

@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
 
@@ -105,106 +106,134 @@ public class HomeFragment extends Fragment {
         super.onResume();
 
         //To display the featured quizzes in a slider
-        ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 
-        final RequestTask rt = new RequestTask();
-
-        try {
-            String[] featuredResponse = rt.sendGetRequest("featuredQuiz", "GET");
-            JSONArray jsonFeaturedQuizzesArray = new JSONArray(featuredResponse[1]);
-            for(int i = 0; i < jsonFeaturedQuizzesArray.length(); i++){
-
-                JSONArray jsonFeaturedQuizArray = new JSONArray(featuredResponse[1]);
-                JSONObject jsonFeaturedQuiz = jsonFeaturedQuizArray.getJSONObject(i);
-                int quizId = jsonFeaturedQuiz.getInt("QuizID");
-
-                String[] quizResponse = rt.sendGetRequest("quiz/"+quizId, "GET");
-                JSONObject jsonQuiz = new JSONObject(quizResponse[1]);
-
-                QuizPreviewFragment quizPreview = new QuizPreviewFragment();
-                Bundle featuredBundle = new Bundle();
-                String featuredTitle = jsonQuiz.getString("QuizName");
-                String featuredDesc = jsonQuiz.getString("QuizDescription");
-                String featuredImg = jsonQuiz.getString("QuizImage");
-                int featuredId = jsonQuiz.getInt("QuizID");
-                int featuredColor = Color.parseColor("#" + jsonQuiz.getString("QuizColor"));
-
-                featuredBundle.putString("title", featuredTitle);
-                featuredBundle.putString("desc", featuredDesc);
-                featuredBundle.putString("img", featuredImg);
-                featuredBundle.putInt("id", featuredId);
-                featuredBundle.putInt("color", featuredColor);
-
-                quizPreview.setArguments(featuredBundle);
-                fragments.add(quizPreview);
-
-            }
-        } catch (JSONException e){
-            Log.e("ERROR", "Invalid JSON");
-        }
+        loadFeatured();
+        loadRecent();
+    }
 
 
-        ArrayList<Fragment> fragmentsRecentGrid = new ArrayList<>();
+    public void loadFeatured(){
+        final ArrayList<Integer> featuredId = new ArrayList<>();
 
+        RequestTask featuredResponse = new RequestTask(new RequestTask.AsyncResponse() {
+            @Override
+            public void processFinish(String[] response) {
+                final ArrayList<Fragment> fragmentsFeatured = new ArrayList<Fragment>();
+                try {
+
+                    JSONArray jsonFeaturedQuizzesArray = new JSONArray(response[1]);
+                    for(int i = 0; i < jsonFeaturedQuizzesArray.length(); i++){
+
+                        JSONArray jsonFeaturedQuizArray = new JSONArray(response[1]);
+                        JSONObject jsonFeaturedQuiz = jsonFeaturedQuizArray.getJSONObject(i);
+                        int quizId = jsonFeaturedQuiz.getInt("QuizID");
+                        featuredId.add(quizId);
+                    }
+                } catch (JSONException e){
+                    Log.e("ERROR", "Invalid JSON");
+                }
+                    for(int i=0; i<featuredId.size(); i++){
+                        RequestTask ft = new RequestTask(new RequestTask.AsyncResponse() {
+                            @Override
+                            public void processFinish(String[] output) {
+                                try {
+                                    JSONObject jsonQuiz = new JSONObject(output[1]);
+
+                                    QuizPreviewFragment quizPreview = new QuizPreviewFragment();
+                                    Bundle featuredBundle = new Bundle();
+                                    String featuredTitle = jsonQuiz.getString("QuizName");
+                                    String featuredDesc = jsonQuiz.getString("QuizDescription");
+                                    String featuredImg = jsonQuiz.getString("QuizImage");
+                                    int featuredId = jsonQuiz.getInt("QuizID");
+                                    int featuredColor = Color.parseColor("#" + jsonQuiz.getString("QuizColor"));
+
+                                    featuredBundle.putString("title", featuredTitle);
+                                    featuredBundle.putString("desc", featuredDesc);
+                                    featuredBundle.putString("img", featuredImg);
+                                    featuredBundle.putInt("id", featuredId);
+                                    featuredBundle.putInt("color", featuredColor);
+
+                                    quizPreview.setArguments(featuredBundle);
+                                    fragmentsFeatured.add(quizPreview);
+
+                                    featuredAdapter = new FragmentedActivity.SliderAdapter(getChildFragmentManager(), fragmentsFeatured.size(), fragmentsFeatured);
+                                    featuredPager.setAdapter(featuredAdapter);
+                                }catch (JSONException e){
+                                    Log.e("JSON ERROR", "Bad JSON");
+                                    e.printStackTrace();
+                                }
+                            }
+                            });
+                        ft.sendGetRequest("quiz/"+featuredId.get(i), "GET");
+                        }
+                    featuredNavigationDots.setupWithViewPager(featuredPager, true);
+                    }
+            });
+         featuredResponse.sendGetRequest("featuredQuiz", "GET");
+
+    }
+
+    private void loadRecent(){
+        final ArrayList<Fragment> fragmentsRecentGrid = new ArrayList<>();
+        final ArrayList<Integer> recentId = new ArrayList<>();
         JSONObject jsonUser = new JSONObject();
         try {
             jsonUser.put("UserID", UserHelper.getUser().getUserID());
-
-            RequestTask rt2 = new RequestTask();
-            String[] response = rt2.sendGetRequest("recentQuiz/"+UserHelper.getUser().getUserID(), "GET");
-            if(response[0].equals("200")){
-
-                JSONArray recentQuizArray = new JSONArray(response[1]);
-
-                RecentQuizGridFragment recentGrid = new RecentQuizGridFragment();
-
-                RecentQuizGridFragment recentGrid2;
-                ArrayList<Integer> grid2 = new ArrayList<>();
-                recentGrid2 = new RecentQuizGridFragment();
-                ArrayList<Integer> grid1 = new ArrayList<>();
-
-                for(int i=0; i<recentQuizArray.length(); i++){
-
-                    if(i>=4){
-                        int id = recentQuizArray.getJSONObject(i).getInt("QuizID");
-                        grid2.add(id);
-                    }else{
-                        int id = recentQuizArray.getJSONObject(i).getInt("QuizID");
-                        grid1.add(id);
-                    }
-                }
-
-                Bundle bundle1 = new Bundle();
-                bundle1.putIntegerArrayList("list", grid1);
-                recentGrid.setArguments(bundle1);
-                fragmentsRecentGrid.add(recentGrid);
-
-                if(recentQuizArray.length()>4){
-                    Bundle bundle2 = new Bundle();
-                    bundle2.putIntegerArrayList("list", grid2);
-                    recentGrid2.setArguments(bundle2);
-                    fragmentsRecentGrid.add(recentGrid2);
-                }
-            }else{
-                Log.e("ERROR", "No user");
-            }
         }catch (JSONException e){
             Log.e("JSON ERROR", "Bad JSON");
             e.printStackTrace();
         }
-        featuredAdapter = new FragmentedActivity.SliderAdapter(getChildFragmentManager(), fragments.size(), fragments);
-        featuredPager.setAdapter(featuredAdapter);
-        featuredNavigationDots.setupWithViewPager(featuredPager, true);
-        if(featuredNavigationDots.getTabCount() < 2){
-            featuredNavigationDots.setVisibility(View.INVISIBLE);
-        }
+        RequestTask rt = new RequestTask(new RequestTask.AsyncResponse(){
+        @Override
+        public void processFinish(String[] output) {
+            try {
+                if (output[0].equals("200")) {
 
-        recentAdapter = new FragmentedActivity.SliderAdapter(getChildFragmentManager(), fragmentsRecentGrid.size(), fragmentsRecentGrid);
-        recentPager.setAdapter(recentAdapter);
+                    JSONArray recentQuizArray = new JSONArray(output[1]);
 
-        recentNavigationDots.setupWithViewPager(recentPager, true);
-        if(recentNavigationDots.getTabCount() < 2){
-            recentNavigationDots.setVisibility(View.INVISIBLE);
+                    RecentQuizGridFragment recentGrid = new RecentQuizGridFragment();
+
+                    RecentQuizGridFragment recentGrid2;
+                    ArrayList<Integer> grid2 = new ArrayList<>();
+                    recentGrid2 = new RecentQuizGridFragment();
+                    ArrayList<Integer> grid1 = new ArrayList<>();
+
+                    for (int i = 0; i < recentQuizArray.length(); i++) {
+
+                        if (i >= 4) {
+                            int id = recentQuizArray.getJSONObject(i).getInt("QuizID");
+                            grid2.add(id);
+                        } else {
+                            int id = recentQuizArray.getJSONObject(i).getInt("QuizID");
+                            grid1.add(id);
+                        }
+                    }
+
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putIntegerArrayList("list", grid1);
+                    recentGrid.setArguments(bundle1);
+                    fragmentsRecentGrid.add(recentGrid);
+
+                    if (recentQuizArray.length() > 4) {
+                        Bundle bundle2 = new Bundle();
+                        bundle2.putIntegerArrayList("list", grid2);
+                        recentGrid2.setArguments(bundle2);
+                        fragmentsRecentGrid.add(recentGrid2);
+                    }
+                } else {
+                    Log.e("ERROR", "No user");
+                }
+                recentAdapter = new FragmentedActivity.SliderAdapter(getChildFragmentManager(), fragmentsRecentGrid.size(), fragmentsRecentGrid);
+                recentPager.setAdapter(recentAdapter);
+
+                recentNavigationDots.setupWithViewPager(recentPager, true);
+            }catch(JSONException e){
+                Log.e("JSON ERROR", "Bad Json");
+                e.printStackTrace();
+            }
         }
+    });
+
+        rt.sendGetRequest("recentQuiz/"+UserHelper.getUser().getUserID(),"GET");
     }
 }

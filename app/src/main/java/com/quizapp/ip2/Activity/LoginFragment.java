@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.quizapp.ip2.Helper.PostTask;
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.Helper.StringHasher;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.Model.User;
@@ -76,7 +76,7 @@ public class LoginFragment extends Fragment {
 
                         UserHelper.setUser(user);
 
-                        String[] banRequest = new RequestTask().sendGetRequest("blacklist/" + user.getUserID(), "GET");
+                        String[] banRequest = new RequestTask2().sendGetRequest("blacklist/" + user.getUserID(), "GET");
                         if(banRequest[0].equals("404")){
                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                             builder.setTitle("Remember me");
