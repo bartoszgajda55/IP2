@@ -88,7 +88,6 @@ public class HomepageActivity extends FragmentedActivity {
         super.onResume();
         viewPager.setCurrentItem(1);
     }
-
     //Adds the white navigation icons to the tab bar
     private void addTabIcons(){
         for(int i = 0; i < tabLayout.getTabCount(); i++){

@@ -467,7 +467,6 @@ public class UserFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     int place = i + 1;
 
-                    RequestTask rtUser = new RequestTask();
                     JSONArray resultUserArray;
 
                     //If user 1 = user ELSE user 2 = user
@@ -475,7 +474,7 @@ public class UserFragment extends Fragment {
                         String[] friendResponse = rt.sendGetRequest("user/"+jsonObject.get("User2ID"), "GET");
                         resultUserArray= new JSONArray(friendResponse[1]);
                     }else{
-                        String[] friendResponse = rt.sendGetRequest("user/ " + jsonObject.get("User1ID"), "GET");
+                        String[] friendResponse = rt.sendGetRequest("user/" + jsonObject.get("User1ID"), "GET");
                         resultUserArray= new JSONArray(friendResponse[1]);
 
                     }

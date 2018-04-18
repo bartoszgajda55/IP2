@@ -69,7 +69,7 @@ public class AdminLookupUserActivity extends AppCompatActivity {
         txtTotalXP.setText(String.valueOf(args.getInt("xp")));
         txtLevel.setText(String.valueOf(args.getInt("level")));
         txtRanking.setText(String.valueOf(args.getInt("ranking") + 1));
-        txtQuizzesComplete.setText(String.valueOf(args.getInt("quizzesscomplete")));
+        txtQuizzesComplete.setText(String.valueOf(args.getInt("quizzescomplete")));
         txtCorrectAnswers.setText(String.valueOf(args.getInt("correctanswers")));
 
         switchAdmin.setChecked(args.getBoolean("adminstatus"));

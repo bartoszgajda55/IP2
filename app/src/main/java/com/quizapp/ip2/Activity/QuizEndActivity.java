@@ -96,8 +96,6 @@ public class QuizEndActivity extends AppCompatActivity {
             LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
             View view = inflater.inflate(R.layout.levelup_dialog, null);
 
-
-
             GifImageView gif = (GifImageView) view.findViewById(R.id.gifLevelUp);
             TextView levelText = (TextView) view.findViewById(R.id.textView2);
             levelText.setText("You are now level " + newLevel + "...");
