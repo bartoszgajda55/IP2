@@ -132,50 +132,43 @@ public class HomeFragment extends Fragment {
                 } catch (JSONException e){
                     Log.e("ERROR", "Invalid JSON");
                 }
+                    for(int i=0; i<featuredId.size(); i++){
+                        RequestTask ft = new RequestTask(new RequestTask.AsyncResponse() {
+                            @Override
+                            public void processFinish(String[] output) {
+                                try {
+                                    JSONObject jsonQuiz = new JSONObject(output[1]);
 
-                RequestTask quizResponse = new RequestTask(new RequestTask.AsyncResponse() {
-                    @Override
-                    public void processFinish(String[] response) {
-                        try {
-                            JSONObject jsonQuiz = new JSONObject(response[1]);
+                                    QuizPreviewFragment quizPreview = new QuizPreviewFragment();
+                                    Bundle featuredBundle = new Bundle();
+                                    String featuredTitle = jsonQuiz.getString("QuizName");
+                                    String featuredDesc = jsonQuiz.getString("QuizDescription");
+                                    String featuredImg = jsonQuiz.getString("QuizImage");
+                                    int featuredId = jsonQuiz.getInt("QuizID");
+                                    int featuredColor = Color.parseColor("#" + jsonQuiz.getString("QuizColor"));
 
-                            QuizPreviewFragment quizPreview = new QuizPreviewFragment();
-                            Bundle featuredBundle = new Bundle();
-                            String featuredTitle = jsonQuiz.getString("QuizName");
-                            String featuredDesc = jsonQuiz.getString("QuizDescription");
-                            String featuredImg = jsonQuiz.getString("QuizImage");
-                            int featuredId = jsonQuiz.getInt("QuizID");
-                            int featuredColor = Color.parseColor("#" + jsonQuiz.getString("QuizColor"));
+                                    featuredBundle.putString("title", featuredTitle);
+                                    featuredBundle.putString("desc", featuredDesc);
+                                    featuredBundle.putString("img", featuredImg);
+                                    featuredBundle.putInt("id", featuredId);
+                                    featuredBundle.putInt("color", featuredColor);
 
-                            featuredBundle.putString("title", featuredTitle);
-                            featuredBundle.putString("desc", featuredDesc);
-                            featuredBundle.putString("img", featuredImg);
-                            featuredBundle.putInt("id", featuredId);
-                            featuredBundle.putInt("color", featuredColor);
+                                    quizPreview.setArguments(featuredBundle);
+                                    fragmentsFeatured.add(quizPreview);
 
-                            quizPreview.setArguments(featuredBundle);
-                            fragmentsFeatured.add(quizPreview);
-
-                            featuredAdapter = new FragmentedActivity.SliderAdapter(getChildFragmentManager(), fragmentsFeatured.size(), fragmentsFeatured);
-                            featuredPager.setAdapter(featuredAdapter);
-                            featuredNavigationDots.setupWithViewPager(featuredPager, true);
-                            if(featuredNavigationDots.getTabCount() < 2){
-
-                                featuredNavigationDots.setVisibility(View.INVISIBLE);
+                                    featuredAdapter = new FragmentedActivity.SliderAdapter(getChildFragmentManager(), fragmentsFeatured.size(), fragmentsFeatured);
+                                    featuredPager.setAdapter(featuredAdapter);
+                                }catch (JSONException e){
+                                    Log.e("JSON ERROR", "Bad JSON");
+                                    e.printStackTrace();
+                                }
                             }
-                        }catch (JSONException e){
-                            Log.e("JSON ERROR", "Bad JSON");
-                            e.printStackTrace();
+                            });
+                        ft.sendGetRequest("quiz/"+featuredId.get(i), "GET");
                         }
+                    featuredNavigationDots.setupWithViewPager(featuredPager, true);
                     }
-                });
-
-
-                    quizResponse.sendGetRequest("quiz/" + featuredId.get(0), "GET");
-
-            }
-        });
-
+            });
          featuredResponse.sendGetRequest("featuredQuiz", "GET");
 
     }

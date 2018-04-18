@@ -19,6 +19,9 @@ public class RequestTask extends AsyncTask<String, String, String[]>{
         void processFinish(String[] output);
     }
 
+    public RequestTask() {
+    }
+
     public AsyncResponse delegate = null;
 
     public RequestTask(AsyncResponse delegate){
