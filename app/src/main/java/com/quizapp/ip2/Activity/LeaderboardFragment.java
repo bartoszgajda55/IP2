@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.quizapp.ip2.Helper.LevelParser;
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
 
@@ -46,7 +46,7 @@ public class LeaderboardFragment extends Fragment {
     public void populatePage(){
         if(!pageLoaded) {
             //TODO Add an async task for loading leaderboards
-            final RequestTask rt = new RequestTask();
+            final RequestTask2 rt = new RequestTask2();
 
             try {
                 String[] response = rt.sendGetRequest("user?term=XP&order=desc&limit=101", "GET");
@@ -85,7 +85,7 @@ public class LeaderboardFragment extends Fragment {
             //Add current user's ranking/score to bottom of page
                 UserPreviewFragment frag = new UserPreviewFragment();
                 Bundle bundle = new Bundle();
-                RequestTask rankingRequest = new RequestTask();
+                RequestTask2 rankingRequest = new RequestTask2();
                 int place = 0;
                 try {
                     String[] rankResponse = rt.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/ranking", "GET");

@@ -89,9 +89,8 @@ public class PostTask {
             return response;
         }
 
-        @Override
-        protected void onPostExecute(String[] s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(String[] result){
+            super.onPostExecute(result);
         }
 
     }

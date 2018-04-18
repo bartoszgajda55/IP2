@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Helper.LevelParser;
 import com.quizapp.ip2.Helper.PostTask;
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.Helper.StringHasher;
 import com.quizapp.ip2.Helper.UserHelper;
 import com.quizapp.ip2.R;
@@ -396,7 +396,7 @@ public class UserFragment extends Fragment {
     public void populateFriends(){
         if(!friendsLoaded) {
 
-            RequestTask rt = new RequestTask();
+            RequestTask2 rt = new RequestTask2();
 
 
             try{
@@ -455,7 +455,7 @@ public class UserFragment extends Fragment {
     public void populateFriendsSearch(String search){
             friendsLayout.removeViews(1, friendsLayout.getChildCount()-1);
 
-            RequestTask rt = new RequestTask();
+            RequestTask2 rt = new RequestTask2();
 
             try{
                 String[] responseFriends = rt.sendGetRequest("user/" + UserHelper.getUser().getUserID() + "/friends", "GET");

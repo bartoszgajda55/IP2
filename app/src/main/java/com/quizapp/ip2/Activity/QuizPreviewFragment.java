@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.quizapp.ip2.Helper.DownloadImageTask;
 import com.quizapp.ip2.Helper.QuizHelper;
-import com.quizapp.ip2.Helper.RequestTask;
+import com.quizapp.ip2.Helper.RequestTask2;
 import com.quizapp.ip2.Model.Question;
 import com.quizapp.ip2.Model.Quiz;
 import com.quizapp.ip2.R;
@@ -70,7 +70,7 @@ public class QuizPreviewFragment extends Fragment {
                 int id = QuizPreviewFragment.this.getArguments().getInt("id");
                 String desc = QuizPreviewFragment.this.getArguments().getString("desc");
 
-                RequestTask rt = new RequestTask();
+                RequestTask2 rt = new RequestTask2();
                 try {
                     String[] response = rt.sendGetRequest("quiz/" + id + "/questions", "GET");
                     JSONArray jsonQuestions = new JSONArray(response[1]);
