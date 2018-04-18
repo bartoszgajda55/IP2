@@ -82,6 +82,28 @@ public class HomeFragment extends Fragment {
 
 
 
+        //Listen for button click to show all quizzes
+        btnBrowseAll.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getContext(), QuizSearchActivity.class);
+                Bundle b = new Bundle();
+                b.putString("search", "all");
+                //"all" key is a boolean value, if true, will show every quiz in the database. Else the query will be used.
+                b.putBoolean("all", true);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
+
+        return view;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         //To display the featured quizzes in a slider
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 
@@ -122,43 +144,14 @@ public class HomeFragment extends Fragment {
         }
 
 
-        featuredAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragments.size(), fragments);
-        featuredPager.setAdapter(featuredAdapter);
-        featuredNavigationDots.setupWithViewPager(featuredPager, true);
-        if(featuredNavigationDots.getTabCount() < 2){
-            featuredNavigationDots.setVisibility(View.INVISIBLE);
-        }
-
-        //Listen for button click to show all quizzes
-        btnBrowseAll.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(getContext(), QuizSearchActivity.class);
-                Bundle b = new Bundle();
-                b.putString("search", "all");
-                //"all" key is a boolean value, if true, will show every quiz in the database. Else the query will be used.
-                b.putBoolean("all", true);
-                intent.putExtras(b);
-                startActivity(intent);
-            }
-        });
-
-        return view;
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
         ArrayList<Fragment> fragmentsRecentGrid = new ArrayList<>();
 
         JSONObject jsonUser = new JSONObject();
         try {
             jsonUser.put("UserID", UserHelper.getUser().getUserID());
 
-            RequestTask rt = new RequestTask();
-            String[] response = rt.sendGetRequest("recentQuiz/"+UserHelper.getUser().getUserID(), "GET");
+            RequestTask rt2 = new RequestTask();
+            String[] response = rt2.sendGetRequest("recentQuiz/"+UserHelper.getUser().getUserID(), "GET");
             if(response[0].equals("200")){
 
                 JSONArray recentQuizArray = new JSONArray(response[1]);
@@ -199,8 +192,14 @@ public class HomeFragment extends Fragment {
             Log.e("JSON ERROR", "Bad JSON");
             e.printStackTrace();
         }
+        featuredAdapter = new FragmentedActivity.SliderAdapter(getChildFragmentManager(), fragments.size(), fragments);
+        featuredPager.setAdapter(featuredAdapter);
+        featuredNavigationDots.setupWithViewPager(featuredPager, true);
+        if(featuredNavigationDots.getTabCount() < 2){
+            featuredNavigationDots.setVisibility(View.INVISIBLE);
+        }
 
-        recentAdapter = new FragmentedActivity.SliderAdapter(getActivity().getSupportFragmentManager(), fragmentsRecentGrid.size(), fragmentsRecentGrid);
+        recentAdapter = new FragmentedActivity.SliderAdapter(getChildFragmentManager(), fragmentsRecentGrid.size(), fragmentsRecentGrid);
         recentPager.setAdapter(recentAdapter);
 
         recentNavigationDots.setupWithViewPager(recentPager, true);
